@@ -2,59 +2,52 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { industries, services, cities, getIndustryBySlug } from '@/lib/data';
+import { industries, services, getIndustryBySlug } from '@/lib/data';
+import { rotatingBrandPhotos } from '@/lib/brand-photos';
+import { getIndustryContent, getServiceContent } from '@/lib/site-content';
+import { buildBreadcrumbSchema, buildPageMetadata, buildServiceSchema } from '@/lib/seo';
+import { getFeaturedCities } from '@/lib/voice-ai-industries';
 import CTASection from '@/components/sections/CTASection';
 import FeaturesBento from '@/components/sections/FeaturesBento';
-
-const INDUSTRY_PHOTOS = [
-  '/site-photos/team-on-phone.jpg',
-  '/site-photos/team-consultation.jpg',
-  '/site-photos/voip-phone.jpg',
-  '/site-photos/team-meeting.jpg',
-  '/site-photos/omnichannel.jpg',
-  '/site-photos/laptop-typing.jpg',
-  '/site-photos/team-office.jpg',
-  '/site-photos/team-conversation.jpg',
-  '/site-photos/digital-cx.png',
-  '/site-photos/business-mobile.jpg',
-];
 
 interface Props {
   params: Promise<{ slug: string }>;
 }
 
 export async function generateStaticParams() {
-  return industries.map((i) => ({ slug: i.slug }));
+  return industries.map((industry) => ({ slug: industry.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const industry = getIndustryBySlug(slug);
   if (!industry) return {};
-  return {
-    title: `VoIP for ${industry.name} | MyVoIP`,
-    description: `${industry.tagline}. MyVoIP provides ${industry.name.toLowerCase()} businesses with cloud phone systems, AI features, and 24/7 US-based support — starting at $9.99/month.`,
-    alternates: { canonical: `https://my-voip.com/industries/${slug}` },
-    openGraph: {
-      title: `VoIP for ${industry.name} | MyVoIP`,
-      description: industry.description,
-    },
-  };
+
+  const content = getIndustryContent(industry);
+  const heroPhoto = rotatingBrandPhotos[industries.findIndex((item) => item.slug === slug) % rotatingBrandPhotos.length];
+
+  return buildPageMetadata({
+    title: `${industry.name} Communication Workflows`,
+    description: content.metaDescription,
+    path: `/industries/${slug}`,
+    openGraphDescription: content.description,
+    image: heroPhoto,
+  });
 }
 
 const colorMap: Record<string, { bg: string; border: string; text: string; pill: string; pillText: string; dot: string }> = {
-  red:     { bg: 'bg-red-600/10',     border: 'border-red-500/30',     text: 'text-red-400',     pill: 'bg-red-600/10',     pillText: 'text-red-300',     dot: 'bg-red-400' },
-  blue:    { bg: 'bg-blue-600/10',    border: 'border-blue-500/30',    text: 'text-blue-400',    pill: 'bg-blue-600/10',    pillText: 'text-blue-300',    dot: 'bg-blue-400' },
-  green:   { bg: 'bg-green-600/10',   border: 'border-green-500/30',   text: 'text-green-400',   pill: 'bg-green-600/10',   pillText: 'text-green-300',   dot: 'bg-green-400' },
-  yellow:  { bg: 'bg-yellow-600/10',  border: 'border-yellow-500/30',  text: 'text-yellow-400',  pill: 'bg-yellow-600/10',  pillText: 'text-yellow-300',  dot: 'bg-yellow-400' },
-  orange:  { bg: 'bg-orange-600/10',  border: 'border-orange-500/30',  text: 'text-orange-400',  pill: 'bg-orange-600/10',  pillText: 'text-orange-300',  dot: 'bg-orange-400' },
-  purple:  { bg: 'bg-purple-600/10',  border: 'border-purple-500/30',  text: 'text-purple-400',  pill: 'bg-purple-600/10',  pillText: 'text-purple-300',  dot: 'bg-purple-400' },
-  slate:   { bg: 'bg-slate-600/20',   border: 'border-slate-500/30',   text: 'text-slate-300',   pill: 'bg-slate-700/50',   pillText: 'text-slate-300',   dot: 'bg-slate-400' },
-  pink:    { bg: 'bg-pink-600/10',    border: 'border-pink-500/30',    text: 'text-pink-400',    pill: 'bg-pink-600/10',    pillText: 'text-pink-300',    dot: 'bg-pink-400' },
-  amber:   { bg: 'bg-amber-600/10',   border: 'border-amber-500/30',   text: 'text-amber-400',   pill: 'bg-amber-600/10',   pillText: 'text-amber-300',   dot: 'bg-amber-400' },
-  cyan:    { bg: 'bg-cyan-600/10',    border: 'border-cyan-500/30',    text: 'text-cyan-400',    pill: 'bg-cyan-600/10',    pillText: 'text-cyan-300',    dot: 'bg-cyan-400' },
-  violet:  { bg: 'bg-violet-600/10',  border: 'border-violet-500/30',  text: 'text-violet-400',  pill: 'bg-violet-600/10',  pillText: 'text-violet-300',  dot: 'bg-violet-400' },
-  rose:    { bg: 'bg-rose-600/10',    border: 'border-rose-500/30',    text: 'text-rose-400',    pill: 'bg-rose-600/10',    pillText: 'text-rose-300',    dot: 'bg-rose-400' },
+  red: { bg: 'bg-red-600/10', border: 'border-red-500/30', text: 'text-red-400', pill: 'bg-red-600/10', pillText: 'text-red-300', dot: 'bg-red-400' },
+  blue: { bg: 'bg-blue-600/10', border: 'border-blue-500/30', text: 'text-blue-400', pill: 'bg-blue-600/10', pillText: 'text-blue-300', dot: 'bg-blue-400' },
+  green: { bg: 'bg-green-600/10', border: 'border-green-500/30', text: 'text-green-400', pill: 'bg-green-600/10', pillText: 'text-green-300', dot: 'bg-green-400' },
+  yellow: { bg: 'bg-yellow-600/10', border: 'border-yellow-500/30', text: 'text-yellow-400', pill: 'bg-yellow-600/10', pillText: 'text-yellow-300', dot: 'bg-yellow-400' },
+  orange: { bg: 'bg-orange-600/10', border: 'border-orange-500/30', text: 'text-orange-400', pill: 'bg-orange-600/10', pillText: 'text-orange-300', dot: 'bg-orange-400' },
+  purple: { bg: 'bg-purple-600/10', border: 'border-purple-500/30', text: 'text-purple-400', pill: 'bg-purple-600/10', pillText: 'text-purple-300', dot: 'bg-purple-400' },
+  slate: { bg: 'bg-slate-600/20', border: 'border-slate-500/30', text: 'text-slate-300', pill: 'bg-slate-700/50', pillText: 'text-slate-300', dot: 'bg-slate-400' },
+  pink: { bg: 'bg-pink-600/10', border: 'border-pink-500/30', text: 'text-pink-400', pill: 'bg-pink-600/10', pillText: 'text-pink-300', dot: 'bg-pink-400' },
+  amber: { bg: 'bg-amber-600/10', border: 'border-amber-500/30', text: 'text-amber-400', pill: 'bg-amber-600/10', pillText: 'text-amber-300', dot: 'bg-amber-400' },
+  cyan: { bg: 'bg-cyan-600/10', border: 'border-cyan-500/30', text: 'text-cyan-400', pill: 'bg-cyan-600/10', pillText: 'text-cyan-300', dot: 'bg-cyan-400' },
+  violet: { bg: 'bg-violet-600/10', border: 'border-violet-500/30', text: 'text-violet-400', pill: 'bg-violet-600/10', pillText: 'text-violet-300', dot: 'bg-violet-400' },
+  rose: { bg: 'bg-rose-600/10', border: 'border-rose-500/30', text: 'text-rose-400', pill: 'bg-rose-600/10', pillText: 'text-rose-300', dot: 'bg-rose-400' },
   emerald: { bg: 'bg-emerald-600/10', border: 'border-emerald-500/30', text: 'text-emerald-400', pill: 'bg-emerald-600/10', pillText: 'text-emerald-300', dot: 'bg-emerald-400' },
 };
 
@@ -63,86 +56,87 @@ export default async function IndustryPage({ params }: Props) {
   const industry = getIndustryBySlug(slug);
   if (!industry) notFound();
 
-  const c = colorMap[industry.color] ?? colorMap['blue'];
-
-  const industryIndex = industries.findIndex((i) => i.slug === slug);
-  const heroPhoto = INDUSTRY_PHOTOS[industryIndex % INDUSTRY_PHOTOS.length];
-
-  const recommendedServices = services.filter((s) =>
-    !['ai-voice-agents', 'ai-chatbots'].includes(s.slug)
-  ).slice(0, 4);
-
-  const featuredCities = cities.slice(0, 60);
+  const content = getIndustryContent(industry);
+  const c = colorMap[industry.color] ?? colorMap.blue;
+  const industryIndex = industries.findIndex((item) => item.slug === slug);
+  const heroPhoto = rotatingBrandPhotos[industryIndex % rotatingBrandPhotos.length];
+  const recommendedServices = services.filter((service) => !['ai-voice-agents', 'ai-chatbots'].includes(service.slug)).slice(0, 4);
+  const featuredCities = getFeaturedCities(24);
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: industry.name, path: `/industries/${slug}` },
+  ]);
+  const serviceSchema = buildServiceSchema({
+    name: `${industry.name} Communication Workflows`,
+    description: content.metaDescription,
+    path: `/industries/${slug}`,
+    serviceType: industry.name,
+    image: heroPhoto,
+  });
 
   return (
     <>
-      {/* Hero */}
-      <section className="relative overflow-hidden py-16 md:py-24 px-4">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+      />
+
+      <section className="relative overflow-hidden px-4 py-16 md:py-24">
         <div className="absolute inset-0">
-          <div className={`absolute top-0 left-0 w-[700px] h-[500px] ${c.bg} rounded-full blur-3xl opacity-60`} />
-          <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-blue-900/10 rounded-full blur-3xl" />
+          <div className={`absolute left-0 top-0 h-[500px] w-[700px] ${c.bg} rounded-full blur-3xl opacity-60`} />
+          <div className="absolute bottom-0 right-0 h-[400px] w-[400px] rounded-full bg-blue-900/10 blur-3xl" />
         </div>
-        <div className="relative max-w-7xl mx-auto">
-          {/* Breadcrumb */}
-          <nav className="flex items-center gap-2 text-slate-500 text-sm mb-8">
-            <Link href="/" className="hover:text-slate-300 transition-colors">Home</Link>
-            <span>/</span>
-            <Link href="/#industries" className="hover:text-slate-300 transition-colors">Industries</Link>
+
+        <div className="relative mx-auto max-w-7xl">
+          <nav className="mb-8 flex items-center gap-2 text-sm text-slate-500">
+            <Link href="/" className="transition-colors hover:text-slate-300">Home</Link>
             <span>/</span>
             <span className="text-slate-300">{industry.name}</span>
           </nav>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            {/* Left: copy */}
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center">
             <div>
-              <div className={`inline-flex items-center gap-2 ${c.pill} ${c.border} border rounded-full px-4 py-1.5 mb-6`}>
-                <span className={`w-2 h-2 ${c.dot} rounded-full animate-pulse`} />
-                <span className={`${c.pillText} text-sm font-medium`}>Industry Solution</span>
+              <div className={`mb-6 inline-flex items-center gap-2 rounded-full border ${c.border} ${c.pill} px-4 py-1.5`}>
+                <span className={`h-2 w-2 rounded-full ${c.dot}`} />
+                <span className={`text-sm font-medium ${c.pillText}`}>{content.badgeLabel}</span>
               </div>
-              <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 leading-tight">
-                VoIP for <span className={c.text}>{industry.name}</span>
+              <h1 className="mb-4 text-4xl font-bold leading-tight text-white md:text-5xl">
+                <span className={c.text}>{content.heroTitle}</span>
               </h1>
-              <p className="text-xl text-slate-300 font-medium mb-5 leading-relaxed">{industry.tagline}</p>
-              <p className="text-slate-400 text-lg leading-relaxed mb-8">{industry.description}</p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link href="/quote" className="bg-blue-600 hover:bg-blue-500 text-white font-bold px-8 py-4 rounded-xl transition-colors text-lg text-center">
+              <p className="mb-5 text-xl leading-relaxed text-slate-300">{content.tagline}</p>
+              <p className="mb-8 text-lg leading-relaxed text-slate-400">{content.description}</p>
+              <div className="flex flex-col gap-4 sm:flex-row">
+                <Link href="/quote" className="rounded-xl bg-blue-600 px-8 py-4 text-center text-lg font-bold text-white transition-colors hover:bg-blue-500">
                   Get a Free Quote
                 </Link>
-                <a href="tel:+18336986471" className="border border-slate-600 text-slate-200 hover:border-blue-500 hover:text-white font-semibold px-8 py-4 rounded-xl transition-colors text-lg text-center">
-                  Call (833) 698-6471
+                <a href="tel:+18336986471" className="rounded-xl border border-slate-600 px-8 py-4 text-center text-lg font-semibold text-slate-200 transition-colors hover:border-blue-500 hover:text-white">
+                  Call (888) 787-6624
                 </a>
               </div>
             </div>
 
-            {/* Right: Photo + floating stats */}
             <div className="relative">
               <div className={`absolute -inset-3 ${c.bg} rounded-3xl blur-2xl opacity-40`} />
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-black/60 border border-slate-700/60">
-                <Image
-                  src={heroPhoto}
-                  alt={`VoIP for ${industry.name}`}
-                  width={680}
-                  height={480}
-                  className="w-full h-auto object-cover"
-                  priority
-                  unoptimized
-                />
-                {/* Floating stat overlays */}
-                <div className="absolute bottom-4 left-4 bg-slate-900/90 backdrop-blur-sm border border-slate-700 rounded-xl px-4 py-2.5 shadow-xl">
-                  <div className={`text-xl font-black ${c.text}`}>{industry.stats[0].value}</div>
-                  <div className="text-slate-300 text-xs">{industry.stats[0].label}</div>
+              <div className="relative overflow-hidden rounded-2xl border border-slate-700/60 shadow-2xl shadow-black/60">
+                <Image src={heroPhoto} alt={`${industry.name} communication workflows`} width={680} height={480} className="h-auto w-full object-cover" priority unoptimized />
+                <div className="absolute bottom-4 left-4 rounded-xl border border-slate-700 bg-slate-900/90 px-4 py-2.5 shadow-xl backdrop-blur-sm">
+                  <div className={`text-xl font-black ${c.text}`}>{content.stats[0]?.value}</div>
+                  <div className="text-xs text-slate-300">{content.stats[0]?.label}</div>
                 </div>
-                <div className="absolute top-4 right-4 bg-slate-900/90 backdrop-blur-sm border border-slate-700 rounded-xl px-4 py-2.5 shadow-xl">
-                  <div className="text-green-400 font-black text-sm">{industry.stats[2].label}</div>
-                  <div className={`font-black text-lg ${c.text}`}>{industry.stats[2].value}</div>
+                <div className="absolute right-4 top-4 rounded-xl border border-slate-700 bg-slate-900/90 px-4 py-2.5 shadow-xl backdrop-blur-sm">
+                  <div className="text-sm font-black text-green-400">{content.stats[1]?.label}</div>
+                  <div className={`text-lg font-black ${c.text}`}>{content.stats[1]?.value}</div>
                 </div>
               </div>
-              {/* Mini stats below the photo */}
-              <div className="grid grid-cols-2 gap-3 mt-4">
-                {industry.stats.slice(1, 3).map((stat) => (
-                  <div key={stat.label} className={`${c.bg} ${c.border} border rounded-xl p-4 text-center`}>
-                    <div className={`text-2xl font-black ${c.text} mb-1`}>{stat.value}</div>
-                    <div className="text-slate-400 text-xs">{stat.label}</div>
+              <div className="mt-4 grid grid-cols-2 gap-3">
+                {content.stats.slice(2, 4).map((stat) => (
+                  <div key={stat.label} className={`rounded-xl border ${c.border} ${c.bg} p-4 text-center`}>
+                    <div className={`mb-1 text-2xl font-black ${c.text}`}>{stat.value}</div>
+                    <div className="text-xs text-slate-400">{stat.label}</div>
                   </div>
                 ))}
               </div>
@@ -151,57 +145,34 @@ export default async function IndustryPage({ params }: Props) {
         </div>
       </section>
 
-      {/* Challenges vs Solutions */}
-      <section className="py-20 px-4 bg-slate-900/50">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              We Understand Your Industry
-            </h2>
-            <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-              Every challenge you face has a purpose-built solution in the MyVoIP platform.
-            </p>
+      <section className="bg-slate-900/50 px-4 py-20">
+        <div className="mx-auto max-w-6xl">
+          <div className="mb-12 text-center">
+            <h2 className="mb-4 text-3xl font-bold text-white md:text-4xl">We Understand Your Industry</h2>
+            <p className="mx-auto max-w-2xl text-lg text-slate-400">Every challenge you face has a purpose-built solution in the UponAI platform.</p>
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Challenges */}
-            <div className="bg-slate-800/40 border border-slate-700 rounded-2xl p-8">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-xl bg-red-500/20 flex items-center justify-center flex-shrink-0">
-                  <svg className="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                  </svg>
-                </div>
-                <h3 className="text-white font-bold text-xl">Common Challenges</h3>
-              </div>
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+            <div className="rounded-2xl border border-slate-700 bg-slate-800/40 p-8">
+              <h3 className="mb-6 text-xl font-bold text-white">Common Challenges</h3>
               <div className="space-y-3">
-                {industry.challenges.map((challenge) => (
-                  <div key={challenge} className="flex items-start gap-3 bg-slate-900/50 rounded-xl p-4 border border-slate-700/50">
-                    <div className="w-5 h-5 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-red-400 text-xs font-bold">✕</span>
-                    </div>
-                    <span className="text-slate-300 text-sm leading-relaxed">{challenge}</span>
+                {industry.challenges.map((item) => (
+                  <div key={item} className="flex items-start gap-3 rounded-xl border border-slate-700/50 bg-slate-900/50 p-4">
+                    <span className="mt-0.5 flex-shrink-0 font-bold text-red-400">✕</span>
+                    <span className="text-sm leading-relaxed text-slate-300">{item}</span>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Solutions */}
-            <div className={`${c.bg} ${c.border} border rounded-2xl p-8`}>
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-xl bg-green-500/20 flex items-center justify-center flex-shrink-0">
-                  <svg className="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-                <h3 className="text-white font-bold text-xl">MyVoIP Solutions</h3>
-              </div>
+            <div className={`rounded-2xl border ${c.border} ${c.bg} p-8`}>
+              <h3 className="mb-6 text-xl font-bold text-white">UponAI Solutions</h3>
               <div className="space-y-3">
-                {industry.solutions.map((solution) => (
-                  <div key={solution} className="flex items-start gap-3 bg-slate-900/40 rounded-xl p-4 border border-white/5">
-                    <svg className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {industry.solutions.map((item) => (
+                  <div key={item} className="flex items-start gap-3 rounded-xl border border-white/5 bg-slate-900/40 p-4">
+                    <svg className="mt-0.5 h-5 w-5 flex-shrink-0 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
                     </svg>
-                    <span className="text-slate-200 text-sm leading-relaxed">{solution}</span>
+                    <span className="text-sm leading-relaxed text-slate-200">{item}</span>
                   </div>
                 ))}
               </div>
@@ -210,83 +181,60 @@ export default async function IndustryPage({ params }: Props) {
         </div>
       </section>
 
-      {/* Key Features */}
-      <section className="py-20 px-4">
-        <div className="max-w-6xl mx-auto">
+      <section className="px-4 py-20">
+        <div className="mx-auto max-w-6xl">
           <FeaturesBento
             features={industry.features}
             title={`Everything ${industry.name} Needs, Built In`}
-            subtitle="Purpose-built features for your industry — no add-ons or complicated setups required."
+            subtitle="Purpose-built features for your industry without generic phone-system filler."
           />
         </div>
       </section>
 
-      {/* Recommended Services */}
-      <section className="py-20 px-4 bg-slate-900/50">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-white mb-4">
-              Most Popular Services for {industry.name}
-            </h2>
-            <p className="text-slate-400 text-lg">
-              These MyVoIP products are most widely used by {industry.name.toLowerCase()} organizations.
-            </p>
+      <section className="bg-slate-900/50 px-4 py-20">
+        <div className="mx-auto max-w-6xl">
+          <div className="mb-12 text-center">
+            <h2 className="mb-4 text-3xl font-bold text-white">Most Relevant UponAI Services for {industry.name}</h2>
+            <p className="text-lg text-slate-400">These UponAI solutions are commonly paired with {industry.name.toLowerCase()} workflows.</p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {recommendedServices.map((s) => (
-              <Link key={s.slug} href={`/services/${s.slug}`} className="group bg-slate-800/50 border border-slate-700 rounded-2xl p-6 hover:border-blue-500/50 hover:bg-slate-800 transition-all">
-                <h3 className="text-white font-semibold text-base mb-2 group-hover:text-blue-300 transition-colors">{s.shortName}</h3>
-                <p className="text-slate-400 text-sm leading-relaxed line-clamp-3 mb-4">{s.tagline}</p>
-                <div className="flex items-center text-blue-400 text-sm font-medium group-hover:text-blue-300">
-                  Learn more
-                  <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </div>
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {recommendedServices.map((service) => (
+              <Link key={service.slug} href={`/services/${service.slug}`} className="group rounded-2xl border border-slate-700 bg-slate-800/50 p-6 transition-all hover:border-blue-500/50 hover:bg-slate-800">
+                <h3 className="mb-2 text-base font-semibold text-white transition-colors group-hover:text-blue-300">{service.shortName}</h3>
+                <p className="mb-4 line-clamp-3 text-sm leading-relaxed text-slate-400">{getServiceContent(service).tagline}</p>
+                <div className="flex items-center text-sm font-medium text-blue-400 transition-colors group-hover:text-blue-300">Learn more</div>
               </Link>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Why MyVoIP */}
-      <section className="py-20 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className={`${c.bg} ${c.border} border rounded-3xl p-10 md:p-14`}>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+      <section className="px-4 py-20">
+        <div className="mx-auto max-w-6xl">
+          <div className={`rounded-3xl border ${c.border} ${c.bg} p-10 md:p-14`}>
+            <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:items-center">
               <div>
-                <span className={`${c.text} text-sm font-semibold uppercase tracking-wider`}>Why MyVoIP for {industry.name}</span>
-                <h2 className="text-3xl md:text-4xl font-bold text-white mt-3 mb-5 leading-tight">
-                  The Right VoIP Partner for Your Industry
+                <span className={`text-sm font-semibold uppercase tracking-wider ${c.text}`}>Why UponAI for {industry.name}</span>
+                <h2 className="mt-3 mb-5 text-3xl font-bold leading-tight text-white md:text-4xl">
+                  Communication workflows shaped around how your industry actually operates
                 </h2>
-                <p className="text-slate-400 leading-relaxed mb-5">
-                  Unlike generic phone providers, MyVoIP has specialized experience serving {industry.name.toLowerCase()} businesses.
-                  We understand your workflows, your compliance requirements, and what it takes to keep your team communicating efficiently.
+                <p className="mb-5 leading-relaxed text-slate-400">{content.locationSummary}</p>
+                <p className="leading-relaxed text-slate-400">
+                  UponAI combines cloud communications, AI workflow design, and routing logic so your team can improve responsiveness without relying on generic phone-system messaging.
                 </p>
-                <p className="text-slate-400 leading-relaxed">
-                  Get set up in as little as 24 hours with dedicated onboarding support — no IT department required.
-                </p>
-                <div className="mt-8 flex flex-col sm:flex-row gap-4">
-                  <Link href="/quote" className="bg-blue-600 hover:bg-blue-500 text-white font-bold px-8 py-4 rounded-xl transition-colors text-center">
+                <div className="mt-8">
+                  <Link href="/quote" className="rounded-xl bg-blue-600 px-8 py-4 text-center font-bold text-white transition-colors hover:bg-blue-500">
                     Start Free Consultation
                   </Link>
                 </div>
               </div>
               <div className="grid grid-cols-1 gap-3">
-                {[
-                  '20+ years serving US businesses',
-                  '5,000+ businesses across all industries',
-                  '24/7 US-based support — real humans',
-                  'No long-term contracts required',
-                  '99.99% uptime SLA guaranteed',
-                  'Setup in as little as 24 hours',
-                  'Starting at just $9.99/month per user',
-                ].map((point) => (
+                {content.trustPoints.map((point) => (
                   <div key={point} className="flex items-center gap-3">
-                    <svg className={`w-5 h-5 ${c.text} flex-shrink-0`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className={`h-5 w-5 flex-shrink-0 ${c.text}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
-                    <span className="text-slate-300 text-sm">{point}</span>
+                    <span className="text-sm text-slate-300">{point}</span>
                   </div>
                 ))}
               </div>
@@ -295,54 +243,24 @@ export default async function IndustryPage({ params }: Props) {
         </div>
       </section>
 
-      {/* Cities */}
-      <section className="py-20 px-4 bg-slate-900/50">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl font-bold text-white mb-4">
-              Serving {industry.name} Businesses Nationwide
-            </h2>
-            <p className="text-slate-400 text-lg">
-              Click your city to see local pricing and availability for {industry.name.toLowerCase()} businesses.
-            </p>
+      <section className="bg-slate-900/50 px-4 py-20">
+        <div className="mx-auto max-w-6xl">
+          <div className="mb-10 text-center">
+            <h2 className="mb-4 text-3xl font-bold text-white">Serving {industry.name} Businesses Nationwide</h2>
+            <p className="text-lg text-slate-400">Click your city to see local workflow pages for {industry.name.toLowerCase()} teams.</p>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
             {featuredCities.map((city) => (
-              <Link
-                key={city.slug}
-                href={`/industries/${slug}/${city.slug}`}
-                className="bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-slate-300 hover:text-white hover:border-blue-500/50 hover:bg-slate-800 transition-all text-center"
-              >
+              <Link key={city.slug} href={`/industries/${slug}/${city.slug}`} className="rounded-lg border border-slate-700 bg-slate-800/50 px-3 py-2.5 text-center text-sm text-slate-300 transition-all hover:border-blue-500/50 hover:bg-slate-800 hover:text-white">
                 {city.name}, {city.stateAbbr}
               </Link>
             ))}
           </div>
-          <div className="text-center mt-6">
-            <p className="text-slate-500 text-sm">+ 240 more cities nationwide · <Link href="/contact" className="text-blue-400 hover:text-blue-300">Contact us</Link> for your area</p>
+          <div className="mt-6 text-center">
+            <p className="text-sm text-slate-500">+ 240 more cities nationwide · <Link href="/contact" className="text-blue-400 hover:text-blue-300">Contact us</Link> for your area</p>
           </div>
         </div>
       </section>
-
-      {/* Schema.org */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'Service',
-            name: `VoIP Phone Systems for ${industry.name}`,
-            description: industry.description,
-            provider: {
-              '@type': 'Organization',
-              name: 'MyVoIP',
-              url: 'https://my-voip.com',
-              telephone: '+18336986471',
-            },
-            areaServed: { '@type': 'Country', name: 'United States' },
-            url: `https://my-voip.com/industries/${slug}`,
-          }),
-        }}
-      />
 
       <CTASection />
     </>

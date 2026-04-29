@@ -2,14 +2,16 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   uponaiIndustriesMenu,
   uponaiUseCasesMenu,
 } from '@/lib/uponai-pages';
+import { uponaiBookingUrl } from '@/lib/booking';
+import ThemeToggle from '@/components/ui/ThemeToggle';
 
 const chevron = (
-  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
   </svg>
 );
@@ -24,14 +26,14 @@ const whatWeDoLinks: DropdownLink[] = [
 ];
 
 const featuresLinks: DropdownLink[] = [
-  { label: 'Book Appointment', href: 'https://uponai.ai/group-booking-uponai', external: true },
+  { label: 'Book Appointment', href: uponaiBookingUrl, external: true },
   { label: 'SIP Integration & Call Transfer', href: '/sip-integrations-and-transfers-685191' },
   { label: 'Recordings', href: '/recordings-page' },
 ];
 
 const resourcesLinks: DropdownLink[] = [
   { label: 'N8N', href: '/n8n-downloads' },
-  { label: 'Blogs', href: 'https://www.uponai.com/blogs/', external: true },
+  { label: 'Blogs', href: '/blogs' },
   { label: 'About Us', href: '/about-us-page' },
   { label: 'Support', href: '/support' },
   { label: 'Documentation', href: 'https://documentation.uponai.com/', external: true },
@@ -55,6 +57,7 @@ function Dropdown({
 }) {
   const [open, setOpen] = useState(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
   const scheduleClose = useCallback(() => {
     closeTimer.current = setTimeout(() => setOpen(false), 120);
@@ -64,8 +67,20 @@ function Dropdown({
     if (closeTimer.current) clearTimeout(closeTimer.current);
   }, []);
 
+  useEffect(() => {
+    function handlePointerDown(event: MouseEvent) {
+      if (!containerRef.current?.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handlePointerDown);
+    return () => document.removeEventListener('mousedown', handlePointerDown);
+  }, []);
+
   return (
     <div
+      ref={containerRef}
       className="relative"
       onMouseEnter={() => {
         cancelClose();
@@ -73,23 +88,32 @@ function Dropdown({
       }}
       onMouseLeave={scheduleClose}
     >
-      <button className="px-3 py-2 text-slate-300 hover:text-white text-sm rounded-md hover:bg-slate-800 transition-colors flex items-center gap-1">
+      <button
+        type="button"
+        aria-expanded={open}
+        aria-haspopup="menu"
+        className="flex items-center gap-1 rounded-full px-4 py-2 text-sm font-medium text-[var(--text-body)] transition-colors hover:bg-[var(--surface-soft)] hover:text-[var(--text-strong)]"
+        onClick={() => {
+          cancelClose();
+          setOpen((current) => !current);
+        }}
+      >
         {label}
         {chevron}
       </button>
 
       {open && (
         <div
-          className={`absolute top-full left-0 ${width} pt-2 z-50`}
+          className={`absolute left-0 top-full z-50 ${width} pt-3`}
           onMouseEnter={cancelClose}
           onMouseLeave={scheduleClose}
         >
-          <div className="bg-slate-900 border border-slate-700 rounded-xl shadow-2xl py-2">
-            <div className="grid gap-4 p-2 md:grid-cols-2">
+          <div className="theme-panel rounded-[1.5rem] p-3">
+            <div className="grid gap-4 p-1 md:grid-cols-2">
               {groups.map((group) => (
                 <div key={group.heading ?? group.links.map((link) => link.label).join('-')}>
                   {group.heading ? (
-                    <p className="px-2 pb-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">
+                    <p className="px-3 pb-2 text-[11px] font-semibold uppercase tracking-[0.28em] text-[var(--brand-green-text)]">
                       {group.heading}
                     </p>
                   ) : null}
@@ -100,7 +124,8 @@ function Dropdown({
                         href={link.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="block rounded-lg px-2 py-2 text-sm text-slate-300 hover:bg-slate-800 hover:text-white transition-colors"
+                        onClick={() => setOpen(false)}
+                        className="block rounded-2xl px-3 py-3 text-sm text-[var(--text-body)] transition-colors hover:bg-[var(--surface-soft)] hover:text-[var(--text-strong)]"
                       >
                         {link.label}
                       </a>
@@ -108,7 +133,8 @@ function Dropdown({
                       <Link
                         key={link.label}
                         href={link.href}
-                        className="block rounded-lg px-2 py-2 text-sm text-slate-300 hover:bg-slate-800 hover:text-white transition-colors"
+                        onClick={() => setOpen(false)}
+                        className="block rounded-2xl px-3 py-3 text-sm text-[var(--text-body)] transition-colors hover:bg-[var(--surface-soft)] hover:text-[var(--text-strong)]"
                       >
                         {link.label}
                       </Link>
@@ -128,31 +154,49 @@ export default function Nav() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 border-b border-slate-800 bg-[#08111f]/95 backdrop-blur">
-      <div className="hidden md:block border-b border-slate-800/80 bg-slate-950/70">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2 text-xs text-slate-400 sm:px-6 lg:px-8">
-          <a href="tel:8887876624" className="transition-colors hover:text-white">
-            (888) 787-6624
-          </a>
-          <a href="mailto:info@uponai.com" className="transition-colors hover:text-white">
-            info@uponai.com
-          </a>
+    <header className="theme-header fixed left-0 right-0 top-0 z-50 border-b">
+      <div className="theme-topbar hidden border-b md:block">
+        <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
+          <div className="flex items-center gap-3">
+            <span className="inline-flex h-2.5 w-2.5 rounded-full bg-[#54d2ff] shadow-[0_0_18px_rgba(84,210,255,0.85)]" />
+            <p className="text-xs uppercase tracking-[0.32em] text-[var(--text-soft)]">
+              AI Voice Workflow Platform
+            </p>
+          </div>
+          <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-end">
+            <ThemeToggle />
+            <a
+              href="tel:8887876624"
+              className="theme-pill-green rounded-full px-4 py-2 text-sm font-semibold transition-colors hover:border-[#22c55e]/40 hover:text-[var(--text-strong)]"
+            >
+              (888) 787-6624
+            </a>
+            <a
+              href="mailto:info@uponai.com"
+              className="theme-pill-cyan rounded-full px-4 py-2 text-sm font-semibold transition-colors hover:border-[#54d2ff]/40 hover:text-[var(--text-strong)]"
+            >
+              info@uponai.com
+            </a>
+          </div>
         </div>
       </div>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <Link href="/" className="flex items-center flex-shrink-0">
-            <Image
-              src="/logo.png"
-              alt="UponAI"
-              width={160}
-              height={56}
-              className="h-11 w-auto object-contain"
-              priority
-            />
+
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex min-h-[72px] items-center justify-between gap-4 md:min-h-[88px]">
+          <Link href="/" className="flex flex-shrink-0 items-center">
+            <div className="relative h-12 w-36 overflow-hidden sm:h-14 sm:w-40 md:h-20 md:w-56">
+              <Image
+                src="/logo.png"
+                alt="UponAI"
+                fill
+                sizes="(min-width: 768px) 224px, 176px"
+                className="object-contain scale-[1.65] sm:scale-[1.72] md:scale-[1.9]"
+                priority
+              />
+            </div>
           </Link>
 
-          <nav className="hidden lg:flex items-center gap-0.5">
+          <nav className="hidden items-center gap-1 xl:flex">
             <Dropdown label="What We Do" groups={[{ links: whatWeDoLinks }]} width="w-72" />
             <Dropdown
               label="Solutions"
@@ -167,20 +211,34 @@ export default function Nav() {
                   ],
                 },
               ]}
-              width="w-[32rem]"
+              width="w-[34rem]"
             />
             <Dropdown label="Features" groups={[{ links: featuresLinks }]} width="w-80" />
-            <Dropdown label="Resources" groups={[{ links: resourcesLinks }]} width="w-[32rem]" />
+            <Dropdown label="Resources" groups={[{ links: resourcesLinks }]} width="w-[34rem]" />
           </nav>
 
-          <div className="hidden lg:flex items-center gap-3 flex-shrink-0">
-            <Link href="/get-a-demo-page" className="bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors whitespace-nowrap">
-              Get a Demo
+          <div className="hidden flex-shrink-0 items-center gap-3 xl:flex">
+            <Link
+              href="/contact-us-page"
+              className="theme-secondary-button rounded-full px-5 py-3 text-sm font-medium"
+            >
+              Contact Us
             </Link>
+            <a
+              href={uponaiBookingUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="theme-primary-button rounded-full px-5 py-3 text-sm font-bold"
+            >
+              Get a Demo
+            </a>
           </div>
 
-          <button className="lg:hidden p-2 text-slate-300 hover:text-white" onClick={() => setMobileOpen(!mobileOpen)}>
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <button
+            className="rounded-2xl border border-[var(--border)] p-2.5 text-[var(--text-body)] transition-colors hover:text-[var(--text-strong)] xl:hidden"
+            onClick={() => setMobileOpen(!mobileOpen)}
+          >
+            <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               {mobileOpen ? (
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               ) : (
@@ -192,55 +250,85 @@ export default function Nav() {
       </div>
 
       {mobileOpen && (
-        <div className="lg:hidden bg-slate-900 border-t border-slate-800 px-4 py-4 space-y-1 max-h-[80vh] overflow-y-auto">
-          {[
-            { heading: 'What We Do', links: whatWeDoLinks },
-            {
-              heading: 'Solutions',
-              links: [
-                ...industryLinks,
-                { label: 'UCaaS Providers', href: '/ucaas' },
-                { label: 'Call Overflow', href: '/call-overflow-page' },
-                ...useCaseLinks,
-              ],
-            },
-            { heading: 'Features', links: featuresLinks },
-            { heading: 'Resources', links: resourcesLinks },
-          ].map(({ heading, links }) => (
-            <div key={heading} className="py-2">
-              <p className="text-xs text-slate-500 uppercase tracking-wider mb-2">{heading}</p>
-              {links.map((link) =>
-                link.external ? (
-                  <a
-                    key={link.label}
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block py-1.5 pl-2 text-sm text-slate-300 hover:text-white"
-                    onClick={() => setMobileOpen(false)}
-                  >
-                    {link.label}
-                  </a>
-                ) : (
-                  <Link
-                    key={link.label}
-                    href={link.href}
-                    className="block py-1.5 pl-2 text-sm text-slate-300 hover:text-white"
-                    onClick={() => setMobileOpen(false)}
-                  >
-                    {link.label}
-                  </Link>
-                ),
-              )}
+        <div className="border-t border-[var(--border-strong)] bg-[var(--surface)] px-4 py-4 xl:hidden">
+          <div className="max-h-[calc(100svh-5.5rem)] space-y-4 overflow-y-auto pb-2">
+            <div className="flex flex-wrap items-center gap-3">
+              <ThemeToggle mobile />
+              <a
+                href="tel:8887876624"
+                className="theme-pill-green rounded-full px-3 py-1.5 text-xs font-semibold transition-colors hover:border-[#22c55e]/40 hover:text-[var(--text-strong)]"
+              >
+                (888) 787-6624
+              </a>
+              <a
+                href="mailto:info@uponai.com"
+                className="theme-pill-cyan rounded-full px-3 py-1.5 text-xs font-semibold transition-colors hover:border-[#54d2ff]/40 hover:text-[var(--text-strong)]"
+              >
+                info@uponai.com
+              </a>
             </div>
-          ))}
 
-          <Link href="/contact-us-page" className="block py-2 text-slate-300 hover:text-white text-sm" onClick={() => setMobileOpen(false)}>
-            Contact Us
-          </Link>
-          <Link href="/get-a-demo-page" className="block mt-3 bg-blue-600 text-white text-sm font-semibold px-4 py-2.5 rounded-lg text-center" onClick={() => setMobileOpen(false)}>
-            Get a Demo
-          </Link>
+            {[
+              { heading: 'What We Do', links: whatWeDoLinks },
+              {
+                heading: 'Solutions',
+                links: [
+                  ...industryLinks,
+                  { label: 'UCaaS Providers', href: '/ucaas' },
+                  { label: 'Call Overflow', href: '/call-overflow-page' },
+                  ...useCaseLinks,
+                ],
+              },
+              { heading: 'Features', links: featuresLinks },
+              { heading: 'Resources', links: resourcesLinks },
+            ].map(({ heading, links }) => (
+              <div key={heading} className="theme-card rounded-3xl p-4">
+                <p className="mb-2 text-xs uppercase tracking-[0.26em] text-[var(--brand-green-text)]">{heading}</p>
+                {links.map((link) =>
+                  link.external ? (
+                    <a
+                      key={link.label}
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block rounded-2xl px-3 py-2 text-sm text-[var(--text-body)] transition-colors hover:bg-[var(--surface-soft)] hover:text-[var(--text-strong)]"
+                      onClick={() => setMobileOpen(false)}
+                    >
+                      {link.label}
+                    </a>
+                  ) : (
+                    <Link
+                      key={link.label}
+                      href={link.href}
+                      className="block rounded-2xl px-3 py-2 text-sm text-[var(--text-body)] transition-colors hover:bg-[var(--surface-soft)] hover:text-[var(--text-strong)]"
+                      onClick={() => setMobileOpen(false)}
+                    >
+                      {link.label}
+                    </Link>
+                  ),
+                )}
+              </div>
+            ))}
+
+            <div className="grid gap-3 sm:grid-cols-2">
+              <Link
+                href="/contact-us-page"
+                className="theme-secondary-button rounded-full px-4 py-3 text-center text-sm font-medium"
+                onClick={() => setMobileOpen(false)}
+              >
+                Contact Us
+              </Link>
+              <a
+                href={uponaiBookingUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="theme-primary-button rounded-full px-4 py-3 text-center text-sm font-bold"
+                onClick={() => setMobileOpen(false)}
+              >
+                Get a Demo
+              </a>
+            </div>
+          </div>
         </div>
       )}
     </header>

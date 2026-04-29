@@ -122,7 +122,7 @@ export default function ResourceDownloadGate({
                 </svg>
               </a>
               <p className="text-slate-500 text-xs mt-4">
-                Need a demo instead? <Link href="/contact" className="text-blue-400 hover:text-blue-300">Contact the team</Link>.
+                Need a demo instead? <Link href="/contact-us-page" className="text-blue-400 hover:text-blue-300">Contact the team</Link>.
               </p>
             </div>
           ) : (

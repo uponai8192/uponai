@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { uponaiBookingUrl } from '@/lib/booking';
 
 interface CTASectionProps {
   heading?: string;
@@ -14,24 +15,29 @@ export default function CTASection({
   const displayHeading = city ? `Deploy AI Voice Agents in ${city}` : heading;
 
   return (
-    <section className="relative overflow-hidden bg-blue-600 py-16 px-4">
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full border-2 border-white" />
-        <div className="absolute -bottom-12 -left-12 w-64 h-64 rounded-full border-2 border-white" />
+    <section className="relative overflow-hidden px-4 py-16">
+      <div className="absolute inset-0">
+        <div className="absolute -right-16 -top-24 h-80 w-80 rounded-full bg-[#54d2ff]/16 blur-3xl" />
+        <div className="absolute -bottom-20 -left-16 h-80 w-80 rounded-full bg-[#22c55e]/16 blur-3xl" />
       </div>
-      <div className="relative max-w-4xl mx-auto text-center">
-        <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">{displayHeading}</h2>
-        <p className="text-blue-100 text-lg mb-8 max-w-2xl mx-auto">{subheading}</p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link
-            href="/get-a-demo-page"
-            className="bg-white text-blue-600 font-bold px-8 py-3.5 rounded-xl hover:bg-blue-50 transition-colors text-base"
+      <div className="theme-panel relative mx-auto max-w-5xl rounded-[2.25rem] px-6 py-12 text-center md:px-10">
+        <div className="theme-pill-green mx-auto inline-flex rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em]">
+          AI Voice Demo
+        </div>
+        <h2 className="theme-heading mx-auto mt-5 max-w-3xl text-3xl font-bold md:text-5xl">{displayHeading}</h2>
+        <p className="theme-body mx-auto mt-4 max-w-2xl text-lg leading-8">{subheading}</p>
+        <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
+          <a
+            href={uponaiBookingUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="theme-primary-button rounded-full px-8 py-3.5 text-base font-bold"
           >
             Get a Demo
-          </Link>
+          </a>
           <Link
             href="/contact-us-page"
-            className="border-2 border-white text-white font-semibold px-8 py-3.5 rounded-xl hover:bg-white/10 transition-colors text-base"
+            className="theme-secondary-button rounded-full px-8 py-3.5 text-base font-semibold"
           >
             Contact Us
           </Link>

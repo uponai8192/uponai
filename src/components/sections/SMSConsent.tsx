@@ -17,13 +17,13 @@ export default function SMSConsent() {
         />
         <span className="text-slate-300 text-sm leading-relaxed">
           By checking this box, I consent to receive SMS text messages and/or calls from{' '}
-          <strong className="text-white">MyVoIP</strong> at
+          <strong className="text-white">UponAI</strong> at
           the phone number provided above. Message frequency may vary. Standard message and data
           rates may apply. Reply <strong>STOP</strong> to opt out at any time. Reply{' '}
           <strong>HELP</strong> for assistance. This consent is not required as a condition of
           purchase. See our{' '}
           <a
-            href="https://my-voip.com/privacy-policy"
+            href="https://uponai.com/privacy-policy"
             className="text-blue-400 hover:text-blue-300 underline"
             target="_blank"
             rel="noopener noreferrer"
@@ -32,7 +32,7 @@ export default function SMSConsent() {
           </a>{' '}
           and{' '}
           <a
-            href="https://my-voip.com/terms-of-services"
+            href="https://uponai.com/terms-of-services"
             className="text-blue-400 hover:text-blue-300 underline"
             target="_blank"
             rel="noopener noreferrer"
@@ -57,12 +57,12 @@ export default function SMSConsent() {
         <p>
           <strong className="text-slate-300">Need help?</strong> Reply <strong>HELP</strong>{' '}
           or contact{' '}
-          <a href="mailto:Sales@my-voip.com" className="text-blue-400 hover:text-blue-300">
-            Sales@my-voip.com
+          <a href="mailto:info@uponai.com" className="text-blue-400 hover:text-blue-300">
+            info@uponai.com
           </a>{' '}
           or call{' '}
-          <a href="tel:+18336986471" className="text-blue-400 hover:text-blue-300">
-            (833) 698-6471
+          <a href="tel:+18887876624" className="text-blue-400 hover:text-blue-300">
+            (888) 787-6624
           </a>
           .
         </p>

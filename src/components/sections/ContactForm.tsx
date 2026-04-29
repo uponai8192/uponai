@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useState } from 'react';
 
 type Status = 'idle' | 'submitting' | 'success' | 'error';
@@ -59,10 +60,10 @@ export default function ContactForm() {
         </p>
         <p className="text-slate-400 text-sm">
           Need immediate help?{' '}
-          <a href="tel:+18336986471" className="text-blue-400 hover:text-blue-300 font-medium">
-            Call (833) 698-6471
+          <a href="tel:+18887876624" className="text-blue-400 hover:text-blue-300 font-medium">
+            Call (888) 787-6624
           </a>{' '}
-          — available 24/7.
+          to reach the UponAI team.
         </p>
       </div>
     );
@@ -137,9 +138,9 @@ export default function ContactForm() {
               frequency may vary. Standard message and data rates may apply. Reply{' '}
               <strong>STOP</strong> to opt out. Reply <strong>HELP</strong> for assistance.
               Consent is not required as a condition of purchase. See our{' '}
-              <a href="/privacy-policy" className="text-blue-400 hover:underline">Privacy Policy</a>{' '}
+              <Link href="/privacy-policy" className="text-blue-400 hover:underline">Privacy Policy</Link>{' '}
               and{' '}
-              <a href="/terms-of-services" className="text-blue-400 hover:underline">Terms of Service</a>.
+              <Link href="/terms-of-services" className="text-blue-400 hover:underline">Terms of Service</Link>.
             </span>
           </label>
           <div className="mt-3 pt-3 border-t border-slate-700 text-slate-500 text-xs space-y-0.5">
@@ -150,7 +151,7 @@ export default function ContactForm() {
 
         {status === 'error' && (
           <div className="bg-red-900/20 border border-red-700/50 rounded-xl px-4 py-3 text-red-300 text-sm">
-            {errorMsg || 'Something went wrong. Please call us at (833) 698-6471.'}
+            {errorMsg || 'Something went wrong. Please call us at (888) 787-6624.'}
           </div>
         )}
 
@@ -179,7 +180,7 @@ export default function ContactForm() {
 
         <p className="text-center text-slate-500 text-xs">
           We never sell your information. See our{' '}
-          <a href="/privacy-policy" className="hover:text-slate-300">Privacy Policy</a>.
+          <Link href="/privacy-policy" className="hover:text-slate-300">Privacy Policy</Link>.
         </p>
       </div>
     </form>

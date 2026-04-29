@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="UponAI favicon">
+  <rect width="128" height="128" rx="28" fill="#020817" />
+  <g transform="translate(12 10)">
+    <rect x="18" y="32" width="22" height="72" rx="11" fill="#2F74D0" transform="rotate(28 29 68)" />
+    <rect x="45" y="32" width="22" height="72" rx="11" fill="#2F74D0" transform="rotate(-28 56 68)" />
+    <path d="M53 18L72 52L53 86L34 52Z" fill="#175A97" />
+    <circle cx="85" cy="28" r="12" fill="#38C24B" />
+    <rect x="74" y="44" width="22" height="56" rx="11" fill="#38C24B" />
+    <path d="M74 44H90L96 100H85Z" fill="#0E6652" />
+  </g>
+</svg>

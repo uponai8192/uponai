@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useState } from 'react';
 
 type Status = 'idle' | 'submitting' | 'success' | 'error';
@@ -102,14 +103,14 @@ export default function QuoteForm() {
         </div>
         <h3 className="text-2xl font-bold text-white mb-3">Quote Request Received!</h3>
         <p className="text-slate-300 leading-relaxed mb-2">
-          Thanks, {form.firstName}! One of our specialists will reach out within one business day with a custom quote.
+          Thanks, {form.firstName}! One of our specialists will reach out within one business day with a recommendation for your workflow.
         </p>
         <p className="text-slate-400 text-sm">
           Need it faster?{' '}
-          <a href="tel:+18336986471" className="text-blue-400 hover:text-blue-300 font-medium">
-            Call (833) 698-6471
+          <a href="tel:+18887876624" className="text-blue-400 hover:text-blue-300 font-medium">
+            Call (888) 787-6624
           </a>{' '}
-          — available 24/7.
+          to speak with the UponAI team.
         </p>
       </div>
     );
@@ -123,8 +124,8 @@ export default function QuoteForm() {
           <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
           <span className="text-green-400 text-xs font-semibold uppercase tracking-wider">Responding within 1 business day</span>
         </div>
-        <h2 className="text-xl font-bold text-white">Get Your Custom VoIP Quote</h2>
-        <p className="text-slate-400 text-sm mt-1">Tell us about your setup and we&apos;ll build a plan around it.</p>
+        <h2 className="text-xl font-bold text-white">Plan Your UponAI Workflow</h2>
+        <p className="text-slate-400 text-sm mt-1">Tell us about your environment and we&apos;ll recommend the right AI voice, chat, and routing setup.</p>
       </div>
 
       <div className="px-7 py-6 space-y-6">
@@ -175,7 +176,7 @@ export default function QuoteForm() {
 
           {/* Desk phones */}
           <div className="space-y-3 mb-6">
-            <label className={LABEL}>Will you need desk phones?</label>
+            <label className={LABEL}>Will you need desk phones or fixed calling stations?</label>
             <RadioGroup name="deskPhones" options={['Yes', 'No', 'Not Sure']} value={form.deskPhones} onChange={(v) => set('deskPhones', v)} />
             {form.deskPhones === 'Yes' && (
               <input type="number" min={1} value={form.deskPhonesQty} onChange={(e) => set('deskPhonesQty', e.target.value)}
@@ -196,7 +197,7 @@ export default function QuoteForm() {
           {/* AI Receptionist */}
           <div className="space-y-2 mb-6">
             <label className={LABEL}>
-              Would you like an AI receptionist?{' '}
+              Would you like AI voice coverage?{' '}
               <a href="/services/ai-voice-agents" className="text-blue-400 hover:text-blue-300 font-normal text-xs" target="_blank">
                 Learn more ↗
               </a>
@@ -222,13 +223,13 @@ export default function QuoteForm() {
             />
             <span className="text-slate-300 text-xs leading-relaxed">
               By checking this box, I consent to receive SMS text messages and/or calls from{' '}
-              <strong className="text-white">MyVoIP</strong> at the phone number provided. Message
+              <strong className="text-white">UponAI</strong> at the phone number provided. Message
               frequency may vary. Standard message and data rates may apply. Reply{' '}
               <strong>STOP</strong> to opt out at any time. Reply <strong>HELP</strong> for
               assistance. Consent is not required as a condition of purchase. See our{' '}
-              <a href="/privacy-policy" className="text-blue-400 hover:underline">Privacy Policy</a>{' '}
+              <Link href="/privacy-policy" className="text-blue-400 hover:underline">Privacy Policy</Link>{' '}
               and{' '}
-              <a href="/terms-of-services" className="text-blue-400 hover:underline">Terms of Service</a>.
+              <Link href="/terms-of-services" className="text-blue-400 hover:underline">Terms of Service</Link>.
             </span>
           </label>
           <div className="mt-3 pt-3 border-t border-slate-700 text-slate-500 text-xs space-y-0.5">
@@ -239,7 +240,7 @@ export default function QuoteForm() {
 
         {status === 'error' && (
           <div className="bg-red-900/20 border border-red-700/50 rounded-xl px-4 py-3 text-red-300 text-sm">
-            {errorMsg || 'Something went wrong. Please call us at (833) 698-6471.'}
+            {errorMsg || 'Something went wrong. Please call us at (888) 787-6624.'}
           </div>
         )}
 
@@ -258,7 +259,7 @@ export default function QuoteForm() {
             </>
           ) : (
             <>
-              Request My Custom Quote
+              Request My Consultation
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
               </svg>
@@ -268,7 +269,7 @@ export default function QuoteForm() {
 
         <p className="text-center text-slate-500 text-xs">
           We never sell your information. See our{' '}
-          <a href="/privacy-policy" className="hover:text-slate-300">Privacy Policy</a>.
+          <Link href="/privacy-policy" className="hover:text-slate-300">Privacy Policy</Link>.
         </p>
       </div>
     </form>

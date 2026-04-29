@@ -2,15 +2,16 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { cities } from '@/lib/data';
+import { brandPhotos } from '@/lib/brand-photos';
 import CTASection from '@/components/sections/CTASection';
 
 export const metadata: Metadata = {
-  title: 'AI Chatbots for Business | UponAI',
+  title: 'AI Chatbots for Business',
   description:
     'Deploy AI chatbots that engage website visitors, qualify leads, and route customers 24/7 — powered by UponAI. Never miss an inquiry, even when your team is offline.',
   alternates: { canonical: 'https://uponai.com/services/ai-chatbots' },
   openGraph: {
-    title: 'AI Chatbots for Business | UponAI',
+    title: 'AI Chatbots for Business',
     description: 'AI chatbots that engage, qualify, and convert visitors around the clock.',
   },
 };
@@ -150,7 +151,7 @@ export default function AIChatbotsPage() {
             <div className="absolute -inset-2 bg-violet-500/15 rounded-3xl blur-2xl" />
             <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-black/60 border border-slate-700/60">
               <Image
-                src="/site-photos/ai-chatbot.jpeg"
+                src={brandPhotos.chatbotPhone}
                 alt="AI chatbot engaging a mobile user — powered by UponAI"
                 width={700}
                 height={500}

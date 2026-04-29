@@ -1,29 +1,80 @@
 import type { Metadata } from 'next';
-import { Manrope } from 'next/font/google';
+import { Space_Grotesk } from 'next/font/google';
 import Script from 'next/script';
 import './globals.css';
 import Nav from '@/components/ui/Nav';
 import Footer from '@/components/ui/Footer';
+import CookieConsentManager from '@/components/ui/CookieConsentManager';
+import { DEFAULT_OG_IMAGE, SITE_NAME, SITE_URL, organizationSchema, websiteSchema } from '@/lib/seo';
 
-const manrope = Manrope({ subsets: ['latin'] });
+const spaceGrotesk = Space_Grotesk({ subsets: ['latin'] });
+const themeInitScript = `(() => {
+  try {
+    const stored = window.localStorage.getItem('uponai-theme');
+    const theme = stored === 'light' ? 'light' : 'dark';
+    const root = document.documentElement;
+    root.dataset.theme = theme;
+    root.style.colorScheme = theme;
+  } catch (error) {
+    document.documentElement.dataset.theme = 'dark';
+    document.documentElement.style.colorScheme = 'dark';
+  }
+})();`;
 
 export const metadata: Metadata = {
   title: {
-    default: "UponAI | Powering Tomorrow's Conversations",
+    default: "Powering Tomorrow's Conversations",
     template: '%s | UponAI',
   },
   description:
     'At UponAI, we blend AI and communication to redefine business engagement with AI voice agents, AI chatbots, call automation, and modern communications solutions.',
-  keywords: ['AI voice agents', 'AI chatbots', 'conversational AI', 'call automation', 'business communications'],
-  authors: [{ name: 'UponAI', url: 'https://uponai.com' }],
-  metadataBase: new URL('https://uponai.com'),
+  keywords: [
+    'AI voice agents',
+    'AI chatbots',
+    'voice AI',
+    'conversational AI',
+    'call automation',
+    'customer support automation',
+    'appointment scheduling AI',
+    'business communications',
+  ],
+  applicationName: SITE_NAME,
+  authors: [{ name: SITE_NAME, url: SITE_URL }],
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
+  category: 'technology',
+  metadataBase: new URL(SITE_URL),
+  icons: {
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/icon.png', sizes: '32x32', type: 'image/png' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: '/icon.png',
+  },
   openGraph: {
-    siteName: 'UponAI',
+    title: "Powering Tomorrow's Conversations",
+    description:
+      'UponAI builds AI voice agents, AI chatbots, and conversation workflows for businesses that need faster call handling and cleaner customer conversations.',
+    url: SITE_URL,
+    siteName: SITE_NAME,
     type: 'website',
     locale: 'en_US',
+    images: [
+      {
+        url: DEFAULT_OG_IMAGE,
+        width: 1200,
+        height: 630,
+        alt: SITE_NAME,
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
+    title: "Powering Tomorrow's Conversations",
+    description:
+      'UponAI builds AI voice agents, AI chatbots, and conversation workflows for modern customer conversations.',
+    images: [DEFAULT_OG_IMAGE],
   },
   robots: {
     index: true,
@@ -34,20 +85,25 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" data-theme="dark" suppressHydrationWarning>
       <head>
-        <Script
-          id="snitcher-radar"
-          strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `!function(e){"use strict";var t=e&&e.namespace;if(t&&e.profileId&&e.cdn){var i=window[t];if(i&&Array.isArray(i)||(i=window[t]=[]),!i.initialized&&!i._loaded)if(i._loaded)console&&console.warn("[Radar] Duplicate initialization attempted");else{i._loaded=!0;["track","page","identify","group","alias","ready","debug","on","off","once","trackClick","trackSubmit","trackLink","trackForm","pageview","screen","reset","register","setAnonymousId","addSourceMiddleware","addIntegrationMiddleware","addDestinationMiddleware","giveCookieConsent"].forEach((function(e){var a;i[e]=(a=e,function(){var e=window[t];if(e.initialized)return e[a].apply(e,arguments);var i=[].slice.call(arguments);return i.unshift(a),e.push(i),e})})),-1===e.apiEndpoint.indexOf("http")&&(e.apiEndpoint="https://"+e.apiEndpoint),i.bootstrap=function(){var t,i=document.createElement("script");i.async=!0,i.type="text/javascript",i.id="__radar__",i.setAttribute("data-settings",JSON.stringify(e)),i.src=[-1!==(t=e.cdn).indexOf("http")?"":"https://",t,"/releases/latest/radar.min.js"].join("");var a=document.scripts[0];a.parentNode.insertBefore(i,a)},i.bootstrap()}}else"undefined"!=typeof console&&console.error("[Radar] Configuration incomplete")}({"apiEndpoint":"radar.snitcher.com","cdn":"cdn.snitcher.com","namespace":"Snitcher","profileId":"ssNlf0nX3C"});`,
-          }}
+        <Script id="theme-init" strategy="beforeInteractive">
+          {themeInitScript}
+        </Script>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
       </head>
-      <body className={`${manrope.className} bg-[#08111f] text-slate-100 antialiased`}>
+      <body className={`${spaceGrotesk.className} bg-[var(--background)] text-[var(--foreground)] antialiased transition-[background-color,color] duration-300`}>
         <Nav />
-        <main className="pt-16 md:pt-24">{children}</main>
+        <main className="pt-20 sm:pt-24 md:pt-32">{children}</main>
         <Footer />
+        <CookieConsentManager />
       </body>
     </html>
   );

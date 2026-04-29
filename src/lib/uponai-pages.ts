@@ -1,6 +1,9 @@
+import { uponaiBookingUrl } from '@/lib/booking';
+
 export type UponAIMenuLink = {
   label: string;
   href: string;
+  external?: boolean;
 };
 
 export type UponAISection = {
@@ -20,12 +23,14 @@ export type UponAIPage = {
   eyebrow: string;
   highlights: string[];
   sections: UponAISection[];
+  featureCards?: UponAISection[];
   faqs?: UponAIFAQ[];
   image: string;
   imageAlt: string;
   ctaHeading?: string;
   ctaSubheading?: string;
   aliasTo?: string;
+  externalRedirectTo?: string;
 };
 
 export const uponaiServicesMenu: UponAIMenuLink[] = [
@@ -38,6 +43,7 @@ export const uponaiIndustriesMenu: UponAIMenuLink[] = [
   { label: 'Insurance', href: '/voice-ai-for-insurance-page' },
   { label: 'Home Services', href: '/voice-ai-for-home-services-page' },
   { label: 'Real Estate', href: '/voice-ai-real-estate' },
+  { label: 'Dental Offices', href: '/voice-ai-for-dental-offices' },
   { label: 'Veterinary Clinics', href: '/voice-ai-veterinary-clinics' },
   { label: 'Restaurants', href: '/for-restaurant-page' },
   { label: 'Telecommunications', href: '/voice-ai-for-telecommunication' },
@@ -58,9 +64,9 @@ export const uponaiResourcesMenu: UponAIMenuLink[] = [
 ];
 
 export const uponaiFooterInfo: UponAIMenuLink[] = [
-  { label: 'Get Demo', href: '/get-a-demo-page' },
-  { label: 'Privacy Policy', href: '/privacy-policy-page' },
-  { label: 'Terms & Condition', href: '/terms-services-page' },
+  { label: 'Get Demo', href: uponaiBookingUrl, external: true },
+  { label: 'Privacy Policy', href: '/privacy-policy' },
+  { label: 'Terms & Condition', href: '/terms-of-services' },
 ];
 
 export const uponaiOfficeLocations = [
@@ -135,33 +141,18 @@ export const uponaiPages: UponAIPage[] = [
     imageAlt: 'UponAI live demo screen',
     ctaHeading: 'Ready To Explore An AI Voice Rollout?',
     ctaSubheading: 'Use the contact form to tell us what you want to automate and we will tailor the conversation.',
+    externalRedirectTo: uponaiBookingUrl,
   },
   {
-    slug: 'contact-us-page',
-    title: 'Contact Us',
-    description: 'Contact UponAI to discuss AI voice, chat, automation, and communications workflow design.',
-    eyebrow: 'Contact Us',
-    highlights: [
-      'Talk through your current call flow',
-      'Ask about specific industries or use cases',
-      'Get direction on where to start first',
-    ],
-    sections: [
-      {
-        title: 'For New Projects',
-        body: 'If you are exploring AI voice or chat for the first time, we can help identify where automation will have the biggest operational impact.',
-      },
-      {
-        title: 'For Existing Teams',
-        body: 'If you already have communications infrastructure in place, we can evaluate how AI should plug into your current workflows and handoffs.',
-      },
-      {
-        title: 'For Partnerships',
-        body: 'If you are interested in channel, implementation, or strategic partnership opportunities, contact us and we will route the conversation accordingly.',
-      },
-    ],
-    image: '/site-photos/team-consultation.jpg',
-    imageAlt: 'UponAI team consultation session',
+    slug: 'book-a-call-with-jody-and-sean',
+    title: 'Book a Demo',
+    description: 'Book a demo with UponAI.',
+    eyebrow: 'Get Started',
+    highlights: [],
+    sections: [],
+    image: '/ai-photos/test-call.png',
+    imageAlt: 'UponAI booking page',
+    externalRedirectTo: uponaiBookingUrl,
   },
   {
     slug: 'customer-support-page',
@@ -185,6 +176,46 @@ export const uponaiPages: UponAIPage[] = [
       {
         title: 'Escalation Paths',
         body: 'When the issue needs a human, the handoff includes the interaction context so the customer does not have to start over.',
+      },
+    ],
+    featureCards: [
+      {
+        title: '24/7 Instant Response',
+        body: 'Keep support available outside business hours and during call spikes without forcing customers into voicemail or long hold queues.',
+      },
+      {
+        title: 'Common Issue Resolution',
+        body: 'Handle repetitive account, billing, order, and routine support questions immediately while reserving live agents for more complex cases.',
+      },
+      {
+        title: 'Smart Call Routing',
+        body: 'Send higher-complexity or higher-value callers to the right queue with context collected before the transfer happens.',
+      },
+      {
+        title: 'Queue Management & Callbacks',
+        body: 'Offer wait-time awareness, callback capture, and alternate resolution paths when demand outpaces live staffing.',
+      },
+      {
+        title: 'Ticket Creation & CRM Logging',
+        body: 'Turn each interaction into structured support data instead of relying on manual note-taking after the fact.',
+      },
+      {
+        title: 'Reporting & Call Insights',
+        body: 'Use conversation patterns, sentiment, and resolution outcomes to improve workflow quality over time.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'What customer support issues should AI handle first?',
+        answer: 'The best starting point is repetitive inbound volume such as account questions, order status, billing basics, password issues, and routing callers into the right live queue.',
+      },
+      {
+        question: 'Can AI support escalate to a live agent with context?',
+        answer: 'Yes. The workflow can capture intent, attempted resolution steps, account details, and urgency indicators before transferring the caller to a human.',
+      },
+      {
+        question: 'Will this replace a full support team?',
+        answer: 'No. The point is to remove repetitive first-line volume so your live team can focus on exceptions, escalations, and relationship-sensitive conversations.',
       },
     ],
     image: '/ai-photos/knowledge-bases.png',
@@ -214,6 +245,46 @@ export const uponaiPages: UponAIPage[] = [
         body: 'Your team starts the next day with structured context instead of a backlog of voicemails and incomplete notes.',
       },
     ],
+    featureCards: [
+      {
+        title: 'Always Available',
+        body: 'Answer every inbound call after hours, on weekends, and during holidays without relying on static voicemail trees.',
+      },
+      {
+        title: 'Smart Issue Recognition',
+        body: 'Separate urgent situations from routine inquiries so on-call staff only get involved when the issue actually requires them.',
+      },
+      {
+        title: 'Natural Conversations',
+        body: 'Use conversational AI to keep callers engaged instead of pushing them through a frustrating after-hours script.',
+      },
+      {
+        title: 'Appointment Scheduling',
+        body: 'Book, reschedule, and cancel appointments even when the office is closed so opportunities are not lost overnight.',
+      },
+      {
+        title: 'Emergency Call Spike Handling',
+        body: 'Absorb sudden surges from outages, weather events, or campaign traffic without degrading response quality.',
+      },
+      {
+        title: 'Seamless Morning Handoff',
+        body: 'Give the returning team summaries, captured intent, and the next actions needed instead of a stack of unstructured voicemails.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'What is the main use of after-hours AI support?',
+        answer: 'It protects revenue and customer trust by answering when your team is offline, capturing intent, and escalating true urgent cases appropriately.',
+      },
+      {
+        question: 'Can it distinguish urgent from non-urgent calls?',
+        answer: 'Yes. The workflow can route emergencies differently from routine scheduling, billing, or informational questions.',
+      },
+      {
+        question: 'Does after-hours support only help service teams?',
+        answer: 'No. It is useful anywhere missed calls create lost bookings, delayed response, or poor customer experience outside staffed hours.',
+      },
+    ],
     image: '/ai-photos/test-call.png',
     imageAlt: 'UponAI after-hours call workflow preview',
   },
@@ -241,6 +312,46 @@ export const uponaiPages: UponAIPage[] = [
         body: 'Customers get a faster experience and your internal team spends less time coordinating routine scheduling tasks.',
       },
     ],
+    featureCards: [
+      {
+        title: '24/7 Call Answering',
+        body: 'Capture booking intent immediately instead of losing appointment demand to missed calls or voicemail.',
+      },
+      {
+        title: 'Real-Time Scheduling',
+        body: 'Surface live availability and route callers into the right slot, provider, or service type while the conversation is happening.',
+      },
+      {
+        title: 'Smart Rescheduling',
+        body: 'Handle date changes, cancellations, and booking updates without forcing staff into repetitive calendar cleanup.',
+      },
+      {
+        title: 'Waitlist & Gap Fill',
+        body: 'Use cancellations and schedule openings to move demand into empty slots faster and keep utilization stronger.',
+      },
+      {
+        title: 'Reminder & Follow-Up Logic',
+        body: 'Support confirmations, reminders, and next-step messaging so booked appointments are less likely to drop off.',
+      },
+      {
+        title: 'Calendar Consistency',
+        body: 'Apply the same booking rules every time instead of relying on inconsistent intake across staff or shifts.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can voice AI book appointments directly?',
+        answer: 'Yes. When connected to the right scheduling logic, it can collect requirements, confirm availability, and complete bookings in the same conversation.',
+      },
+      {
+        question: 'Does it only work for simple schedules?',
+        answer: 'No. The workflow can account for provider availability, service type, timing constraints, and other booking rules that matter operationally.',
+      },
+      {
+        question: 'What is the biggest benefit of AI scheduling?',
+        answer: 'It removes friction from the first interaction, captures more demand after hours, and reduces the manual scheduling burden on office staff.',
+      },
+    ],
     image: '/ai-photos/agent-builder.jpeg',
     imageAlt: 'UponAI booking workflow setup',
   },
@@ -266,6 +377,46 @@ export const uponaiPages: UponAIPage[] = [
       {
         title: 'Smarter Prioritization',
         body: 'Your live sales capacity is spent where it matters most instead of on low-intent conversations that could have been filtered earlier.',
+      },
+    ],
+    featureCards: [
+      {
+        title: 'Cold Calling At Scale',
+        body: 'Launch high-volume first-touch outreach without manual dialing, script fatigue, or inconsistent messaging across calls.',
+      },
+      {
+        title: 'Lead Qualification',
+        body: 'Ask structured qualification questions up front so your live reps receive stronger conversations instead of raw lists.',
+      },
+      {
+        title: 'Voicemail Detection & Callback',
+        body: 'Recognize unanswered calls, leave tailored voicemail, and schedule the next follow-up attempt automatically.',
+      },
+      {
+        title: 'CRM Integration',
+        body: 'Log outcomes, notes, qualification data, and follow-up status directly into your sales workflow instead of relying on manual entry.',
+      },
+      {
+        title: 'Appointment Scheduling',
+        body: 'Move qualified prospects directly into booked meetings while the momentum is still there.',
+      },
+      {
+        title: 'Follow-Up Automation',
+        body: 'Keep nurture and re-engagement moving across time zones, days, and campaign stages without burning out the sales team.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Where does outbound voice AI help most?',
+        answer: 'It helps most at the top of funnel where consistency, scale, timing, and qualification discipline matter more than a senior closer being on every call.',
+      },
+      {
+        question: 'Can the AI hand off directly to a sales rep?',
+        answer: 'Yes. Once a lead meets the right criteria, the workflow can transfer, schedule, or route the opportunity to the correct rep with captured context.',
+      },
+      {
+        question: 'Is this meant to replace the whole sales team?',
+        answer: 'No. It is designed to automate repetitive first-touch and follow-up work so human reps spend more time on active opportunities.',
       },
     ],
     image: '/ai-photos/post-call-analysis.png',
@@ -486,6 +637,7 @@ export const uponaiPages: UponAIPage[] = [
     ],
     image: '/site-photos/voip-phone.jpg',
     imageAlt: 'Telecommunications operations image',
+    aliasTo: '/voice-ai-for-telecommunication',
   },
   {
     slug: 'voice-ai-for-legal-services',
@@ -592,6 +744,46 @@ export const uponaiPages: UponAIPage[] = [
         body: 'A stronger communications foundation makes it easier to expand into more sophisticated voice and automation workflows over time.',
       },
     ],
+    featureCards: [
+      {
+        title: 'Unified Calling & Messaging',
+        body: 'Keep voice, routing, messaging, and team communication under one communications foundation instead of scattered point tools.',
+      },
+      {
+        title: 'AI-Ready Routing',
+        body: 'Use UCaaS as the communications layer that lets AI workflows hand off, escalate, and route with less operational friction.',
+      },
+      {
+        title: 'Remote Team Flexibility',
+        body: 'Support distributed teams, mobile staff, and multi-location communication without losing visibility into how calls are handled.',
+      },
+      {
+        title: 'Shared Presence & Availability',
+        body: 'Give routing logic better awareness of who is available, what queue should catch the call, and what the next best handoff is.',
+      },
+      {
+        title: 'Operational Consistency',
+        body: 'Apply one structure for inbound handling, escalation, and communications policy across the business.',
+      },
+      {
+        title: 'Expandable Architecture',
+        body: 'Make it easier to add automation, AI, and workflow integrations later because the communication layer is already organized correctly.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Why does UCaaS matter if the goal is AI voice?',
+        answer: 'Because AI works best when it is attached to a communication system that already has clear routing, availability, escalation, and endpoint logic.',
+      },
+      {
+        question: 'Does every AI deployment need a UCaaS change first?',
+        answer: 'Not always, but many teams get better long-term results when the communications backbone is stable before layering in more automation.',
+      },
+      {
+        question: 'What is the practical benefit of combining AI and UCaaS?',
+        answer: 'You get better handoffs, more reliable routing, and less fragmentation between automation and the live teams who ultimately handle part of the workflow.',
+      },
+    ],
     image: '/site-photos/omnichannel.jpg',
     imageAlt: 'Unified communications illustration',
   },
@@ -619,6 +811,46 @@ export const uponaiPages: UponAIPage[] = [
         body: 'Overflow handling becomes a defined process rather than a collection of missed calls and manual follow-up.',
       },
     ],
+    featureCards: [
+      {
+        title: 'Overflow Coverage',
+        body: 'Answer calls when queues back up, staff are busy, or the live team cannot pick up every ring in real time.',
+      },
+      {
+        title: 'Surge Capacity',
+        body: 'Keep customer conversations moving during busy periods, launches, outages, or campaign spikes without degrading response quality.',
+      },
+      {
+        title: 'Intent Capture',
+        body: 'Collect the reason for the call, urgency, and next-step needs so the handoff is useful instead of blind.',
+      },
+      {
+        title: 'Callback Logic',
+        body: 'Offer structured callback options instead of forcing callers to wait indefinitely or abandon the attempt entirely.',
+      },
+      {
+        title: 'Priority Escalation',
+        body: 'Route the highest-value or most urgent overflow calls into a clearer path while lower-priority requests are handled automatically.',
+      },
+      {
+        title: 'Better Caller Experience',
+        body: 'Replace dead ends and missed opportunities with a more responsive first interaction, even when your team is overloaded.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'What problem does overflow AI solve first?',
+        answer: 'It protects the business during busy periods by preventing call abandonment, missed opportunities, and poor first impressions when live staff are tied up.',
+      },
+      {
+        question: 'Can overflow AI still transfer callers?',
+        answer: 'Yes. It can collect intent and then route or schedule callbacks depending on the urgency and your team’s availability.',
+      },
+      {
+        question: 'Is overflow only useful for call centers?',
+        answer: 'No. Any team that experiences bursts of inbound demand can benefit from a defined overflow workflow instead of a missed-call pileup.',
+      },
+    ],
     image: '/ai-photos/extension-routing.png',
     imageAlt: 'UponAI call routing and overflow setup',
   },
@@ -644,6 +876,42 @@ export const uponaiPages: UponAIPage[] = [
       {
         title: 'Human Handoff',
         body: 'The goal is not just transfer. It is transferring with the right context, at the right time, into the right destination.',
+      },
+    ],
+    featureCards: [
+      {
+        title: 'Context-Aware Transfers',
+        body: 'Move callers from AI to a live destination with captured context so the handoff feels informed instead of disconnected.',
+      },
+      {
+        title: 'SIP-Based Flexibility',
+        body: 'Connect AI workflows to the telephony stack you already use when routing and transfer behavior needs to stay operationally realistic.',
+      },
+      {
+        title: 'Destination Logic',
+        body: 'Send callers to the right queue, extension, user, or downstream process path based on intent and workflow rules.',
+      },
+      {
+        title: 'Carrier & Platform Compatibility',
+        body: 'Design call flow behavior around your actual telephony environment instead of pretending the AI lives in isolation.',
+      },
+      {
+        title: 'Handoff Reliability',
+        body: 'Reduce dropped context and bad transfer experiences by treating call transfer design as part of the workflow itself.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Why do SIP integrations matter for AI voice?',
+        answer: 'Because real deployments usually need to connect AI conversations to existing phone systems, users, queues, or carriers without breaking the workflow.',
+      },
+      {
+        question: 'Is a transfer enough on its own?',
+        answer: 'No. The value comes from transferring with timing, context, and destination logic that actually match how your team works.',
+      },
+      {
+        question: 'Can this support human handoff design?',
+        answer: 'Yes. It is specifically about making AI-to-human routing practical and operationally consistent in live communications environments.',
       },
     ],
     image: '/ai-photos/sip-carrier.png',
@@ -901,7 +1169,29 @@ export const uponaiPages: UponAIPage[] = [
     aliasTo: '/about-us-page',
   },
   {
+    slug: 'about',
+    title: 'About UponAI',
+    description: 'Learn how UponAI approaches AI voice, chat, and communications automation for modern businesses.',
+    eyebrow: 'About Us',
+    highlights: [],
+    sections: [],
+    image: '/site-photos/team-office.jpg',
+    imageAlt: 'UponAI about page',
+    aliasTo: '/about-us-page',
+  },
+  {
     slug: 'get-a-demo',
+    title: 'Get a Demo',
+    description: 'Book a demo to see how UponAI handles inbound calls, qualification, routing, and AI-driven engagement.',
+    eyebrow: 'Get Started',
+    highlights: [],
+    sections: [],
+    image: '/site-photos/team-office.jpg',
+    imageAlt: 'UponAI demo page',
+    aliasTo: '/get-a-demo-page',
+  },
+  {
+    slug: 'get-demo',
     title: 'Get a Demo',
     description: 'Book a demo to see how UponAI handles inbound calls, qualification, routing, and AI-driven engagement.',
     eyebrow: 'Get Started',
@@ -932,6 +1222,28 @@ export const uponaiPages: UponAIPage[] = [
     image: '/site-photos/team-office.jpg',
     imageAlt: 'UponAI support page',
     aliasTo: '/customer-support-page',
+  },
+  {
+    slug: 'book-and-schedule',
+    title: 'Booking & Scheduling',
+    description: 'Let UponAI handle appointment booking, qualification, and calendar coordination inside voice workflows.',
+    eyebrow: 'Use Case',
+    highlights: [],
+    sections: [],
+    image: '/site-photos/team-office.jpg',
+    imageAlt: 'UponAI booking and scheduling page',
+    aliasTo: '/book-and-schedule-page',
+  },
+  {
+    slug: 'voice-ai-for-outbound-sales',
+    title: 'Voice AI For Outbound Sales',
+    description: 'Use voice AI to qualify leads, run outbound campaigns, and move more sales conversations forward.',
+    eyebrow: 'Use Case',
+    highlights: [],
+    sections: [],
+    image: '/site-photos/team-office.jpg',
+    imageAlt: 'UponAI outbound sales page',
+    aliasTo: '/voice-ai-for-outbound-sales-page',
   },
   {
     slug: 'ucaas',
@@ -987,6 +1299,72 @@ export const uponaiPages: UponAIPage[] = [
     image: '/site-photos/team-office.jpg',
     imageAlt: 'UponAI partnerships page',
     aliasTo: '/partners',
+  },
+  {
+    slug: 'for-restaurant',
+    title: 'Voice AI For Restaurants',
+    description: 'Use voice AI to answer restaurant calls, manage bookings, and reduce staff interruption during service hours.',
+    eyebrow: 'Industry',
+    highlights: [],
+    sections: [],
+    image: '/site-photos/team-office.jpg',
+    imageAlt: 'UponAI restaurant voice AI page',
+    aliasTo: '/for-restaurant-page',
+  },
+  {
+    slug: 'voice-ai-for-insurance',
+    title: 'Voice AI For Insurance',
+    description: 'Use voice AI to qualify callers, capture policy context, and route insurance conversations more efficiently.',
+    eyebrow: 'Industry',
+    highlights: [],
+    sections: [],
+    image: '/site-photos/team-office.jpg',
+    imageAlt: 'UponAI insurance voice AI page',
+    aliasTo: '/voice-ai-for-insurance-page',
+  },
+  {
+    slug: 'voice-ai-for-legal-services-232449',
+    title: 'Voice AI For Legal Services',
+    description: 'Use voice AI to intake new legal inquiries, route urgent matters, and reduce repetitive front-desk call volume.',
+    eyebrow: 'Industry',
+    highlights: [],
+    sections: [],
+    image: '/site-photos/team-office.jpg',
+    imageAlt: 'UponAI legal services voice AI page',
+    aliasTo: '/voice-ai-for-legal-services',
+  },
+  {
+    slug: 'voice-ai-real-estate-694782',
+    title: 'Voice AI For Real Estate',
+    description: 'Use voice AI to capture property inquiries, qualify leads, and keep real estate response times fast.',
+    eyebrow: 'Industry',
+    highlights: [],
+    sections: [],
+    image: '/site-photos/team-office.jpg',
+    imageAlt: 'UponAI real estate voice AI page',
+    aliasTo: '/voice-ai-real-estate',
+  },
+  {
+    slug: 'voice-ai-veterinary-clinics-116653',
+    title: 'Voice AI For Veterinary Clinics',
+    description: 'Use voice AI to handle appointment demand, urgent pet-owner calls, and repetitive veterinary office questions.',
+    eyebrow: 'Industry',
+    highlights: [],
+    sections: [],
+    image: '/site-photos/team-office.jpg',
+    imageAlt: 'UponAI veterinary voice AI page',
+    aliasTo: '/voice-ai-veterinary-clinics',
+  },
+  {
+    slug: 'voice-ai',
+    title: 'AI Voice Systems',
+    description: 'Explore how UponAI uses AI voice systems to handle calls, routing, qualification, and customer conversations.',
+    eyebrow: 'Solution',
+    highlights: [],
+    sections: [],
+    image: '/site-photos/team-office.jpg',
+    imageAlt: 'UponAI AI voice systems page',
+    aliasTo: '/services/ai-voice-agents',
   },
 ];
 

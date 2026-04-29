@@ -16,11 +16,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!city) return {};
   const cs = formatCityState(city);
   return {
-    title: `AI Voice Agents in ${cs} | UponAI`,
-    description: `Deploy AI voice agents for your ${cs} business. Answer every call 24/7, qualify leads, book appointments, and route callers — powered by UponAI and UponAI.`,
+    title: `AI Voice Agents in ${cs}`,
+    description: `Deploy AI voice agents for your ${cs} business. Answer every call 24/7, qualify leads, book appointments, and route callers with a voice workflow built by UponAI.`,
     alternates: { canonical: `https://uponai.com/services/ai-voice-agents/${city.slug}` },
     openGraph: {
-      title: `AI Voice Agents in ${cs} | UponAI`,
+      title: `AI Voice Agents in ${cs}`,
       description: `Automate your phone lines with human-sounding AI that never sleeps. Built for ${cs} businesses.`,
     },
   };
@@ -134,7 +134,7 @@ export default async function AIVoiceAgentCityPage({ params }: Props) {
 
           <div className="inline-flex items-center gap-2 bg-violet-600/10 border border-violet-500/30 rounded-full px-4 py-1.5 mb-6">
             <span className="w-2 h-2 bg-violet-400 rounded-full animate-pulse" />
-            <span className="text-violet-300 text-sm font-medium">Powered by UponAI × UponAI</span>
+            <span className="text-violet-300 text-sm font-medium">Built on the UponAI voice workflow platform</span>
           </div>
 
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
@@ -244,13 +244,13 @@ export default async function AIVoiceAgentCityPage({ params }: Props) {
         </div>
       </section>
 
-      {/* Why UponAI + UponAI */}
+      {/* Why UponAI */}
       <section className="py-20 px-4">
         <div className="max-w-5xl mx-auto">
           <div className="bg-gradient-to-br from-violet-900/20 to-blue-900/20 border border-violet-500/20 rounded-3xl p-10">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
               <div>
-                <span className="text-violet-400 text-sm font-semibold uppercase tracking-wider">The UponAI + UponAI Advantage</span>
+                <span className="text-violet-400 text-sm font-semibold uppercase tracking-wider">The UponAI Advantage</span>
                 <h2 className="text-3xl font-bold text-white mt-3 mb-5 leading-tight">
                   Native AI Built Into Your Phone System
                 </h2>
@@ -297,7 +297,7 @@ export default async function AIVoiceAgentCityPage({ params }: Props) {
             description: `AI Voice Agents for businesses in ${cs}`,
             url: `https://uponai.com/services/ai-voice-agents/${city.slug}`,
             telephone: '+18336986471',
-            email: 'Sales@my-voip.com',
+            email: 'info@uponai.com',
             areaServed: { '@type': 'City', name: city.name, containedInPlace: { '@type': 'State', name: city.state } },
             hasOfferCatalog: {
               '@type': 'OfferCatalog',

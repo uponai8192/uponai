@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
+import { brandPhotos } from '@/lib/brand-photos';
 import CTASection from '@/components/sections/CTASection';
 
 export const metadata: Metadata = {
@@ -67,7 +68,7 @@ export default function IVRSystemPage() {
             <div className="absolute -inset-2 bg-blue-500/10 rounded-3xl blur-2xl" />
             <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-black/50 border border-slate-700/50 bg-slate-900">
               <Image
-                src="/ai-photos/extension-routing.png"
+                src={brandPhotos.voiceMic}
                 alt="UponAI routing and voice system configuration"
                 width={900}
                 height={620}

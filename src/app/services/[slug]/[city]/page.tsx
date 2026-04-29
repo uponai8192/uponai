@@ -3,6 +3,9 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { services, cities, industries, getServiceBySlug, getCityBySlug, formatCityState } from '@/lib/data';
+import { brandPhotos, servicePhotoMap } from '@/lib/brand-photos';
+import { getCityMarketNarrative, getCityRegionNarrative } from '@/lib/voice-ai-industries';
+import { getServiceContent } from '@/lib/site-content';
 import CTASection from '@/components/sections/CTASection';
 import FeaturesBento from '@/components/sections/FeaturesBento';
 
@@ -25,45 +28,26 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const service = getServiceBySlug(slug);
   const city = getCityBySlug(citySlug);
   if (!service || !city) return {};
+
   const location = formatCityState(city);
+  const content = getServiceContent(service, city);
+
   return {
-    title: `${service.shortName} in ${location} | MyVoIP`,
-    description: `MyVoIP provides ${service.name.toLowerCase()} for businesses in ${location}. ${service.tagline}. Starting at $9.99/month with 24/7 US-based support. Get a free quote today.`,
-    keywords: [`${service.shortName.toLowerCase()} ${city.name}`, `business VoIP ${city.name}`, `cloud phone system ${city.name} ${city.stateAbbr}`, `${service.shortName.toLowerCase()} ${city.state}`],
-    alternates: { canonical: `https://my-voip.com/services/${slug}/${citySlug}` },
+    title: `${service.shortName} in ${location}`,
+    description: `${content.metaDescription} UponAI supports ${location} businesses with cleaner routing, stronger handoff logic, and communication workflows that can expand into AI.`,
+    keywords: [
+      `${service.shortName.toLowerCase()} ${city.name}`,
+      `business communications ${city.name}`,
+      `customer communication workflow ${city.name} ${city.stateAbbr}`,
+      `${service.shortName.toLowerCase()} ${city.state}`,
+    ],
+    alternates: { canonical: `https://uponai.com/services/${slug}/${citySlug}` },
     openGraph: {
-      title: `${service.shortName} in ${location} | MyVoIP`,
-      description: `${service.name} for ${location} businesses. ${service.tagline}.`,
+      title: `${service.shortName} in ${location}`,
+      description: `${service.name} for ${location} businesses. ${content.tagline}.`,
     },
   };
 }
-
-// Assign a photo to each service
-const SERVICE_PHOTOS: Record<string, string> = {
-  'business-voip':          '/site-photos/voip-phone.jpg',
-  'contact-centers':        '/site-photos/omnichannel.jpg',
-  'sip-trunks':             '/site-photos/digital-cx.png',
-  'hosted-fax':             '/site-photos/laptop-typing.jpg',
-  'mobile-voip-sms':        '/site-photos/business-mobile.jpg',
-  'web-video-conferencing': '/site-photos/team-consultation.jpg',
-  'voip-integration':       '/site-photos/team-meeting.jpg',
-  'ai-voice-agents':        '/site-photos/ai-concept.jpeg',
-  'ai-chatbots':            '/site-photos/ai-chatbot.jpeg',
-};
-
-// Photo badge overlay data per service
-const SERVICE_BADGES: Record<string, { top: string; bottom: string }> = {
-  'business-voip':          { top: '99.99% Uptime', bottom: '$9.99 / month' },
-  'contact-centers':        { top: 'Omnichannel Ready', bottom: 'Setup in 24 hrs' },
-  'sip-trunks':             { top: 'Unlimited Calls', bottom: 'Keep Your PBX' },
-  'hosted-fax':             { top: 'HIPAA Compliant', bottom: 'No Fax Machine' },
-  'mobile-voip-sms':        { top: 'iOS & Android', bottom: 'Work Anywhere' },
-  'web-video-conferencing': { top: '500 Participants', bottom: 'HD Video Included' },
-  'voip-integration':       { top: '100+ Integrations', bottom: 'REST API Access' },
-  'ai-voice-agents':        { top: '24/7 AI Answering', bottom: '< 1s Response' },
-  'ai-chatbots':            { top: '80% Auto-Resolved', bottom: 'Live on Your Site' },
-};
-
 
 export default async function ServiceCityPage({ params }: Props) {
   const { slug, city: citySlug } = await params;
@@ -72,26 +56,31 @@ export default async function ServiceCityPage({ params }: Props) {
   if (!service || !city) notFound();
 
   const location = formatCityState(city);
-  const photo = SERVICE_PHOTOS[slug] ?? '/site-photos/team-on-phone.jpg';
-  const badge = SERVICE_BADGES[slug] ?? { top: '99.99% Uptime', bottom: '$9.99 / month' };
-
-  const nearbyCities = cities.filter((c) => c.stateAbbr === city.stateAbbr && c.slug !== citySlug).slice(0, 8);
-  const otherServices = services.filter((s) => s.slug !== slug).slice(0, 4);
+  const content = getServiceContent(service, city);
+  const market = getCityMarketNarrative(city);
+  const region = getCityRegionNarrative(city);
+  const photo = servicePhotoMap[slug] ?? brandPhotos.voiceMic;
+  const nearbyCities = cities.filter((item) => item.stateAbbr === city.stateAbbr && item.slug !== citySlug).slice(0, 8);
+  const otherServices = services.filter((item) => item.slug !== slug).slice(0, 4);
   const featuredIndustries = industries.slice(0, 6);
-
-  // Alternate photo side based on city slug char code for visual variety
   const photoRight = city.slug.charCodeAt(0) % 2 === 0;
 
   const schemaJson = JSON.stringify({
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
-    name: 'MyVoIP',
+    name: 'UponAI',
     description: `${service.name} provider serving ${location} businesses`,
-    url: `https://my-voip.com/services/${slug}/${citySlug}`,
-    telephone: '+18336986471',
-    address: { '@type': 'PostalAddress', streetAddress: '281 US-46 West', addressLocality: 'Elmwood Park', addressRegion: 'NJ', postalCode: '07407', addressCountry: 'US' },
+    url: `https://uponai.com/services/${slug}/${citySlug}`,
+    telephone: '+18887876624',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: '711 Moorefield Park Drive, Suite A',
+      addressLocality: 'North Chesterfield',
+      addressRegion: 'VA',
+      postalCode: '23236',
+      addressCountry: 'US',
+    },
     areaServed: { '@type': 'City', name: city.name, containedInPlace: { '@type': 'State', name: city.state } },
-    priceRange: '$$',
     openingHours: 'Mo-Su 00:00-23:59',
     serviceType: service.name,
   });
@@ -100,43 +89,37 @@ export default async function ServiceCityPage({ params }: Props) {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaJson }} />
 
-      {/* ── Hero ─────────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden py-16 md:py-24 px-4">
+      <section className="relative overflow-hidden px-4 py-16 md:py-24">
         <div className="absolute inset-0">
-          <div className="absolute top-0 left-0 w-[600px] h-[500px] bg-blue-600/8 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-blue-900/10 rounded-full blur-3xl" />
+          <div className="absolute left-0 top-0 h-[500px] w-[600px] rounded-full bg-blue-600/8 blur-3xl" />
+          <div className="absolute bottom-0 right-0 h-[400px] w-[400px] rounded-full bg-blue-900/10 blur-3xl" />
         </div>
-        <div className={`relative max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${!photoRight ? 'lg:grid-flow-dense' : ''}`}>
 
-          {/* Copy */}
+        <div className={`relative mx-auto grid max-w-7xl gap-12 lg:grid-cols-2 lg:items-center ${!photoRight ? 'lg:grid-flow-dense' : ''}`}>
           <div className={!photoRight ? 'lg:col-start-2' : ''}>
-            <nav className="flex flex-wrap items-center gap-2 text-slate-500 text-sm mb-6">
-              <Link href="/" className="hover:text-slate-300 transition-colors">Home</Link>
+            <nav className="mb-6 flex flex-wrap items-center gap-2 text-sm text-slate-500">
+              <Link href="/" className="transition-colors hover:text-slate-300">Home</Link>
               <span>/</span>
-              <Link href={`/services/${slug}`} className="hover:text-slate-300 transition-colors">{service.shortName}</Link>
+              <Link href={`/services/${slug}`} className="transition-colors hover:text-slate-300">{service.shortName}</Link>
               <span>/</span>
               <span className="text-slate-300">{location}</span>
             </nav>
 
-            <div className="inline-flex items-center gap-2 bg-blue-600/10 border border-blue-500/30 rounded-full px-4 py-1.5 mb-6">
-              <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-              <span className="text-blue-300 text-sm font-medium">Now serving {location}</span>
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-600/10 px-4 py-1.5">
+              <span className="h-2 w-2 rounded-full bg-green-400" />
+              <span className="text-sm font-medium text-blue-300">{content.badgeLabel} in {location}</span>
             </div>
 
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 leading-tight">
-              {service.shortName} in{' '}
-              <span className="text-blue-400">{city.name}, {city.stateAbbr}</span>
+            <h1 className="mb-4 text-4xl font-bold leading-tight text-white md:text-5xl">
+              {service.shortName} in <span className="text-blue-400">{city.name}, {city.stateAbbr}</span>
             </h1>
-            <p className="text-slate-300 text-xl mb-6 leading-relaxed">{service.tagline}</p>
-            <p className="text-slate-400 leading-relaxed mb-8 max-w-lg">
-              MyVoIP provides {city.name} businesses with {service.name.toLowerCase()} — feature-rich, reliable, and affordable. Get enterprise-grade cloud communications without the enterprise price tag.
-            </p>
+            <p className="mb-6 text-xl leading-relaxed text-slate-300">{content.tagline}</p>
+            <p className="mb-8 max-w-lg leading-relaxed text-slate-400">{content.locationIntro}</p>
 
-            {/* Trust bar */}
-            <div className="flex flex-wrap gap-x-5 gap-y-2 text-slate-400 text-sm mb-8">
-              {['No Long-Term Contracts', '24/7 US Support', '99.99% Uptime', 'Setup in 24 Hours'].map((item) => (
+            <div className="mb-8 flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-400">
+              {[content.badgeTop, content.badgeBottom, '24/7 US Support', 'Modern workflow design'].map((item) => (
                 <div key={item} className="flex items-center gap-1.5">
-                  <svg className="w-3.5 h-3.5 text-green-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="h-3.5 w-3.5 flex-shrink-0 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
                   </svg>
                   {item}
@@ -144,175 +127,154 @@ export default async function ServiceCityPage({ params }: Props) {
               ))}
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link href="/quote" className="bg-blue-600 hover:bg-blue-500 text-white font-bold px-8 py-4 rounded-xl transition-colors text-lg text-center">
+            <div className="flex flex-col gap-4 sm:flex-row">
+              <Link href="/quote" className="rounded-xl bg-blue-600 px-8 py-4 text-center text-lg font-bold text-white transition-colors hover:bg-blue-500">
                 Get a Free Quote
               </Link>
-              <a href="tel:+18336986471" className="border border-slate-600 text-slate-200 hover:border-blue-500 hover:text-white font-semibold px-8 py-4 rounded-xl transition-colors text-lg text-center">
-                (833) 698-6471
+              <a href="tel:+18336986471" className="rounded-xl border border-slate-600 px-8 py-4 text-center text-lg font-semibold text-slate-200 transition-colors hover:border-blue-500 hover:text-white">
+                (888) 787-6624
               </a>
             </div>
           </div>
 
-          {/* Photo */}
           <div className={`relative ${!photoRight ? 'lg:col-start-1 lg:row-start-1' : ''}`}>
-            <div className="absolute -inset-3 bg-blue-500/8 rounded-3xl blur-2xl" />
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-black/60 border border-slate-700/60">
+            <div className="absolute -inset-3 rounded-3xl bg-blue-500/8 blur-2xl" />
+            <div className="relative overflow-hidden rounded-2xl border border-slate-700/60 shadow-2xl shadow-black/60">
               <Image
                 src={photo}
                 alt={`${service.name} in ${location}`}
                 width={680}
                 height={460}
-                className="w-full h-auto object-cover"
+                className="h-auto w-full object-cover"
                 priority
                 unoptimized
               />
-              {/* Stat badges */}
-              <div className="absolute bottom-4 left-4 bg-slate-900/90 backdrop-blur-sm border border-slate-700 rounded-xl px-4 py-2.5 shadow-xl">
-                <div className="text-blue-400 font-black text-lg leading-none">{badge.bottom.split(' ')[0]}</div>
-                <div className="text-slate-300 text-xs">{badge.bottom.split(' ').slice(1).join(' ')}</div>
+              <div className="absolute bottom-4 left-4 rounded-xl border border-slate-700 bg-slate-900/90 px-4 py-2.5 shadow-xl backdrop-blur-sm">
+                <div className="text-sm font-black leading-none text-blue-400">{content.badgeBottom}</div>
               </div>
-              <div className="absolute top-4 right-4 bg-slate-900/90 backdrop-blur-sm border border-slate-700 rounded-xl px-4 py-2.5 shadow-xl">
-                <div className="text-green-400 font-black text-sm leading-none">{badge.top}</div>
+              <div className="absolute right-4 top-4 rounded-xl border border-slate-700 bg-slate-900/90 px-4 py-2.5 shadow-xl backdrop-blur-sm">
+                <div className="text-sm font-black leading-none text-green-400">{content.badgeTop}</div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── Features ─────────────────────────────────────────────────────────── */}
-      <section className="py-20 px-4 bg-slate-900/50">
-        <div className="max-w-6xl mx-auto">
+      <section className="bg-slate-900/50 px-4 py-20">
+        <div className="mx-auto max-w-6xl">
           <FeaturesBento
             features={service.features}
             title={`${service.shortName} Features for ${city.name} Businesses`}
-            subtitle="Every plan includes these features — no add-on fees, no surprises."
+            subtitle="Core features for teams that want cleaner communication, stronger routing, and room to expand into AI workflows."
           />
         </div>
       </section>
 
-      {/* ── Why MyVoIP in [City] — photo + copy ─────────────────────────────── */}
-      <section className="py-20 px-4">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
-          {/* Photo collage */}
+      <section className="px-4 py-20">
+        <div className="mx-auto max-w-6xl">
+          <div className="mb-10 grid gap-4 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
+            <div>
+              <span className="text-sm font-semibold uppercase tracking-wider text-blue-400">Local Demand</span>
+              <h2 className="mt-3 text-3xl font-bold text-white md:text-4xl">
+                Why {service.shortName.toLowerCase()} in {city.name} needs more than generic national copy.
+              </h2>
+            </div>
+            <p className="leading-relaxed text-slate-400">
+              {market.seo} {region.body}
+            </p>
+          </div>
+          <div className="grid gap-4 md:grid-cols-3">
+            {content.localHighlights.map((item) => (
+              <div key={item} className="rounded-2xl border border-slate-700 bg-slate-800/50 p-6">
+                <p className="text-sm leading-relaxed text-slate-300">{item}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="px-4 py-20">
+        <div className="mx-auto grid max-w-7xl gap-14 lg:grid-cols-2 lg:items-center">
           <div className="relative">
             <div className="grid grid-cols-2 gap-4">
-              <div className="rounded-2xl overflow-hidden shadow-xl border border-slate-700/50 row-span-2">
-                <Image
-                  src="/site-photos/team-on-phone.jpg"
-                  alt={`MyVoIP support team serving ${city.name}`}
-                  width={400}
-                  height={560}
-                  className="w-full h-full object-cover"
-                  unoptimized
-                />
+              <div className="row-span-2 overflow-hidden rounded-2xl border border-slate-700/50 shadow-xl">
+                <Image src={brandPhotos.voiceSearch} alt={`UponAI support team serving ${city.name}`} width={400} height={560} className="h-full w-full object-cover" unoptimized />
               </div>
-              <div className="rounded-2xl overflow-hidden shadow-xl border border-slate-700/50">
-                <Image
-                  src="/site-photos/team-office.jpg"
-                  alt="MyVoIP team"
-                  width={400}
-                  height={260}
-                  className="w-full h-full object-cover"
-                  unoptimized
-                />
+              <div className="overflow-hidden rounded-2xl border border-slate-700/50 shadow-xl">
+                <Image src={brandPhotos.connectedGlobe} alt="UponAI team" width={400} height={260} className="h-full w-full object-cover" unoptimized />
               </div>
-              <div className="rounded-2xl overflow-hidden shadow-xl border border-slate-700/50">
-                <Image
-                  src="/site-photos/team-conversation.jpg"
-                  alt="MyVoIP support"
-                  width={400}
-                  height={260}
-                  className="w-full h-full object-cover"
-                  unoptimized
-                />
+              <div className="overflow-hidden rounded-2xl border border-slate-700/50 shadow-xl">
+                <Image src={brandPhotos.chatbotPhone} alt="UponAI support" width={400} height={260} className="h-full w-full object-cover" unoptimized />
               </div>
             </div>
           </div>
 
-          {/* Copy */}
           <div>
-            <span className="text-blue-400 text-sm font-semibold uppercase tracking-wider">Why {city.name} Businesses Choose Us</span>
-            <h2 className="text-3xl md:text-4xl font-bold text-white mt-3 mb-5 leading-tight">
-              Local-Quality Service. Enterprise-Grade Technology.
-            </h2>
-            <p className="text-slate-400 leading-relaxed mb-5">
-              Unlike big telecom carriers, MyVoIP gives every {city.name} business direct access to our US-based support team — not an overseas call center. When something needs fixing, you talk to a real person who knows your system.
+            <span className="text-sm font-semibold uppercase tracking-wider text-blue-400">Why {city.name} Businesses Choose Us</span>
+            <h2 className="mt-3 mb-5 text-3xl font-bold leading-tight text-white md:text-4xl">{content.whyTitle}</h2>
+            <p className="mb-5 leading-relaxed text-slate-400">{content.whyBody}</p>
+            <p className="mb-8 leading-relaxed text-slate-400">
+              Teams in {city.name} get communication workflows designed around local demand, nearby-market coverage, and cleaner operational handoff across the broader {city.state} market.
             </p>
-            <p className="text-slate-400 leading-relaxed mb-8">
-              We&apos;ve been connecting businesses across {city.state} with reliable cloud communications for over 20 years. No long-term contracts, no surprise bills, and no IT department required.
-            </p>
-            <div className="grid grid-cols-2 gap-4 mb-8">
-              {[
-                { value: '20+', label: 'Years in Business' },
-                { value: '5,000+', label: 'Businesses Served' },
-                { value: '99.99%', label: 'Uptime SLA' },
-                { value: '$9.99', label: 'Starting Price/mo' },
-              ].map((stat) => (
-                <div key={stat.label} className="bg-slate-800/60 border border-slate-700 rounded-xl p-4">
-                  <div className="text-2xl font-black text-blue-400 mb-1">{stat.value}</div>
-                  <div className="text-slate-400 text-sm">{stat.label}</div>
+            <div className="mb-8 grid grid-cols-2 gap-4">
+              {content.whyStats.map((stat) => (
+                <div key={stat.label} className="rounded-xl border border-slate-700 bg-slate-800/60 p-4">
+                  <div className="mb-1 text-2xl font-black text-blue-400">{stat.value}</div>
+                  <div className="text-sm text-slate-400">{stat.label}</div>
                 </div>
               ))}
             </div>
-            <Link href="/quote" className="inline-block bg-blue-600 hover:bg-blue-500 text-white font-bold px-8 py-4 rounded-xl transition-colors">
+            <Link href="/quote" className="inline-block rounded-xl bg-blue-600 px-8 py-4 font-bold text-white transition-colors hover:bg-blue-500">
               Start Free Consultation
             </Link>
           </div>
         </div>
       </section>
 
-      {/* ── Industries we serve in this city ────────────────────────────────── */}
-      <section className="py-16 px-4 bg-slate-900/50">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-2xl font-bold text-white mb-2 text-center">
-            {service.shortName} for Every Industry in {city.name}
-          </h2>
-          <p className="text-slate-400 text-center mb-8">Trusted by businesses across every sector in {city.state}.</p>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-            {featuredIndustries.map((ind) => (
-              <Link key={ind.slug} href={`/industries/${ind.slug}/${citySlug}`} className="bg-slate-800/50 border border-slate-700 rounded-xl px-3 py-3 text-center hover:border-blue-500/40 hover:bg-slate-800 transition-all group">
-                <div className="text-slate-300 text-xs font-medium group-hover:text-white transition-colors leading-snug">{ind.name.split(' ')[0]}</div>
+      <section className="bg-slate-900/50 px-4 py-16">
+        <div className="mx-auto max-w-6xl">
+          <h2 className="mb-2 text-center text-2xl font-bold text-white">{service.shortName} for Every Industry in {city.name}</h2>
+          <p className="mb-8 text-center text-slate-400">Trusted by businesses across every sector in {city.state}.</p>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+            {featuredIndustries.map((industry) => (
+              <Link key={industry.slug} href={`/industries/${industry.slug}/${citySlug}`} className="group rounded-xl border border-slate-700 bg-slate-800/50 px-3 py-3 text-center transition-all hover:border-blue-500/40 hover:bg-slate-800">
+                <div className="text-xs font-medium leading-snug text-slate-300 transition-colors group-hover:text-white">{industry.name.split(' ')[0]}</div>
               </Link>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── Other services ───────────────────────────────────────────────────── */}
-      <section className="py-16 px-4">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-2xl font-bold text-white mb-2">More MyVoIP Services in {location}</h2>
-          <p className="text-slate-400 mb-8">Explore our full suite of cloud communication products.</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {otherServices.map((s) => (
-              <Link key={s.slug} href={`/services/${s.slug}/${citySlug}`} className="group bg-slate-800/50 border border-slate-700 rounded-xl p-5 hover:border-blue-500/50 hover:bg-slate-800 transition-all">
-                <h3 className="text-white font-semibold text-sm mb-2 group-hover:text-blue-300 transition-colors">{s.shortName}</h3>
-                <p className="text-slate-400 text-xs leading-relaxed line-clamp-2 mb-3">{s.tagline}</p>
-                <span className="text-blue-400 text-xs font-medium group-hover:text-blue-300">
-                  {s.shortName} in {city.name} →
-                </span>
+      <section className="px-4 py-16">
+        <div className="mx-auto max-w-6xl">
+          <h2 className="mb-2 text-2xl font-bold text-white">More UponAI Solutions in {location}</h2>
+          <p className="mb-8 text-slate-400">Explore the broader communications and AI workflow stack available for {city.name} teams.</p>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {otherServices.map((item) => (
+              <Link key={item.slug} href={`/services/${item.slug}/${citySlug}`} className="group rounded-xl border border-slate-700 bg-slate-800/50 p-5 transition-all hover:border-blue-500/50 hover:bg-slate-800">
+                <h3 className="mb-2 text-sm font-semibold text-white transition-colors group-hover:text-blue-300">{item.shortName}</h3>
+                <p className="mb-3 line-clamp-2 text-xs leading-relaxed text-slate-400">{getServiceContent(item).tagline}</p>
+                <span className="text-xs font-medium text-blue-400 transition-colors group-hover:text-blue-300">{item.shortName} in {city.name} →</span>
               </Link>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── Nearby cities ────────────────────────────────────────────────────── */}
-      {nearbyCities.length > 0 && (
-        <section className="py-12 px-4 bg-slate-900/50 border-t border-slate-800">
-          <div className="max-w-6xl mx-auto">
-            <p className="text-slate-500 text-sm mb-4">Also serving {service.shortName} customers near {city.name}:</p>
+      {nearbyCities.length > 0 ? (
+        <section className="border-t border-slate-800 bg-slate-900/50 px-4 py-12">
+          <div className="mx-auto max-w-6xl">
+            <p className="mb-4 text-sm text-slate-500">Also serving {service.shortName} customers near {city.name}:</p>
             <div className="flex flex-wrap gap-2">
-              {nearbyCities.map((nc) => (
-                <Link key={nc.slug} href={`/services/${slug}/${nc.slug}`} className="bg-slate-800 border border-slate-700 rounded-lg px-4 py-2 text-sm text-slate-300 hover:text-white hover:border-blue-500/50 transition-colors">
-                  {nc.name}, {nc.stateAbbr}
+              {nearbyCities.map((item) => (
+                <Link key={item.slug} href={`/services/${slug}/${item.slug}`} className="rounded-lg border border-slate-700 bg-slate-800 px-4 py-2 text-sm text-slate-300 transition-colors hover:border-blue-500/50 hover:text-white">
+                  {item.name}, {item.stateAbbr}
                 </Link>
               ))}
             </div>
           </div>
         </section>
-      )}
+      ) : null}
 
       <CTASection city={location} />
     </>

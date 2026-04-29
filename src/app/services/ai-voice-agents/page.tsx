@@ -5,12 +5,12 @@ import { cities } from '@/lib/data';
 import CTASection from '@/components/sections/CTASection';
 
 export const metadata: Metadata = {
-  title: 'AI Voice Agents for Business | UponAI',
+  title: 'AI Voice Agents for Business',
   description:
     'Replace your outdated IVR with a human-sounding AI voice agent that answers calls 24/7, qualifies leads, books appointments, and routes callers — powered by UponAI technology.',
   alternates: { canonical: 'https://uponai.com/services/ai-voice-agents' },
   openGraph: {
-    title: 'AI Voice Agents for Business | UponAI',
+    title: 'AI Voice Agents for Business',
     description: 'Human-sounding AI that answers every call, 24/7. No hold queues. No missed leads.',
   },
 };
@@ -372,7 +372,7 @@ export default function AIVoiceAgentsPage() {
             <span className="text-violet-400 text-sm font-semibold uppercase tracking-wider">Step 6</span>
             <h2 className="text-3xl font-bold text-white mt-2 mb-4">Connect Your Phone Numbers Instantly</h2>
             <p className="text-slate-400 leading-relaxed mb-5">
-              Because UponAI and UponAI are built by the same team, your phone numbers connect to your AI agent with zero friction. Assign any number — local, toll-free, or existing — to your agent in seconds.
+              UponAI voice agents connect directly into your cloud phone workflow, so your phone numbers reach the right AI agent with zero friction. Assign any number — local, toll-free, or existing — to your agent in seconds.
             </p>
             <ul className="space-y-3">
               {[
@@ -458,20 +458,20 @@ export default function AIVoiceAgentsPage() {
         </div>
       </section>
 
-      {/* Why UponAI + UponAI */}
+      {/* Why UponAI */}
       <section className="py-20 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-white mb-4">Why UponAI + UponAI?</h2>
+            <h2 className="text-3xl font-bold text-white mb-4">Why UponAI?</h2>
             <p className="text-slate-400 max-w-2xl mx-auto">
-              Most AI providers don&apos;t understand VoIP. Most VoIP providers don&apos;t understand AI. We built both — so integration is seamless.
+              Most AI tools are layered on top of someone else&apos;s phone stack. UponAI combines AI workflows and telecom expertise in one platform, so deployment is cleaner and handoffs are more reliable.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               {
-                title: 'Same Team, Both Platforms',
-                desc: "UponAI and UponAI were co-founded by the same leadership. There&apos;s no integration friction — the AI agents live natively inside your phone system.",
+                title: 'Native Voice Workflow Design',
+                desc: 'Your AI agents are built for real phone workflows, including transfers, routing, transcripts, and live-agent handoff logic.',
               },
               {
                 title: '20+ Years of VoIP Expertise',

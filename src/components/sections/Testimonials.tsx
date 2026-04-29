@@ -27,17 +27,18 @@ const testimonials = [
 
 export default function Testimonials() {
   return (
-    <section className="py-20 px-4 bg-slate-900/50">
-      <div className="max-w-7xl mx-auto">
+    <section className="theme-section-alt px-4 py-20">
+      <div className="mx-auto max-w-7xl">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">What Clients Say</h2>
-          <p className="text-slate-400 text-lg">
+          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-cyan-text)]">Client Perspective</p>
+          <h2 className="theme-heading mb-4 text-3xl font-bold md:text-4xl">What Clients Say</h2>
+          <p className="theme-soft text-lg">
             Teams use UponAI to make real operational improvements, not just to run isolated demos.
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {testimonials.map((t) => (
-            <div key={t.name} className="bg-slate-800/60 border border-slate-700 rounded-2xl p-7">
+            <div key={t.name} className="theme-card rounded-[2rem] p-7">
               <div className="flex text-yellow-400 mb-4 gap-0.5">
                 {[...Array(5)].map((_, i) => (
                   <svg key={i} className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -45,14 +46,14 @@ export default function Testimonials() {
                   </svg>
                 ))}
               </div>
-              <p className="text-slate-300 text-sm leading-relaxed mb-5 italic">&ldquo;{t.text}&rdquo;</p>
+              <p className="theme-body mb-5 text-sm leading-relaxed italic">&ldquo;{t.text}&rdquo;</p>
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-[#22c55e] text-sm font-bold text-white">
                   {t.initials}
                 </div>
                 <div>
-                  <p className="text-white font-semibold text-sm">{t.name}</p>
-                  <p className="text-slate-500 text-xs">{t.title}</p>
+                  <p className="theme-heading text-sm font-semibold">{t.name}</p>
+                  <p className="theme-subtle text-xs">{t.title}</p>
                 </div>
               </div>
             </div>
