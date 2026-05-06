@@ -2,54 +2,11 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { brandPhotos } from '@/lib/brand-photos';
-import {
-  buildBreadcrumbSchema,
-  buildPageMetadata,
-} from '@/lib/seo';
-
-const controlAreas = [
-  {
-    title: 'Internal Security Procedures',
-    body:
-      'UponAI documents internal security practices around access, development workflows, change management, and operational review so customer-facing systems are not managed ad hoc.',
-  },
-  {
-    title: 'Access Controls',
-    body:
-      'System access is limited by role, reviewed over time, and designed to keep administrative permissions scoped to the people who need them.',
-  },
-  {
-    title: 'Data Handling',
-    body:
-      'UponAI uses defined workflows for storing, processing, and protecting customer data across voice, application, and support environments.',
-  },
-  {
-    title: 'Vendor Oversight',
-    body:
-      'Critical third-party services are reviewed as part of the broader operating model so infrastructure dependencies are not treated as a blind spot.',
-  },
-  {
-    title: 'Incident Response',
-    body:
-      'UponAI maintains response paths for investigating, containing, and communicating material security events when they arise.',
-  },
-  {
-    title: 'Availability Monitoring',
-    body:
-      'Operational visibility, uptime monitoring, and environment checks help the team catch service issues early and respond quickly.',
-  },
-];
-
-const requestItems = [
-  'Legal agreements and procurement review support',
-  'Security questionnaire coordination',
-  'Trust center access and control documentation',
-  'Vendor and architecture review conversations',
-];
+import { buildBreadcrumbSchema, buildPageMetadata } from '@/lib/seo';
 
 const trustCenterLinks = [
   {
-    label: 'View Trust Center Details',
+    label: 'Open External Trust Center',
     href: 'https://app.vanta.com/re-tell.ai/trust/8nfvavp5klt9n4iz32h90/controls#internal-security-procedures',
   },
   {
@@ -58,13 +15,174 @@ const trustCenterLinks = [
   },
 ];
 
+const overviewCards = [
+  {
+    eyebrow: 'Primary Contact',
+    title: 'support@uponai.com',
+    body:
+      'Use this address for legal agreements, trust documentation, procurement follow-up, and security review coordination.',
+  },
+  {
+    eyebrow: 'Review Model',
+    title: 'Controls + Request Path',
+    body:
+      'Customers can start with the external trust-center view, then request additional agreements or review material directly from the UponAI team.',
+  },
+  {
+    eyebrow: 'Program Scope',
+    title: 'Voice, platform, and operations',
+    body:
+      'This page summarizes the control areas teams usually review when evaluating UponAI for AI voice and workflow deployments.',
+  },
+];
+
+const quickLinks = [
+  { id: 'internal-security-procedures', label: 'Internal Security Procedures' },
+  { id: 'infrastructure-security', label: 'Infrastructure Security' },
+  { id: 'access-control', label: 'Access Control' },
+  { id: 'application-change-management', label: 'Application & Change Management' },
+  { id: 'incident-response', label: 'Incident Response' },
+  { id: 'business-continuity', label: 'Business Continuity' },
+  { id: 'vendor-risk', label: 'Vendor & Third-Party Risk' },
+  { id: 'data-handling', label: 'Data Handling & Privacy' },
+];
+
+const controlDomains = [
+  {
+    id: 'internal-security-procedures',
+    eyebrow: 'Governance',
+    title: 'Internal Security Procedures',
+    description:
+      'UponAI documents core security procedures so customer-facing systems are not managed informally. The operating model is intended to support predictable access, review, escalation, and accountability.',
+    bullets: [
+      'Documented internal practices for handling access, operational review, and administrative responsibility',
+      'Defined ownership around system administration, deployment workflow, and environment management',
+      'Review path for trust, procurement, and customer security questions',
+    ],
+  },
+  {
+    id: 'infrastructure-security',
+    eyebrow: 'Infrastructure',
+    title: 'Infrastructure Security',
+    description:
+      'Infrastructure review focuses on how production systems are hosted, segmented, monitored, and maintained. For buyers, this is the section that answers whether the platform is operated with real production discipline.',
+    bullets: [
+      'Hosting and environment controls designed around production reliability and access limitation',
+      'Monitoring and availability visibility to catch service issues before they become prolonged outages',
+      'Operational review of infrastructure dependencies and service-layer risk',
+      'Vendor-backed platform components evaluated as part of the broader deployment stack',
+    ],
+  },
+  {
+    id: 'access-control',
+    eyebrow: 'Identity',
+    title: 'Access Control',
+    description:
+      'Access is treated as a scoped operational function, not an open convenience layer. Teams evaluating UponAI typically want to know who can access administrative systems, how access is granted, and how that access is reviewed over time.',
+    bullets: [
+      'Role-based access principles for internal systems and operational tooling',
+      'Administrative permissions restricted to the people who need them',
+      'Periodic review expectations for privileged access and environment reach',
+      'Controlled path for onboarding, changing, and removing internal access',
+    ],
+  },
+  {
+    id: 'application-change-management',
+    eyebrow: 'Engineering',
+    title: 'Application & Change Management',
+    description:
+      'Because UponAI sits close to customer communications and workflow logic, change management matters. Buyers need confidence that production changes are not introduced casually and that application behavior can be updated with a defined workflow.',
+    bullets: [
+      'Structured development and deployment workflow rather than direct ad hoc production editing',
+      'Review path for application changes that affect customer behavior or operational logic',
+      'Defined process for updating workflow logic, routing rules, and system behavior over time',
+      'Operational traceability around what is changed and why',
+    ],
+  },
+  {
+    id: 'incident-response',
+    eyebrow: 'Response',
+    title: 'Incident Response',
+    description:
+      'If an issue affects security, availability, or customer operations, the response path needs to be clear. The emphasis here is on investigation, containment, communication, and operational follow-up.',
+    bullets: [
+      'Documented response path for investigating material security or service events',
+      'Escalation approach for incidents affecting customer-facing workflows',
+      'Containment and communication expectations during meaningful disruptions',
+      'Follow-up review to improve response quality over time',
+    ],
+  },
+  {
+    id: 'business-continuity',
+    eyebrow: 'Resilience',
+    title: 'Business Continuity & Availability',
+    description:
+      'For communications software, trust is tied directly to uptime and continuity. This section is about how the team thinks about service continuity, monitoring, and the ability to recover from operational issues.',
+    bullets: [
+      'Availability monitoring and service-level visibility across critical workflows',
+      'Operational continuity planning for incidents that affect normal call-handling or platform behavior',
+      'Recovery mindset around restoring service and reducing prolonged interruption',
+      'Dependence review for third-party infrastructure and service providers',
+    ],
+  },
+  {
+    id: 'vendor-risk',
+    eyebrow: 'Third Parties',
+    title: 'Vendor & Third-Party Risk',
+    description:
+      'AI voice deployments often rely on infrastructure, monitoring, and software vendors. Customers reviewing UponAI need a clear indication that those dependencies are treated as part of the security model, not ignored because they sit outside first-party code.',
+    bullets: [
+      'Third-party services reviewed within the broader operational risk model',
+      'Attention to infrastructure, monitoring, and communications dependencies',
+      'Vendor selection and dependency awareness as part of platform operations',
+      'Support path for customer questions related to external service reliance',
+    ],
+  },
+  {
+    id: 'data-handling',
+    eyebrow: 'Data',
+    title: 'Data Handling & Privacy',
+    description:
+      'Security review is incomplete without understanding how data is handled. This section is intended to frame how UponAI approaches customer information, workflow data, and operational processing in practical terms.',
+    bullets: [
+      'Defined handling approach for customer and workflow-related data across platform operations',
+      'Processing expectations shaped around access limitation and operational need',
+      'Customer path for trust-related questions about stored or processed information',
+      'Support route for legal agreements and documentation requests tied to data review',
+    ],
+  },
+];
+
+const requestItems = [
+  'Legal agreements and procurement review support',
+  'Security questionnaire coordination',
+  'Trust center access and control documentation',
+  'Vendor and architecture review conversations',
+  'Customer security follow-up tied to purchasing decisions',
+  'Review support for privacy, data handling, and operational controls',
+];
+
+const documentItems = [
+  'Trust-center control access through the external review portal',
+  'Legal agreement request coordination through support@uponai.com',
+  'Procurement and vendor review follow-up for buying teams',
+  'Clarification path for security, privacy, and operational review questions',
+];
+
+const evaluationSteps = [
+  'Start with the external trust-center controls view for a quick program overview.',
+  'Use this local UponAI page to understand how the review areas map to the platform and operating model.',
+  'Email support@uponai.com for legal agreements, procurement review, or additional documentation.',
+  'Use the standard contact or demo path if you also need architecture or product discussions.',
+];
+
 export const metadata: Metadata = buildPageMetadata({
   title: 'Trust Center | UponAI',
   description:
     'Review the UponAI trust center, security posture overview, and request legal agreements or trust documentation from the team.',
   path: '/trust-center',
   openGraphDescription:
-    'Access the UponAI trust center overview, security program highlights, and trust documentation request path.',
+    'Access the UponAI trust center overview, security controls summary, and legal-agreement request path.',
   image: brandPhotos.connectedGlobe,
 });
 
@@ -93,12 +211,13 @@ export default function TrustCenterPage() {
               Trust Center
             </div>
             <h1 className="theme-heading mt-6 max-w-4xl text-5xl font-bold leading-[0.95] md:text-7xl">
-              Trust, security, and transparency for teams evaluating UponAI.
+              Security, trust, and review support for teams evaluating UponAI.
             </h1>
             <p className="theme-soft mt-6 max-w-3xl text-lg leading-8 md:text-xl">
-              When customers evaluate AI voice infrastructure, they need more than a product demo.
-              They need a clear path to security information, operational controls, and legal review.
-              The UponAI Trust Center is the place to start.
+              The UponAI Trust Center is designed for legal, procurement, security, and customer
+              review teams that need a clearer view of how the platform is operated. This page
+              expands the review path beyond a simple overview and organizes the main control
+              domains customers usually ask about.
             </p>
 
             <div className="mt-8 flex flex-col gap-4 sm:flex-row">
@@ -119,32 +238,16 @@ export default function TrustCenterPage() {
               ))}
             </div>
 
-            <div className="mt-8 grid gap-3 sm:grid-cols-2">
-              <div className="theme-card rounded-[1.5rem] p-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-cyan-text)]">
-                  Primary Contact
-                </p>
-                <a
-                  href="mailto:support@uponai.com"
-                  className="theme-heading mt-3 block break-all text-2xl font-bold"
-                >
-                  support@uponai.com
-                </a>
-                <p className="theme-soft mt-2 text-sm leading-6">
-                  Use this address to request legal agreements, security review help, or trust
-                  documentation.
-                </p>
-              </div>
-              <div className="theme-card rounded-[1.5rem] p-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-green-text)]">
-                  Trust Workflow
-                </p>
-                <p className="theme-heading mt-3 text-2xl font-bold">Review and Request</p>
-                <p className="theme-soft mt-2 text-sm leading-6">
-                  Start with the control overview, then email the team for agreement access or
-                  procurement follow-up.
-                </p>
-              </div>
+            <div className="mt-8 grid gap-3 sm:grid-cols-3">
+              {overviewCards.map((card) => (
+                <div key={card.title} className="theme-card rounded-[1.5rem] p-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-cyan-text)]">
+                    {card.eyebrow}
+                  </p>
+                  <p className="theme-heading mt-3 break-all text-2xl font-bold">{card.title}</p>
+                  <p className="theme-soft mt-2 text-sm leading-6">{card.body}</p>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -164,18 +267,18 @@ export default function TrustCenterPage() {
               <div className="mt-3 grid gap-3 md:grid-cols-2">
                 <div className="theme-card-soft rounded-[1.25rem] p-4">
                   <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-green-text)]">
-                    Review Path
+                    External Review
                   </p>
                   <p className="theme-heading mt-2 text-lg font-semibold">
-                    Trust center details plus procurement follow-up
+                    Trust-center controls and review path
                   </p>
                 </div>
                 <div className="theme-card-soft rounded-[1.25rem] p-4">
                   <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-cyan-text)]">
-                    Legal Access
+                    Agreement Access
                   </p>
                   <p className="theme-heading mt-2 text-lg font-semibold">
-                    Request agreements directly from the UponAI support team
+                    support@uponai.com for legal and trust follow-up
                   </p>
                 </div>
               </div>
@@ -184,42 +287,81 @@ export default function TrustCenterPage() {
         </div>
       </section>
 
-      <section className="px-4 pb-6">
+      <section className="px-4 pb-10">
         <div className="mx-auto max-w-7xl">
-          <div className="max-w-3xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-green-text)]">
-              Security Overview
-            </p>
-            <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">
-              Areas teams usually review before approving a new AI vendor.
-            </h2>
-            <p className="theme-soft mt-4 text-base leading-8 md:text-lg">
-              The goal of the Trust Center is not to bury procurement teams in buzzwords. It is to
-              make the basic review path clear: how UponAI handles internal security practices,
-              access, operational controls, and trust-related follow-up.
-            </p>
-          </div>
-
-          <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {controlAreas.map((item, index) => (
-              <article
-                key={item.title}
-                className={`theme-card rounded-[1.75rem] p-6 ${
-                  index % 2 === 0 ? 'shadow-[0_22px_50px_rgba(34,197,94,0.08)]' : ''
-                }`}
-              >
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-cyan-text)]">
-                  Review Area
+          <div className="theme-card rounded-[2rem] p-6 md:p-8">
+            <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+              <div className="max-w-3xl">
+                <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-green-text)]">
+                  Review Areas
                 </p>
-                <h3 className="theme-heading mt-3 text-2xl font-semibold">{item.title}</h3>
-                <p className="theme-soft mt-4 text-sm leading-7">{item.body}</p>
-              </article>
-            ))}
+                <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">
+                  A controls-style layout for the main trust questions buyers ask.
+                </h2>
+                <p className="theme-soft mt-4 text-base leading-8 md:text-lg">
+                  The sections below are organized the way security and procurement reviews usually
+                  happen: internal procedures first, then infrastructure, access, application
+                  control, incident handling, continuity, vendors, and data practices.
+                </p>
+              </div>
+
+              <div className="lg:max-w-md">
+                <p className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-cyan-text)]">
+                  Jump To
+                </p>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {quickLinks.map((link) => (
+                    <a
+                      key={link.id}
+                      href={`#${link.id}`}
+                      className="theme-card-soft rounded-2xl px-4 py-3 text-sm font-medium text-[var(--text-body)] transition-colors hover:text-[var(--text-strong)]"
+                    >
+                      {link.label}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="px-4 py-16">
+      <section className="px-4 pb-12">
+        <div className="mx-auto max-w-7xl space-y-6">
+          {controlDomains.map((domain) => (
+            <section
+              id={domain.id}
+              key={domain.id}
+              className="theme-panel scroll-mt-36 rounded-[2rem] p-6 md:p-8"
+            >
+              <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
+                <div>
+                  <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-cyan-text)]">
+                    {domain.eyebrow}
+                  </p>
+                  <h2 className="theme-heading mt-3 text-3xl font-bold md:text-4xl">
+                    {domain.title}
+                  </h2>
+                  <p className="theme-soft mt-4 text-base leading-8">{domain.description}</p>
+                </div>
+
+                <div className="grid gap-4 md:grid-cols-2">
+                  {domain.bullets.map((item) => (
+                    <div key={item} className="theme-card rounded-[1.5rem] p-5">
+                      <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-green-text)]">
+                        Control Focus
+                      </p>
+                      <p className="theme-body mt-3 text-sm leading-7">{item}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
+          ))}
+        </div>
+      </section>
+
+      <section className="px-4 py-8">
         <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.95fr_1.05fr]">
           <div className="theme-panel rounded-[2rem] p-7">
             <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-cyan-text)]">
@@ -236,7 +378,10 @@ export default function TrustCenterPage() {
 
             <ul className="mt-6 space-y-3">
               {requestItems.map((item) => (
-                <li key={item} className="theme-card-soft rounded-2xl px-4 py-3 text-sm leading-7 text-[var(--text-body)]">
+                <li
+                  key={item}
+                  className="theme-card-soft rounded-2xl px-4 py-3 text-sm leading-7 text-[var(--text-body)]"
+                >
                   {item}
                 </li>
               ))}
@@ -245,30 +390,21 @@ export default function TrustCenterPage() {
 
           <div className="theme-card rounded-[2rem] p-7">
             <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-green-text)]">
-              Next Steps
+              Available Review Path
             </p>
             <h2 className="theme-heading mt-3 text-3xl font-bold md:text-4xl">
-              Review the trust center, then contact the team for the documents you need.
+              Use the external trust-center controls view, then request what your team needs.
             </h2>
-            <div className="mt-6 space-y-4 text-sm leading-7 text-[var(--text-body)]">
-              <p>
-                Start with the external controls view if you need a fast overview of the security
-                program. That gives reviewers a structured place to begin.
-              </p>
-              <p>
-                For legal agreements, procurement review, or customer-specific questions, email{' '}
-                <a
-                  href="mailto:support@uponai.com"
-                  className="font-semibold text-[var(--brand-cyan-text)] transition-colors hover:text-[var(--text-strong)]"
+
+            <div className="mt-6 grid gap-3">
+              {documentItems.map((item) => (
+                <div
+                  key={item}
+                  className="theme-card-soft rounded-2xl px-4 py-3 text-sm leading-7 text-[var(--text-body)]"
                 >
-                  support@uponai.com
-                </a>
-                .
-              </p>
-              <p>
-                If you also want to discuss product scope, deployment model, or AI voice
-                architecture, use the normal sales path through the contact page or demo booking.
-              </p>
+                  {item}
+                </div>
+              ))}
             </div>
 
             <div className="mt-8 flex flex-col gap-4 sm:flex-row">
@@ -284,6 +420,29 @@ export default function TrustCenterPage() {
               >
                 Contact UponAI
               </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="px-4 py-14">
+        <div className="mx-auto max-w-7xl">
+          <div className="theme-card rounded-[2rem] p-7 md:p-8">
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-cyan-text)]">
+              Evaluation Flow
+            </p>
+            <h2 className="theme-heading mt-3 text-3xl font-bold md:text-4xl">
+              A straightforward path for customer trust review.
+            </h2>
+            <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+              {evaluationSteps.map((step, index) => (
+                <div key={step} className="theme-panel rounded-[1.5rem] p-5">
+                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-green-text)]">
+                    Step {index + 1}
+                  </p>
+                  <p className="theme-body mt-3 text-sm leading-7">{step}</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
