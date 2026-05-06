@@ -6,6 +6,7 @@ import { industries, cities, getIndustryBySlug, getCityBySlug, formatCityState }
 import { offsetBrandPhotos, rotatingBrandPhotos } from '@/lib/brand-photos';
 import { getCityMarketNarrative, getCityRegionNarrative } from '@/lib/voice-ai-industries';
 import { getIndustryContent } from '@/lib/site-content';
+import { buildBreadcrumbSchema, buildLocalBusinessSchema, buildPageMetadata, buildServiceSchema } from '@/lib/seo';
 import CTASection from '@/components/sections/CTASection';
 import FeaturesBento from '@/components/sections/FeaturesBento';
 
@@ -28,15 +29,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!industry || !city) return {};
 
   const content = getIndustryContent(industry, city);
+  const location = formatCityState(city);
 
   return {
-    title: `${industry.name} in ${formatCityState(city)}`,
-    description: content.metaDescription,
-    alternates: { canonical: `https://uponai.com/industries/${slug}/${citySlug}` },
-    openGraph: {
-      title: `${industry.name} in ${formatCityState(city)}`,
-      description: content.description,
-    },
+    ...buildPageMetadata({
+      title: `${industry.name} in ${location}`,
+      description: content.metaDescription,
+      path: `/industries/${slug}/${citySlug}`,
+      openGraphDescription: content.description,
+      image: rotatingBrandPhotos[industries.findIndex((item) => item.slug === slug) % rotatingBrandPhotos.length],
+    }),
+    keywords: [
+      `${industry.name.toLowerCase()} ${city.name}`,
+      `${industry.slug.replaceAll('-', ' ')} ${city.name}`,
+      `business communications ${industry.name.toLowerCase()} ${city.name}`,
+      `${city.name} ${industry.name.toLowerCase()} phone systems`,
+    ],
   };
 }
 
@@ -73,9 +81,41 @@ export default async function IndustryCityPage({ params }: Props) {
   const photoRight = industryIndex % 2 === 0;
   const cityIdx = cities.findIndex((item) => item.slug === citySlug);
   const nearby = [...cities.slice(Math.max(0, cityIdx - 3), cityIdx), ...cities.slice(cityIdx + 1, cityIdx + 4)].slice(0, 6);
+  const pagePath = `/industries/${slug}/${citySlug}`;
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: industry.name, path: `/industries/${slug}` },
+    { name: cs, path: pagePath },
+  ]);
+  const serviceSchema = buildServiceSchema({
+    name: `${industry.name} in ${cs}`,
+    description: content.metaDescription,
+    path: pagePath,
+    serviceType: industry.name,
+    areaServed: cs,
+    image: heroPhoto,
+  });
+  const localBusinessSchema = buildLocalBusinessSchema({
+    name: 'UponAI',
+    description: `Communication workflows for ${industry.name} in ${cs}`,
+    path: pagePath,
+    areaServed: { city: city.name, state: city.state },
+  });
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+      />
       <section className="relative overflow-hidden px-4 py-16 md:py-24">
         <div className="absolute inset-0">
           <div className={`absolute left-0 top-0 h-[500px] w-[600px] ${c.glow} rounded-full blur-3xl opacity-50`} />
@@ -238,22 +278,6 @@ export default async function IndustryCityPage({ params }: Props) {
           </div>
         </div>
       </section>
-
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'LocalBusiness',
-            name: 'UponAI',
-            description: `Communication workflows for ${industry.name} in ${cs}`,
-            url: `https://uponai.com/industries/${slug}/${citySlug}`,
-            telephone: '+18887876624',
-            email: 'info@uponai.com',
-            areaServed: { '@type': 'City', name: city.name, containedInPlace: { '@type': 'State', name: city.state } },
-          }),
-        }}
-      />
 
       {nearby.length > 0 ? (
         <section className="border-t border-slate-800 px-4 py-12">

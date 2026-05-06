@@ -4,6 +4,7 @@ import CTASection from '@/components/sections/CTASection';
 import { uponaiBookingUrl } from '@/lib/booking';
 import type { City } from '@/lib/data';
 import { formatCityState, getIndustryBySlug } from '@/lib/data';
+import { uponaiServicesMenu, uponaiUseCasesMenu } from '@/lib/uponai-pages';
 import {
   buildBreadcrumbSchema,
   buildFaqSchema,
@@ -17,11 +18,31 @@ import {
   getLegacyVoiceAIContent,
   getNearbyCities,
   getVoiceAICityPageOverride,
+  voiceAIIndustryPages,
   type VoiceAIIndustryPage,
 } from '@/lib/voice-ai-industries';
 
 export function VoiceAIIndustryLandingPage({ page }: { page: VoiceAIIndustryPage }) {
   const featuredCities = getFeaturedCities();
+  const relatedIndustryPages = voiceAIIndustryPages.filter((item) => item.slug !== page.slug).slice(0, 6);
+  const relatedWorkflowLinks = [
+    ...uponaiUseCasesMenu.filter((item) => item.href !== `/${page.slug}`),
+    ...uponaiServicesMenu,
+  ].slice(0, 6);
+  const rolloutMoments = [
+    {
+      title: 'Start With The Highest-Volume Calls',
+      body: `Most ${page.label.toLowerCase()} teams begin by removing the repetitive inbound conversations that create the most backlog, voicemail, or missed opportunities.`,
+    },
+    {
+      title: 'Map Routing, Notifications, And Handoffs',
+      body: 'Once the first interaction is structured, teams usually add cleaner routing, faster summaries, and the right escalation path for conversations that still need a person.',
+    },
+    {
+      title: 'Expand Into Scheduling, Intake, Or Follow-Up',
+      body: 'After the first workflow is stable, businesses usually widen the scope into booking, data capture, recall, reminders, or a more connected downstream process.',
+    },
+  ];
   const breadcrumbSchema = buildBreadcrumbSchema([
     { name: 'Home', path: '/' },
     { name: page.label, path: `/${page.slug}` },
@@ -254,6 +275,32 @@ export function VoiceAIIndustryLandingPage({ page }: { page: VoiceAIIndustryPage
         </div>
       </section>
 
+      <section className="theme-section-alt px-4 py-20">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-12 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-3xl">
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-green-text)]">Rollout Path</p>
+              <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">
+                How most teams turn this from a pilot into a real workflow.
+              </h2>
+            </div>
+            <p className="theme-soft max-w-2xl text-base leading-7">
+              The strongest deployments usually start with one call category, prove the intake quality, and then expand into routing,
+              scheduling, notifications, and follow-up once the first layer is stable.
+            </p>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-3">
+            {rolloutMoments.map((item) => (
+              <div key={item.title} className="theme-card rounded-[1.75rem] p-6">
+                <h3 className="theme-heading text-2xl font-semibold">{item.title}</h3>
+                <p className="theme-soft mt-3 text-sm leading-7">{item.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {legacyContent ? (
         <section className="theme-section-alt px-4 py-20">
           <div className="mx-auto max-w-7xl">
@@ -288,6 +335,57 @@ export function VoiceAIIndustryLandingPage({ page }: { page: VoiceAIIndustryPage
           </div>
         </section>
       ) : null}
+
+      <section className="px-4 py-20">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-10 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-3xl">
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-cyan-text)]">Related Pages</p>
+              <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">
+                Strengthen the topic cluster around this workflow.
+              </h2>
+            </div>
+            <p className="theme-soft max-w-2xl text-base leading-7">
+              Internal links matter more when the destination pages are tightly related. These are the most relevant root-level pages
+              around this conversation type.
+            </p>
+          </div>
+
+          <div className="grid gap-4 lg:grid-cols-2">
+            <div className="theme-panel rounded-[2rem] p-5">
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-green-text)]">Related Voice AI Pages</p>
+              <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                {relatedIndustryPages.map((item) => (
+                  <Link
+                    key={item.slug}
+                    href={`/${item.slug}`}
+                    className="theme-card rounded-[1.25rem] px-4 py-4 text-sm font-semibold transition-transform hover:-translate-y-0.5"
+                  >
+                    <span className="theme-heading block">{item.label}</span>
+                    <span className="theme-soft mt-1 block text-xs uppercase tracking-[0.2em]">Voice AI Workflow</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            <div className="theme-panel rounded-[2rem] p-5">
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-cyan-text)]">Related Solutions And Use Cases</p>
+              <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                {relatedWorkflowLinks.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="theme-card rounded-[1.25rem] px-4 py-4 text-sm font-semibold transition-transform hover:-translate-y-0.5"
+                  >
+                    <span className="theme-heading block">{item.label}</span>
+                    <span className="theme-soft mt-1 block text-xs uppercase tracking-[0.2em]">UponAI Workflow</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <section className="theme-section-alt px-4 py-20">
         <div className="mx-auto max-w-7xl">
@@ -356,6 +454,20 @@ export function VoiceAIIndustryCityPage({
   const cityPath = `/${page.slug}/${city.slug}`;
   const cityTitle = override?.heroTitle ?? `${page.label} voice AI in ${location}`;
   const cityDescription = override?.heroDescription ?? `${page.cityLead} ${location} ${page.citySupport}`;
+  const cityImage = override?.image ?? page.image;
+  const cityImageAlt = override?.imageAlt ?? `${page.imageAlt} in ${location}`;
+  const siblingIndustryPages = voiceAIIndustryPages.filter((item) => item.slug !== page.slug).slice(0, 6);
+  const relatedWorkflowLinks = [
+    ...uponaiUseCasesMenu.filter((item) => item.href !== `/${page.slug}`),
+    ...uponaiServicesMenu,
+  ].slice(0, 4);
+  const localSeoNarratives = [
+    `Teams in ${location} usually start this workflow because callers still expect immediate help even when the local office, front desk, or service team cannot answer every ring live.`,
+    `${market.seo} ${region.body} That makes a stronger first phone interaction more valuable than a generic national workflow or a simple voicemail fallback.`,
+    nearbyCities.length > 0
+      ? `This matters even more when ${city.name} teams also support nearby markets like ${nearbyCities.slice(0, 3).map((item) => item.name).join(', ')}, where routing consistency and structured intake have to survive more than one local service area.`
+      : `This matters most when ${city.name} teams need every inbound call to follow the same repeatable process instead of depending on who happens to answer first.`,
+  ];
   const breadcrumbSchema = buildBreadcrumbSchema([
     { name: 'Home', path: '/' },
     { name: page.label, path: `/${page.slug}` },
@@ -367,7 +479,7 @@ export function VoiceAIIndustryCityPage({
     path: cityPath,
     serviceType: `${page.label} in ${location}`,
     areaServed: location,
-    image: page.image,
+    image: cityImage,
   });
   const faqSchema = buildFaqSchema(page.faqs);
   const localUseCases = override?.localUseCases ?? page.localUseCaseTemplates.map((item) => formatVoiceAITemplate(item, city));
@@ -486,8 +598,8 @@ export function VoiceAIIndustryCityPage({
               <div className="theme-panel overflow-hidden rounded-[2rem] p-3">
                 <div className="overflow-hidden rounded-[1.5rem] border border-[var(--border)]">
                   <Image
-                    src={page.image}
-                    alt={`${page.imageAlt} in ${location}`}
+                    src={cityImage}
+                    alt={cityImageAlt}
                     width={1200}
                     height={820}
                     className="h-full w-full object-cover"
@@ -568,6 +680,25 @@ export function VoiceAIIndustryCityPage({
         </div>
       </section>
 
+      <section className="theme-section-alt px-4 py-20">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-10 max-w-4xl">
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-cyan-text)]">Why This Page Exists</p>
+            <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">
+              A stronger local page should say more than the city name.
+            </h2>
+          </div>
+
+          <div className="grid gap-4 lg:grid-cols-3">
+            {localSeoNarratives.map((item) => (
+              <div key={item} className="theme-card rounded-[1.75rem] p-6">
+                <p className="theme-soft text-sm leading-7">{item}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {override?.customHighlights ? (
         <section className="theme-section-alt px-4 py-20">
           <div className="mx-auto max-w-7xl">
@@ -624,6 +755,56 @@ export function VoiceAIIndustryCityPage({
           </div>
         </section>
       ) : null}
+
+      <section className="px-4 py-20">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-10 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-3xl">
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-green-text)]">Related Local Pages</p>
+              <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">
+                Other UponAI voice workflows in {city.name}.
+              </h2>
+            </div>
+            <p className="theme-soft max-w-2xl text-base leading-7">
+              Linking related local workflows helps search engines understand that this city has a broader topic cluster, not just a single isolated page.
+            </p>
+          </div>
+
+          <div className="grid gap-4 lg:grid-cols-2">
+            <div className="theme-panel rounded-[2rem] p-5">
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-cyan-text)]">Same City, Different Voice AI Workflows</p>
+              <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                {siblingIndustryPages.map((item) => (
+                  <Link
+                    key={`${item.slug}-${city.slug}`}
+                    href={`/${item.slug}/${city.slug}`}
+                    className="theme-card rounded-[1.25rem] px-4 py-4 text-sm font-semibold transition-transform hover:-translate-y-0.5"
+                  >
+                    <span className="theme-heading block">{item.label}</span>
+                    <span className="theme-soft mt-1 block text-xs uppercase tracking-[0.2em]">{city.stateAbbr}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            <div className="theme-panel rounded-[2rem] p-5">
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-green-text)]">Broader UponAI Workflows</p>
+              <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                {relatedWorkflowLinks.map((item) => (
+                  <Link
+                    key={`${item.href}-${city.slug}`}
+                    href={item.href}
+                    className="theme-card rounded-[1.25rem] px-4 py-4 text-sm font-semibold transition-transform hover:-translate-y-0.5"
+                  >
+                    <span className="theme-heading block">{item.label}</span>
+                    <span className="theme-soft mt-1 block text-xs uppercase tracking-[0.2em]">Root Workflow</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <section className="px-4 py-20">
         <div className="mx-auto max-w-7xl">

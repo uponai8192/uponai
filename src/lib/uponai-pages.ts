@@ -53,6 +53,7 @@ export const uponaiIndustriesMenu: UponAIMenuLink[] = [
 export const uponaiUseCasesMenu: UponAIMenuLink[] = [
   { label: 'Customer Support', href: '/customer-support-page' },
   { label: 'After Hours Support', href: '/hours-support-page' },
+  { label: 'Answering Service Replacement', href: '/ai-voice-for-answering-service-replacement' },
   { label: 'Booking & Scheduling', href: '/book-and-schedule-page' },
   { label: 'Outbound Sales', href: '/voice-ai-for-outbound-sales-page' },
 ];

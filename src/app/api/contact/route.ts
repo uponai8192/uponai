@@ -5,6 +5,10 @@ type DeliveryResult =
   | { ok: true }
   | { ok: false; error: string };
 
+type CaptchaVerificationResult =
+  | { ok: true }
+  | { ok: false; error: string };
+
 function cleanEnvValue(value?: string) {
   return value?.replaceAll('\\n', '').replaceAll('\n', '').replaceAll('\r', '').trim();
 }
@@ -18,6 +22,53 @@ function getNotifyEmails() {
   return configuredNotifyEmails && configuredNotifyEmails.length > 0
     ? configuredNotifyEmails
     : ['jody@uponai.com', 'bill@uponai.com', 'sean@uponai.com'];
+}
+
+async function verifyTurnstileToken(token: string, req: Request): Promise<CaptchaVerificationResult> {
+  const secret = cleanEnvValue(process.env.TURNSTILE_SECRET_KEY ?? process.env.TURNSTILE_SECRET);
+  if (!secret) {
+    return {
+      ok: false,
+      error: 'Captcha is not configured. Add TURNSTILE_SECRET_KEY on the server.',
+    };
+  }
+
+  try {
+    const forwardedFor = req.headers.get('x-forwarded-for');
+    const remoteip = forwardedFor?.split(',')[0]?.trim();
+    const payload = new URLSearchParams({
+      secret,
+      response: token,
+    });
+
+    if (remoteip) payload.set('remoteip', remoteip);
+
+    const res = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: payload.toString(),
+    });
+
+    if (!res.ok) {
+      return { ok: false, error: 'Captcha verification request failed.' };
+    }
+
+    const data = (await res.json()) as { success?: boolean; 'error-codes'?: string[] };
+    if (!data.success) {
+      return {
+        ok: false,
+        error: `Captcha verification failed${data['error-codes']?.length ? `: ${data['error-codes'].join(', ')}` : '.'}`,
+      };
+    }
+
+    return { ok: true };
+  } catch (error) {
+    console.error('Turnstile verification failed:', error);
+    return {
+      ok: false,
+      error: error instanceof Error ? error.message : 'Captcha verification failed.',
+    };
+  }
 }
 
 // ── Email transport ───────────────────────────────────────────────────────────
@@ -196,6 +247,17 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
     const { formType = 'contact' } = body;
+    const captchaToken =
+      typeof body.captchaToken === 'string' ? body.captchaToken.trim() : '';
+
+    if (!captchaToken) {
+      return NextResponse.json({ error: 'Captcha verification is required.' }, { status: 400 });
+    }
+
+    const captchaResult = await verifyTurnstileToken(captchaToken, req);
+    if (!captchaResult.ok) {
+      return NextResponse.json({ error: captchaResult.error }, { status: 400 });
+    }
 
     if (formType === 'download') {
       const { email, resourceSlug, resourceTitle, downloadUrl } = body;

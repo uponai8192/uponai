@@ -90,6 +90,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Script id="theme-init" strategy="beforeInteractive">
           {themeInitScript}
         </Script>
+        {process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ? (
+          <Script
+            id="cloudflare-turnstile"
+            src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
+            strategy="afterInteractive"
+          />
+        ) : null}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}

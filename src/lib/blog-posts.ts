@@ -64,6 +64,31 @@ const manualUponAIBlogPosts: UponAIBlogPost[] = [
   {
     author: 'Bill McClain',
     body: [
+      'After 30 years in telecom, three lessons keep proving themselves. The best technology meets customers where they are, the best platforms grow with them, and the best partners always have something new on the horizon.',
+      'That is the direction UponAI is taking right now. Today, the platform already delivers advanced voice AI agents, per-second billing without inflated rounding, and full orchestration so teams can manage AI voice deployments across multiple clients, platforms, and voice environments from one place.',
+      'That matters because partners are not all operating on the same stack. Some are on SkySwitch, some on Viirtue, some are running white-label UCaaS, and some are supporting highly customized environments. UponAI is built to work with that reality instead of forcing partners into a narrow model.',
+      'The next layer is what makes the roadmap more interesting. Platform migration tools, DID spam assist, and AI-guided 10DLC workflows are aimed at the real operational pain telecom partners deal with every day, not just the demo-friendly surface layer.',
+      'This is bigger than adding one more AI feature. UponAI is building a broader telecom and AI platform that helps MSPs, channel partners, and UCaaS resellers manage complexity without passing that burden down to customers.',
+      'If you want to stay ahead of where voice AI and telecom operations are going, this is the right time to start the conversation.',
+    ],
+    category: 'UponAI Solutions & Features',
+    excerpt:
+      'Bill McClain outlines where UponAI stands today, what is coming next, and why telecom partners need more than a point solution.',
+    imageUrl: '/brand-photos/connected-globe.jpeg',
+    publishedAt: '2026-05-06T16:00:00.000Z',
+    readTimeMinutes: 1.3,
+    relatedPages: [
+      { label: 'AI Voice For Telecommunications', path: '/voice-ai-for-telecommunication' },
+      { label: 'AI Voice Agents', path: '/services/ai-voice-agents' },
+      { label: 'Book a Demo', path: 'https://uponai.ai/uponai-booking-page' },
+    ],
+    slug: 'bill-mcclain-uponai-platform-roadmap-for-telecom-partners',
+    title: 'Bill McClain on where UponAI is now and where the platform is headed',
+    topicSlugs: ['telecom-partnerships', 'integration-strategy', 'ai-voice-operations'],
+  },
+  {
+    author: 'Bill McClain',
+    body: [
       'Last week I shared that we signed three new SkySwitch partners and two new Viirtue, Inc. partners, and the response was immediate.',
       'This week, we added one more Viirtue, Inc. partner and one new White Label Communications LLC partner. That is momentum across multiple platforms and market segments, not just a single lane.',
       'Providers are choosing UponAI because they can hear what the platform actually delivers. SkySwitch, Viirtue, and White Label Communications all operate in different parts of the market, but the common thread is the same: they want telecom-grade AI voice workflows that solve real provider problems.',

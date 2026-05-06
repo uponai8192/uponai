@@ -6,6 +6,7 @@ import { services, cities, industries, getServiceBySlug, getCityBySlug, formatCi
 import { brandPhotos, servicePhotoMap } from '@/lib/brand-photos';
 import { getCityMarketNarrative, getCityRegionNarrative } from '@/lib/voice-ai-industries';
 import { getServiceContent } from '@/lib/site-content';
+import { buildBreadcrumbSchema, buildLocalBusinessSchema, buildPageMetadata, buildServiceSchema } from '@/lib/seo';
 import CTASection from '@/components/sections/CTASection';
 import FeaturesBento from '@/components/sections/FeaturesBento';
 
@@ -31,21 +32,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const location = formatCityState(city);
   const content = getServiceContent(service, city);
+  const keywords = [
+    `${service.shortName.toLowerCase()} ${city.name}`,
+    `business communications ${city.name}`,
+    `customer communication workflow ${city.name} ${city.stateAbbr}`,
+    `${service.shortName.toLowerCase()} ${city.state}`,
+  ];
 
   return {
-    title: `${service.shortName} in ${location}`,
-    description: `${content.metaDescription} UponAI supports ${location} businesses with cleaner routing, stronger handoff logic, and communication workflows that can expand into AI.`,
-    keywords: [
-      `${service.shortName.toLowerCase()} ${city.name}`,
-      `business communications ${city.name}`,
-      `customer communication workflow ${city.name} ${city.stateAbbr}`,
-      `${service.shortName.toLowerCase()} ${city.state}`,
-    ],
-    alternates: { canonical: `https://uponai.com/services/${slug}/${citySlug}` },
-    openGraph: {
+    ...buildPageMetadata({
       title: `${service.shortName} in ${location}`,
-      description: `${service.name} for ${location} businesses. ${content.tagline}.`,
-    },
+      description: `${content.metaDescription} UponAI supports ${location} businesses with cleaner routing, stronger handoff logic, and communication workflows that can expand into AI.`,
+      path: `/services/${slug}/${citySlug}`,
+      openGraphDescription: `${service.name} for ${location} businesses. ${content.tagline}.`,
+      image: servicePhotoMap[slug] ?? brandPhotos.voiceMic,
+    }),
+    keywords,
   };
 }
 
@@ -65,29 +67,32 @@ export default async function ServiceCityPage({ params }: Props) {
   const featuredIndustries = industries.slice(0, 6);
   const photoRight = city.slug.charCodeAt(0) % 2 === 0;
 
-  const schemaJson = JSON.stringify({
-    '@context': 'https://schema.org',
-    '@type': 'LocalBusiness',
+  const pagePath = `/services/${slug}/${citySlug}`;
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: service.shortName, path: `/services/${slug}` },
+    { name: location, path: pagePath },
+  ]);
+  const serviceSchema = buildServiceSchema({
+    name: `${service.shortName} in ${location}`,
+    description: content.metaDescription,
+    path: pagePath,
+    serviceType: service.name,
+    areaServed: location,
+    image: photo,
+  });
+  const localBusinessSchema = buildLocalBusinessSchema({
     name: 'UponAI',
     description: `${service.name} provider serving ${location} businesses`,
-    url: `https://uponai.com/services/${slug}/${citySlug}`,
-    telephone: '+18887876624',
-    address: {
-      '@type': 'PostalAddress',
-      streetAddress: '711 Moorefield Park Drive, Suite A',
-      addressLocality: 'North Chesterfield',
-      addressRegion: 'VA',
-      postalCode: '23236',
-      addressCountry: 'US',
-    },
-    areaServed: { '@type': 'City', name: city.name, containedInPlace: { '@type': 'State', name: city.state } },
-    openingHours: 'Mo-Su 00:00-23:59',
-    serviceType: service.name,
+    path: pagePath,
+    areaServed: { city: city.name, state: city.state },
   });
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaJson }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }} />
 
       <section className="relative overflow-hidden px-4 py-16 md:py-24">
         <div className="absolute inset-0">

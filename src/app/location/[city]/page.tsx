@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { cities, services, industries, getCityBySlug, formatCityState } from '@/lib/data';
 import { offsetBrandPhotos, rotatingBrandPhotos } from '@/lib/brand-photos';
 import { getCityMarketNarrative, getCityRegionNarrative, voiceAIIndustryPages } from '@/lib/voice-ai-industries';
+import { buildBreadcrumbSchema, buildCollectionPageSchema, buildLocalBusinessSchema, buildPageMetadata } from '@/lib/seo';
 import { getServiceContent } from '@/lib/site-content';
 import CTASection from '@/components/sections/CTASection';
 
@@ -22,21 +23,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!city) return {};
 
   const location = formatCityState(city);
+  const heroPhoto = rotatingBrandPhotos[cities.findIndex((item) => item.slug === citySlug) % rotatingBrandPhotos.length];
 
   return {
-    title: `AI Voice and Communication Workflows in ${location}`,
-    description: `UponAI provides AI voice workflows, cloud communications, routing design, and customer conversation infrastructure to companies in ${location}.`,
+    ...buildPageMetadata({
+      title: `AI Voice and Communication Workflows in ${location}`,
+      description: `UponAI provides AI voice workflows, cloud communications, routing design, and customer conversation infrastructure to companies in ${location}.`,
+      path: `/location/${citySlug}`,
+      openGraphDescription: `Cloud communications, AI voice workflows, and routing design for ${location} businesses.`,
+      image: heroPhoto,
+    }),
     keywords: [
       `business communications ${city.name}`,
       `AI voice ${city.name} ${city.stateAbbr}`,
       `customer communication workflow ${city.name}`,
       `cloud communications ${city.name}`,
     ],
-    alternates: { canonical: `https://uponai.com/location/${citySlug}` },
-    openGraph: {
-      title: `AI Voice and Communication Workflows in ${location}`,
-      description: `Cloud communications, AI voice workflows, and routing design for ${location} businesses.`,
-    },
   };
 }
 
@@ -65,29 +67,32 @@ export default async function LocationPage({ params }: Props) {
   const secondPhoto = offsetBrandPhotos[(cityIndex + 2) % offsetBrandPhotos.length];
   const nearbyCities = cities.filter((item) => item.stateAbbr === city.stateAbbr && item.slug !== citySlug).slice(0, 10);
   const featuredIndustries = industries.slice(0, 12);
-
-  const schemaJson = JSON.stringify({
-    '@context': 'https://schema.org',
-    '@type': 'LocalBusiness',
+  const pagePath = `/location/${citySlug}`;
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: location, path: pagePath },
+  ]);
+  const localBusinessSchema = buildLocalBusinessSchema({
     name: 'UponAI',
     description: `Business communications provider serving ${location}`,
-    url: `https://uponai.com/location/${citySlug}`,
-    telephone: '+18887876624',
-    address: {
-      '@type': 'PostalAddress',
-      streetAddress: '711 Moorefield Park Drive, Suite A',
-      addressLocality: 'North Chesterfield',
-      addressRegion: 'VA',
-      postalCode: '23236',
-      addressCountry: 'US',
-    },
-    areaServed: { '@type': 'City', name: city.name, containedInPlace: { '@type': 'State', name: city.state } },
-    openingHours: 'Mo-Su 00:00-23:59',
+    path: pagePath,
+    areaServed: { city: city.name, state: city.state },
+  });
+  const collectionSchema = buildCollectionPageSchema({
+    name: `UponAI services in ${location}`,
+    description: `Service, industry, and AI voice workflow pages relevant to teams in ${location}.`,
+    path: pagePath,
+    items: [
+      ...services.slice(0, 6).map((service) => ({ name: `${service.shortName} in ${location}`, path: `/services/${service.slug}/${citySlug}` })),
+      ...voiceAIIndustryPages.slice(0, 6).map((page) => ({ name: `${page.label} in ${location}`, path: `/${page.slug}/${citySlug}` })),
+    ],
   });
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaJson }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }} />
 
       <section className="relative overflow-hidden px-4 py-16 md:py-24">
         <div className="absolute inset-0">

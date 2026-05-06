@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
+import TurnstileField from '@/components/ui/TurnstileField';
 
 type Status = 'idle' | 'submitting' | 'success' | 'error';
 
@@ -53,6 +54,8 @@ export default function QuoteForm() {
   const [status, setStatus] = useState<Status>('idle');
   const [errorMsg, setErrorMsg] = useState('');
   const [smsConsent, setSmsConsent] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState('');
+  const [captchaResetKey, setCaptchaResetKey] = useState(0);
 
   const [form, setForm] = useState({
     company: '',
@@ -75,6 +78,11 @@ export default function QuoteForm() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!captchaToken) {
+      setStatus('error');
+      setErrorMsg('Please complete the captcha before requesting your consultation.');
+      return;
+    }
     setStatus('submitting');
     setErrorMsg('');
 
@@ -82,7 +90,7 @@ export default function QuoteForm() {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ formType: 'quote', ...form, smsConsent }),
+        body: JSON.stringify({ formType: 'quote', ...form, smsConsent, captchaToken }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Submission failed');
@@ -90,6 +98,7 @@ export default function QuoteForm() {
     } catch (err) {
       setStatus('error');
       setErrorMsg(err instanceof Error ? err.message : 'Something went wrong.');
+      setCaptchaResetKey((value) => value + 1);
     }
   }
 
@@ -238,6 +247,8 @@ export default function QuoteForm() {
           </div>
         </div>
 
+        <TurnstileField onTokenChange={setCaptchaToken} resetKey={captchaResetKey} />
+
         {status === 'error' && (
           <div className="bg-red-900/20 border border-red-700/50 rounded-xl px-4 py-3 text-red-300 text-sm">
             {errorMsg || 'Something went wrong. Please call us at (888) 787-6624.'}
@@ -246,7 +257,7 @@ export default function QuoteForm() {
 
         <button
           type="submit"
-          disabled={status === 'submitting'}
+          disabled={status === 'submitting' || !captchaToken}
           className="w-full bg-blue-600 hover:bg-blue-500 disabled:bg-blue-800 disabled:cursor-not-allowed text-white font-bold py-4 px-6 rounded-xl transition-colors text-base flex items-center justify-center gap-2"
         >
           {status === 'submitting' ? (

@@ -39,6 +39,13 @@ type CollectionItem = {
   path: string;
 };
 
+type LocalBusinessSchemaInput = {
+  name: string;
+  description: string;
+  path: string;
+  areaServed?: { city: string; state?: string };
+};
+
 export function normalizeMetaTitle(title: string) {
   return title.replace(/\s+\|\s+UponAI$/u, '').trim();
 }
@@ -193,6 +200,47 @@ export function buildCollectionPageSchema({
       name: item.name,
       url: absoluteUrl(item.path),
     })),
+  };
+}
+
+export function buildLocalBusinessSchema({
+  name,
+  description,
+  path,
+  areaServed,
+}: LocalBusinessSchemaInput) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'LocalBusiness',
+    name,
+    description,
+    url: absoluteUrl(path),
+    telephone: SITE_PHONE,
+    email: SITE_EMAIL,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: '711 Moorefield Park Drive, Suite A',
+      addressLocality: 'North Chesterfield',
+      addressRegion: 'VA',
+      postalCode: '23236',
+      addressCountry: 'US',
+    },
+    ...(areaServed
+      ? {
+          areaServed: {
+            '@type': 'City',
+            name: areaServed.city,
+            ...(areaServed.state
+              ? {
+                  containedInPlace: {
+                    '@type': 'State',
+                    name: areaServed.state,
+                  },
+                }
+              : {}),
+          },
+        }
+      : {}),
   };
 }
 

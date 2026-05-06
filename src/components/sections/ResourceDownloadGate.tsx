@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import TurnstileField from '@/components/ui/TurnstileField';
 
 type Status = 'idle' | 'submitting' | 'success' | 'error';
 
@@ -28,6 +29,8 @@ export default function ResourceDownloadGate({
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<Status>('idle');
   const [errorMsg, setErrorMsg] = useState('');
+  const [captchaToken, setCaptchaToken] = useState('');
+  const [captchaResetKey, setCaptchaResetKey] = useState(0);
 
   useEffect(() => {
     if (status !== 'success') return;
@@ -36,6 +39,11 @@ export default function ResourceDownloadGate({
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (!captchaToken) {
+      setStatus('error');
+      setErrorMsg('Please complete the captcha before unlocking the download.');
+      return;
+    }
     setStatus('submitting');
     setErrorMsg('');
 
@@ -49,6 +57,7 @@ export default function ResourceDownloadGate({
           resourceSlug,
           resourceTitle: title,
           downloadUrl,
+          captchaToken,
         }),
       });
       const data = await res.json();
@@ -57,6 +66,7 @@ export default function ResourceDownloadGate({
     } catch (err) {
       setStatus('error');
       setErrorMsg(err instanceof Error ? err.message : 'Something went wrong.');
+      setCaptchaResetKey((value) => value + 1);
     }
   }
 
@@ -141,6 +151,8 @@ export default function ResourceDownloadGate({
                 />
               </div>
 
+              <TurnstileField onTokenChange={setCaptchaToken} resetKey={captchaResetKey} />
+
               {status === 'error' && (
                 <div className="bg-red-900/20 border border-red-700/50 rounded-xl px-4 py-3 text-red-300 text-sm">
                   {errorMsg || 'Something went wrong. Please try again.'}
@@ -149,7 +161,7 @@ export default function ResourceDownloadGate({
 
               <button
                 type="submit"
-                disabled={status === 'submitting'}
+                disabled={status === 'submitting' || !captchaToken}
                 className="w-full bg-blue-600 hover:bg-blue-500 disabled:bg-blue-900 disabled:cursor-not-allowed text-white font-bold py-4 px-6 rounded-xl transition-colors text-base flex items-center justify-center gap-2"
               >
                 {status === 'submitting' ? (
