@@ -125,13 +125,22 @@ export default function Footer() {
               </h3>
               <div className="flex flex-wrap gap-3 text-sm">
                 {uponaiResourcesMenu.map((item) => (
-                  <Link key={item.href} href={item.href} className="theme-link-muted">
-                    {item.label}
-                  </Link>
+                  item.external ? (
+                    <a
+                      key={item.href}
+                      href={item.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="theme-link-muted"
+                    >
+                      {item.label}
+                    </a>
+                  ) : (
+                    <Link key={item.href} href={item.href} className="theme-link-muted">
+                      {item.label}
+                    </Link>
+                  )
                 ))}
-                <Link href="/supports" className="theme-link-muted">
-                  Support
-                </Link>
               </div>
             </div>
 

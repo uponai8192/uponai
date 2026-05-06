@@ -87,6 +87,7 @@ const standalonePages: SitemapEntry[] = [
   { url: '/blogs', lastModified: staticTimestamp, changeFrequency: 'weekly', priority: 0.8 },
   { url: '/contact-us-page', lastModified: staticTimestamp, changeFrequency: 'monthly', priority: 0.8 },
   { url: '/quote', lastModified: staticTimestamp, changeFrequency: 'monthly', priority: 0.7 },
+  { url: '/trust-center', lastModified: staticTimestamp, changeFrequency: 'monthly', priority: 0.7 },
   { url: '/privacy-policy', lastModified: staticTimestamp, changeFrequency: 'yearly', priority: 0.4 },
   { url: '/terms-of-services', lastModified: staticTimestamp, changeFrequency: 'yearly', priority: 0.4 },
   { url: '/services/ivr-system', lastModified: staticTimestamp, changeFrequency: 'monthly', priority: 0.8 },

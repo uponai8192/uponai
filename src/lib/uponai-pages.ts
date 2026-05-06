@@ -60,8 +60,10 @@ export const uponaiUseCasesMenu: UponAIMenuLink[] = [
 
 export const uponaiResourcesMenu: UponAIMenuLink[] = [
   { label: 'Recordings', href: '/recordings-page' },
+  { label: 'Trust Center', href: '/trust-center' },
   { label: 'FAQs', href: '/faqs' },
   { label: 'Partners', href: '/partners' },
+  { label: 'Support', href: 'mailto:support@uponai.com', external: true },
 ];
 
 export const uponaiFooterInfo: UponAIMenuLink[] = [
