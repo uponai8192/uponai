@@ -6,8 +6,8 @@ import { buildBreadcrumbSchema, buildPageMetadata } from '@/lib/seo';
 
 const trustCenterLinks = [
   {
-    label: 'Open External Trust Center',
-    href: 'https://app.vanta.com/re-tell.ai/trust/8nfvavp5klt9n4iz32h90/controls#internal-security-procedures',
+    label: 'Review Security Overview',
+    href: '#internal-security-procedures',
   },
   {
     label: 'Request Legal Agreements',
@@ -26,7 +26,7 @@ const overviewCards = [
     eyebrow: 'Review Model',
     title: 'Controls + Request Path',
     body:
-      'Customers can start with the external trust-center view, then request additional agreements or review material directly from the UponAI team.',
+      'Customers can review security information directly on the UponAI site, then request additional agreements or review material from the UponAI team.',
   },
   {
     eyebrow: 'Program Scope',
@@ -163,14 +163,14 @@ const requestItems = [
 ];
 
 const documentItems = [
-  'Trust-center control access through the external review portal',
+  'Direct on-site review of security control domains and trust-center content',
   'Legal agreement request coordination through support@uponai.com',
   'Procurement and vendor review follow-up for buying teams',
   'Clarification path for security, privacy, and operational review questions',
 ];
 
 const evaluationSteps = [
-  'Start with the external trust-center controls view for a quick program overview.',
+  'Start with the security control sections on this UponAI Trust Center page for a quick program overview.',
   'Use this local UponAI page to understand how the review areas map to the platform and operating model.',
   'Email support@uponai.com for legal agreements, procurement review, or additional documentation.',
   'Use the standard contact or demo path if you also need architecture or product discussions.',
@@ -222,19 +222,23 @@ export default function TrustCenterPage() {
 
             <div className="mt-8 flex flex-col gap-4 sm:flex-row">
               {trustCenterLinks.map((link, index) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={
-                    index === 0
-                      ? 'theme-primary-button rounded-2xl px-7 py-4 text-center text-base font-semibold'
-                      : 'theme-secondary-button rounded-2xl px-7 py-4 text-center text-base font-semibold'
-                  }
-                >
-                  {link.label}
-                </a>
+                index === 0 ? (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    className="theme-primary-button rounded-2xl px-7 py-4 text-center text-base font-semibold"
+                  >
+                    {link.label}
+                  </a>
+                ) : (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    className="theme-secondary-button rounded-2xl px-7 py-4 text-center text-base font-semibold"
+                  >
+                    {link.label}
+                  </a>
+                )
               ))}
             </div>
 
@@ -267,10 +271,10 @@ export default function TrustCenterPage() {
               <div className="mt-3 grid gap-3 md:grid-cols-2">
                 <div className="theme-card-soft rounded-[1.25rem] p-4">
                   <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-green-text)]">
-                    External Review
+                    On-Site Review
                   </p>
                   <p className="theme-heading mt-2 text-lg font-semibold">
-                    Trust-center controls and review path
+                    Trust-center controls directly on UponAI
                   </p>
                 </div>
                 <div className="theme-card-soft rounded-[1.25rem] p-4">
@@ -370,7 +374,7 @@ export default function TrustCenterPage() {
             <h2 className="theme-heading mt-3 text-3xl font-bold md:text-4xl">
               Request trust documentation and legal agreements directly from UponAI.
             </h2>
-            <p className="theme-soft mt-4 text-base leading-8">
+              <p className="theme-soft mt-4 text-base leading-8">
               If your legal, procurement, or security team needs additional documentation, use the
               support address below. That request path is the fastest way to access trust-center
               follow-up for real evaluations.
@@ -393,7 +397,7 @@ export default function TrustCenterPage() {
               Available Review Path
             </p>
             <h2 className="theme-heading mt-3 text-3xl font-bold md:text-4xl">
-              Use the external trust-center controls view, then request what your team needs.
+              Review the trust information here, then request what your team needs.
             </h2>
 
             <div className="mt-6 grid gap-3">
