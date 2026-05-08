@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
+import Link from 'next/link';
 import ContactForm from '@/components/sections/ContactForm';
 
 export const metadata: Metadata = {
@@ -127,8 +128,12 @@ export default function ContactPage() {
               <div className="text-xs text-slate-500 space-y-2 pt-2 border-t border-slate-800">
                 <p className="font-medium text-slate-400">Legal</p>
                 <div className="flex gap-4">
-                  <a href="/privacy-policy" className="hover:text-slate-300 transition-colors">Privacy Policy</a>
-                  <a href="/terms-of-services" className="hover:text-slate-300 transition-colors">Terms of Service</a>
+                  <Link href="/privacy-policy" className="hover:text-slate-300 transition-colors">
+                    Privacy Policy
+                  </Link>
+                  <Link href="/terms-of-services" className="hover:text-slate-300 transition-colors">
+                    Terms of Service
+                  </Link>
                 </div>
               </div>
             </div>

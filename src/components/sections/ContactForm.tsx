@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useState } from 'react';
 
 type Status = 'idle' | 'submitting' | 'success' | 'error';
@@ -137,9 +138,13 @@ export default function ContactForm() {
               frequency may vary. Standard message and data rates may apply. Reply{' '}
               <strong>STOP</strong> to opt out. Reply <strong>HELP</strong> for assistance.
               Consent is not required as a condition of purchase. See our{' '}
-              <a href="/privacy-policy" className="text-blue-400 hover:underline">Privacy Policy</a>{' '}
+              <Link href="/privacy-policy" className="text-blue-400 hover:underline">
+                Privacy Policy
+              </Link>{' '}
               and{' '}
-              <a href="/terms-of-services" className="text-blue-400 hover:underline">Terms of Service</a>.
+              <Link href="/terms-of-services" className="text-blue-400 hover:underline">
+                Terms of Service
+              </Link>.
             </span>
           </label>
           <div className="mt-3 pt-3 border-t border-slate-700 text-slate-500 text-xs space-y-0.5">
@@ -179,7 +184,9 @@ export default function ContactForm() {
 
         <p className="text-center text-slate-500 text-xs">
           We never sell your information. See our{' '}
-          <a href="/privacy-policy" className="hover:text-slate-300">Privacy Policy</a>.
+          <Link href="/privacy-policy" className="hover:text-slate-300">
+            Privacy Policy
+          </Link>.
         </p>
       </div>
     </form>
