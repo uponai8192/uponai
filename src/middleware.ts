@@ -69,11 +69,25 @@ const SCANNER_PATTERNS = [
   /^\/functions\//i,
 ];
 
+// User-Agent substrings that indicate bots/crawlers/scrapers
+const BOT_UA_PATTERNS = [
+  'bot', 'crawl', 'spider', 'scrape', 'slurp', 'fetch',
+  'python-requests', 'python-urllib', 'python-httpx',
+  'go-http-client', 'go http package',
+  'curl', 'wget', 'libwww', 'httpclient',
+  'java/', 'okhttp', 'apache-httpclient',
+  'axios', 'node-fetch', 'got/', 'undici',
+  'scrapy', 'mechanize', 'aiohttp',
+  'headlesschrome', 'phantomjs', 'selenium',
+  'nuclei', 'zgrab', 'masscan', 'nmap', 'nikto', 'sqlmap',
+  'dataforseo', 'semrush', 'ahrefsbot', 'mj12bot',
+];
+
 // In-memory rate limit store: ip -> { count, resetAt }
 // Module-level so it persists across requests in the same process
 const rateLimitStore = new Map<string, { count: number; resetAt: number }>();
 
-const RATE_LIMIT_REQUESTS = 60;  // max requests
+const RATE_LIMIT_REQUESTS = 20;  // max requests
 const RATE_LIMIT_WINDOW_MS = 60_000; // per 60 seconds
 
 function getClientIP(req: NextRequest): string {
@@ -114,7 +128,13 @@ export function middleware(req: NextRequest) {
     return new NextResponse(null, { status: 404 });
   }
 
-  // 2. Rate limit
+  // 2. Block bot/crawler User-Agents
+  const ua = (req.headers.get('user-agent') ?? '').toLowerCase();
+  if (!ua || BOT_UA_PATTERNS.some((s) => ua.includes(s))) {
+    return new NextResponse(null, { status: 403 });
+  }
+
+  // 3. Rate limit
   const ip = getClientIP(req);
   const { limited, retryAfter } = isRateLimited(ip);
 
