@@ -104,6 +104,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main className="pt-20 sm:pt-24 md:pt-32">{children}</main>
         <Footer />
         <CookieConsentManager />
+        <Script
+          src="https://staging.upon-ai.com/js/upon-chat-widget.js"
+          data-public-key="upon_widget_f8ad4704e5c887895582c79e8ccb75498d3e976c345cd899"
+          strategy="lazyOnload"
+        />
       </body>
     </html>
   );

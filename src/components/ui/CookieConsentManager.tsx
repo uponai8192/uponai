@@ -82,50 +82,32 @@ export default function CookieConsentManager() {
     setBannerOpen(false);
   }
 
-  const statusLabel =
-    consent === 'accepted'
-      ? 'Analytics and marketing cookies enabled'
-      : consent === 'rejected'
-        ? 'Only essential site cookies enabled'
-        : 'Choose whether to allow analytics and marketing cookies';
-
   if (!(bannerOpen || consent === null)) return null;
 
   return (
     <div className="fixed inset-x-0 bottom-4 z-[70] px-4">
-      <div className="theme-panel mx-auto max-w-4xl rounded-[1.75rem] p-5 shadow-[0_24px_70px_rgba(var(--shadow-rgb),0.28)] md:p-6">
-        <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
-          <div className="max-w-2xl">
-            <div className="theme-pill-green inline-flex rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em]">
-              Cookie Consent
-            </div>
-            <h2 className="theme-heading mt-4 text-2xl font-bold">Control analytics and marketing tracking on UponAI.</h2>
-            <p className="theme-body mt-3 text-sm leading-7 md:text-base">
-              UponAI uses non-essential tracking tools for analytics and lead attribution. Accepting allows RB2B and
-              Snitcher to load. Rejecting keeps those scripts off until you opt in later.
-            </p>
-            <p className="theme-soft mt-3 text-xs uppercase tracking-[0.22em]">{statusLabel}</p>
-            <div className="mt-3">
-              <Link href="/privacy-policy" className="theme-link-muted text-sm">
-                Review the privacy policy
-              </Link>
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-3 sm:flex-row">
+      <div className="theme-panel mx-auto max-w-2xl rounded-2xl px-4 py-3 shadow-[0_8px_32px_rgba(var(--shadow-rgb),0.22)]">
+        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+          <p className="theme-body text-xs leading-5">
+            We use analytics cookies to improve your experience.{' '}
+            <Link href="/privacy-policy" className="theme-link-muted">
+              Privacy policy
+            </Link>
+          </p>
+          <div className="flex shrink-0 gap-2">
             <button
               type="button"
               onClick={() => saveConsent('rejected')}
-              className="theme-secondary-button rounded-full px-5 py-3 text-sm font-semibold"
+              className="theme-secondary-button rounded-full px-4 py-1.5 text-xs font-semibold"
             >
-              Reject Non-Essential
+              Reject
             </button>
             <button
               type="button"
               onClick={() => saveConsent('accepted')}
-              className="theme-primary-button rounded-full px-5 py-3 text-sm font-bold"
+              className="theme-primary-button rounded-full px-4 py-1.5 text-xs font-bold"
             >
-              Accept All
+              Accept
             </button>
           </div>
         </div>
