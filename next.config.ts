@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: false,
+  allowedDevOrigins: ['website.upon-ai.com'],
   distDir: process.env.NODE_ENV === "development" ? ".next-dev" : ".next",
   outputFileTracingRoot: __dirname,
   async redirects() {
