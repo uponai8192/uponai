@@ -4325,6 +4325,101 @@ export const voiceAIIndustryPages: VoiceAIIndustryPage[] = [
     ctaSubheading:
       'Book a demo to see how voice AI can support appointment booking, recall workflows, insurance questions, and dental call routing.',
   },
+  {
+    slug: 'voice-ai-for-chiropractors',
+    label: 'Chiropractic Offices',
+    eyebrow: 'Chiropractic',
+    heroTitle: 'Voice AI for chiropractic offices that need faster scheduling and fewer missed calls.',
+    heroDescription:
+      'Handle new patient inquiries, appointment requests, insurance questions, and follow-up calls without pulling front desk staff off check-ins and treatment-room coordination.',
+    image: brandPhotos.brainTouch,
+    imageAlt: 'UponAI voice AI for chiropractic offices',
+    stats: [
+      { value: '24/7', label: 'New patient call coverage' },
+      { value: 'Faster', label: 'Appointment booking' },
+      { value: 'Less', label: 'Front-desk interruption' },
+      { value: 'Live', label: 'Staff handoff when needed' },
+    ],
+    workflowMoments: [
+      {
+        title: 'New Patient Inquiries',
+        body: 'Capture interest from first-time callers, gather basic intake details, and move qualified patients toward a scheduled appointment without requiring front desk involvement at every step.',
+      },
+      {
+        title: 'Appointment Scheduling and Reminders',
+        body: 'Handle routine booking, rescheduling requests, and cancellation calls so the front desk can stay focused on patients already in the office.',
+      },
+      {
+        title: 'Insurance and Billing Questions',
+        body: 'Answer the most common insurance coverage and payment questions automatically before callers need to speak with billing staff.',
+      },
+    ],
+    capabilityCards: [
+      {
+        title: 'New Patient Intake',
+        body: 'Collect the caller name, complaint type, insurance carrier, and preferred appointment window before the first live touchpoint.',
+      },
+      {
+        title: 'Recall and Re-engagement',
+        body: 'Reach patients who have lapsed between visits with structured outreach that brings them back without manual follow-up calls.',
+      },
+      {
+        title: 'After-Hours Coverage',
+        body: 'Keep the practice reachable for new patient interest and appointment requests even outside office hours.',
+      },
+      {
+        title: 'Urgency Routing',
+        body: 'Identify callers describing acute pain or urgent concerns and route them into the right response path faster than a standard queue.',
+      },
+    ],
+    outcomes: [
+      'Capture more new patient inquiries before they call a competitor',
+      'Reduce the volume of repetitive scheduling calls hitting the front desk',
+      'Answer common insurance and billing questions without staff involvement',
+      'Keep the practice reachable after hours and during peak treatment blocks',
+      'Improve the first-call experience for new and returning patients',
+      'Give the front desk more room to focus on in-office patient experience',
+    ],
+    faqs: [
+      {
+        question: 'Can voice AI handle chiropractic appointment scheduling?',
+        answer:
+          'Yes. Voice AI can capture appointment requests, collect basic intake information, and route the caller to the right next step — whether that is a confirmed slot or a callback from the scheduling team.',
+      },
+      {
+        question: 'Will new patients still reach a live person if they need one?',
+        answer:
+          'Yes. The workflow can identify when a caller needs live support and route them to the right staff member with intake context already collected.',
+      },
+      {
+        question: 'Can this help with after-hours calls?',
+        answer:
+          'Yes. After-hours coverage is one of the highest-value starting points for chiropractic practices because new patient interest does not stop at 5pm.',
+      },
+      {
+        question: 'Is this useful for smaller single-provider practices?',
+        answer:
+          'Yes. Solo and small chiropractic practices benefit quickly because voice AI gives them steadier phone coverage without adding another front desk seat.',
+      },
+      {
+        question: 'Can the system handle insurance questions?',
+        answer:
+          'Yes. Common questions about accepted insurance, coverage basics, and billing can be answered automatically so those calls do not interrupt staff throughout the day.',
+      },
+    ],
+    localUseCaseTemplates: [
+      'Handle new patient scheduling calls from {location} residents before they go to another provider.',
+      'Answer routine insurance, availability, and office-hours questions for {state} chiropractic teams.',
+      'Keep after-hours appointment interest active for {location} practices that cannot staff the phone overnight.',
+      'Route urgent pain-related calls with cleaner intake context before the care team steps in.',
+    ],
+    cityLead: 'UponAI helps chiropractic offices in',
+    citySupport:
+      'capture new patient calls, reduce front-desk interruptions, and keep scheduling active after hours with a more consistent voice workflow.',
+    ctaHeading: 'Want steadier phone coverage for your practice?',
+    ctaSubheading:
+      'Book a demo to see how voice AI can support new patient intake, appointment scheduling, insurance questions, and chiropractic call routing.',
+  },
 ];
 
 export function getVoiceAIIndustryPage(slug: string): VoiceAIIndustryPage | undefined {
