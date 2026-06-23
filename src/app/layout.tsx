@@ -111,6 +111,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main className="pt-20 sm:pt-24 md:pt-32">{children}</main>
         <Footer />
         <CookieConsentManager />
+        <Script
+          src="https://uponai-voice-intake.vercel.app/embed.js"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );
