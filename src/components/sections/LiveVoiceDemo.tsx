@@ -67,8 +67,17 @@ export default function LiveVoiceDemo() {
     setElapsed(0);
   };
 
+  const [mouse, setMouse] = useState({ x: 0, y: 0 });
+  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setMouse({
+      x: (e.clientX - rect.left - rect.width / 2) / rect.width,
+      y: (e.clientY - rect.top - rect.height / 2) / rect.height,
+    });
+  };
+
   return (
-    <section className="relative overflow-hidden px-4 py-20">
+    <section className="relative overflow-hidden px-4 py-20" onMouseMove={handleMouseMove} onMouseLeave={() => setMouse({ x: 0, y: 0 })}>
       <style>{`
         @keyframes voice-bar {
           0% { transform: scaleY(0.2); opacity: 0.6; }
@@ -89,11 +98,17 @@ export default function LiveVoiceDemo() {
         }
       `}</style>
 
-      {/* Background glows */}
+      {/* Background glows — parallax on mouse */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute left-[8%] top-16 h-72 w-72 rounded-full bg-[#22c55e]/10 blur-3xl" style={{ animation: 'float-blob 12s ease-in-out infinite' }} />
-        <div className="absolute right-[8%] bottom-16 h-80 w-80 rounded-full bg-[#54d2ff]/10 blur-3xl" style={{ animation: 'float-blob 16s ease-in-out infinite 4s' }} />
-        <div className="absolute left-1/2 bottom-8 h-60 w-60 -translate-x-1/2 rounded-full bg-[#22c55e]/6 blur-3xl" style={{ animation: 'float-blob 20s ease-in-out infinite 8s' }} />
+        <div className="absolute left-[8%] top-16" style={{ transform: `translate(${mouse.x * 60}px, ${mouse.y * 40}px)`, transition: 'transform 0.9s cubic-bezier(0.25,0.1,0.25,1)' }}>
+          <div className="h-72 w-72 rounded-full bg-[#22c55e]/10 blur-3xl" style={{ animation: 'float-blob 12s ease-in-out infinite' }} />
+        </div>
+        <div className="absolute right-[8%] bottom-16" style={{ transform: `translate(${mouse.x * -45}px, ${mouse.y * -30}px)`, transition: 'transform 1.1s cubic-bezier(0.25,0.1,0.25,1)' }}>
+          <div className="h-80 w-80 rounded-full bg-[#54d2ff]/10 blur-3xl" style={{ animation: 'float-blob 16s ease-in-out infinite 4s' }} />
+        </div>
+        <div className="absolute left-1/2 bottom-8 -translate-x-1/2" style={{ transform: `translate(calc(-50% + ${mouse.x * 25}px), ${mouse.y * 50}px)`, transition: 'transform 1.4s cubic-bezier(0.25,0.1,0.25,1)' }}>
+          <div className="h-60 w-60 rounded-full bg-[#22c55e]/6 blur-3xl" style={{ animation: 'float-blob 20s ease-in-out infinite 8s' }} />
+        </div>
       </div>
 
       {/* Header */}
