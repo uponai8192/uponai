@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Testimonials from '@/components/sections/Testimonials';
 import CTASection from '@/components/sections/CTASection';
+import LiveVoiceDemo from '@/components/sections/LiveVoiceDemo';
 import { uponaiBookingUrl } from '@/lib/booking';
 import {
   uponaiIndustriesMenu,
@@ -215,6 +216,8 @@ export default function HomePage() {
           ))}
         </div>
       </section>
+
+      <LiveVoiceDemo />
 
       <section className="px-4 py-20">
         <div className="mx-auto max-w-7xl">
