@@ -1,0 +1,204 @@
+// src/components/sections/LiveVoiceDemo.tsx
+'use client';
+
+import { useEffect, useRef, useState } from 'react';
+import { uponaiBookingUrl } from '@/lib/booking';
+import { useVoiceWidget } from '@/components/widget/VoiceWidgetProvider';
+
+type DemoState = 'idle' | 'calling' | 'ended';
+
+const waveHeights = [38, 62, 80, 52, 90, 68, 44, 84, 58, 74, 48, 86, 60, 70, 46];
+
+function GraceAvatar({ pulsing = false }: { pulsing?: boolean }) {
+  return (
+    <div className="relative">
+      <div className="h-20 w-20 rounded-full bg-gradient-to-br from-[#22c55e] to-[#54d2ff] flex items-center justify-center shadow-[0_0_24px_rgba(34,197,94,0.3)]">
+        <span className="text-2xl font-bold text-white select-none">G</span>
+      </div>
+      {pulsing ? (
+        <div
+          className="absolute inset-0 rounded-full border-2 border-[#22c55e]/60"
+          style={{ animation: 'ping 1.5s cubic-bezier(0,0,0.2,1) infinite' }}
+        />
+      ) : (
+        <span className="absolute bottom-1 right-1 h-3.5 w-3.5 rounded-full border-2 border-[var(--surface)] bg-[#22c55e]" />
+      )}
+    </div>
+  );
+}
+
+export default function LiveVoiceDemo() {
+  const { callState, openWidget } = useVoiceWidget();
+  const [demoState, setDemoState] = useState<DemoState>('idle');
+  const [elapsed, setElapsed] = useState(0);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // Sync widget call state → demo section state
+  useEffect(() => {
+    if (callState === 'active') {
+      setDemoState('calling');
+      setElapsed(0);
+    } else if (callState === 'ended') {
+      setDemoState('ended');
+    } else if (callState === 'idle') {
+      // only reset to idle if user explicitly resets via "Talk again"
+    }
+  }, [callState]);
+
+  // Timer
+  useEffect(() => {
+    if (demoState === 'calling') {
+      timerRef.current = setInterval(() => setElapsed((e) => e + 1), 1000);
+    } else {
+      if (timerRef.current) clearInterval(timerRef.current);
+    }
+    return () => { if (timerRef.current) clearInterval(timerRef.current); };
+  }, [demoState]);
+
+  const formatTime = (s: number) => {
+    const m = Math.floor(s / 60).toString().padStart(2, '0');
+    const sec = (s % 60).toString().padStart(2, '0');
+    return `${m}:${sec}`;
+  };
+
+  const handleReset = () => {
+    setDemoState('idle');
+    setElapsed(0);
+  };
+
+  return (
+    <section className="relative overflow-hidden px-4 py-20">
+      <style>{`
+        @keyframes voice-bar {
+          0% { transform: scaleY(0.2); opacity: 0.6; }
+          100% { transform: scaleY(1); opacity: 1; }
+        }
+      `}</style>
+
+      {/* Background glows */}
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute left-[8%] top-16 h-72 w-72 rounded-full bg-[#22c55e]/10 blur-3xl" />
+        <div className="absolute right-[8%] bottom-16 h-80 w-80 rounded-full bg-[#54d2ff]/10 blur-3xl" />
+      </div>
+
+      {/* Header */}
+      <div className="relative mx-auto max-w-3xl text-center">
+        <div className="theme-pill-green inline-flex items-center gap-2.5 rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.24em]">
+          <span className="h-2 w-2 rounded-full bg-[#22c55e] shadow-[0_0_10px_rgba(34,197,94,0.8)]" style={{ animation: 'pulse 2s infinite' }} />
+          Live Voice Demo
+        </div>
+        <h2 className="theme-heading mt-6 text-4xl font-bold leading-tight md:text-5xl">
+          Hear what your AI agent<br />could sound like
+        </h2>
+        <p className="theme-soft mt-4 text-lg">Talk to Grace, then build yours.</p>
+      </div>
+
+      {/* Demo panel */}
+      <div className="relative mx-auto mt-12 max-w-xl">
+
+        {/* ── IDLE ── */}
+        {demoState === 'idle' && (
+          <div className="theme-panel rounded-[2rem] p-7 md:p-10">
+            <div className="flex flex-col items-center gap-4 text-center">
+              <GraceAvatar />
+              <div>
+                <p className="theme-subtle text-xs uppercase tracking-[0.24em]">UponAI Agent</p>
+                <h3 className="theme-heading mt-1.5 text-2xl font-semibold">Grace</h3>
+                <p className="theme-body mx-auto mt-2 max-w-sm text-sm leading-relaxed">
+                  Grace is an AI voice agent built on UponAI. She handles inbound calls, answers questions, books appointments, and transfers to your team when it matters.
+                </p>
+              </div>
+              <div className="flex flex-wrap justify-center gap-2">
+                {['Answers Questions', 'Books Appointments', 'Transfers Calls'].map((tag) => (
+                  <span key={tag} className="theme-card rounded-full px-3 py-1 text-xs theme-body">{tag}</span>
+                ))}
+              </div>
+              <button
+                onClick={openWidget}
+                className="mt-3 flex items-center gap-3 rounded-full bg-[#22c55e] px-8 py-4 text-base font-bold text-white shadow-[0_0_28px_rgba(34,197,94,0.35)] transition-all duration-200 hover:bg-[#16a34a] hover:shadow-[0_0_36px_rgba(34,197,94,0.5)] active:scale-95"
+              >
+                <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 1a3 3 0 0 1 3 3v8a3 3 0 0 1-6 0V4a3 3 0 0 1 3-3zm-1 17.93V21H9v2h6v-2h-2v-2.07A8 8 0 0 0 20 12h-2a6 6 0 0 1-12 0H4a8 8 0 0 0 7 7.93z" />
+                </svg>
+                Talk now
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* ── CALLING ── */}
+        {demoState === 'calling' && (
+          <div className="theme-panel rounded-[2rem] p-7 md:p-10">
+            <div className="mb-8 flex items-center justify-between">
+              <div className="theme-pill-green flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.18em]">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#22c55e]" style={{ animation: 'pulse 1s infinite' }} />
+                Speaking…
+              </div>
+              <span className="theme-subtle font-mono text-sm">{formatTime(elapsed)}</span>
+            </div>
+            <div className="flex flex-col items-center gap-6">
+              <div className="flex w-full items-center gap-5">
+                <GraceAvatar pulsing />
+                <div className="flex h-16 flex-1 items-end gap-1">
+                  {waveHeights.map((h, i) => (
+                    <div
+                      key={i}
+                      className={`flex-1 rounded-full ${i % 2 === 0 ? 'bg-[#22c55e]' : 'bg-[#54d2ff]'}`}
+                      style={{
+                        height: `${h}%`,
+                        transformOrigin: 'bottom',
+                        animation: `voice-bar ${0.45 + (i % 5) * 0.12}s ease-in-out ${i * 0.055}s infinite alternate`,
+                      }}
+                    />
+                  ))}
+                </div>
+              </div>
+              <p className="theme-subtle text-xs uppercase tracking-[0.24em]">Grace · UponAI Agent</p>
+              <div className="flex flex-wrap justify-center gap-2">
+                {['Answers Questions', 'Books Appointments', 'Transfers Calls'].map((tag) => (
+                  <span key={tag} className="theme-card rounded-full px-3 py-1 text-xs theme-body">{tag}</span>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ── ENDED ── */}
+        {demoState === 'ended' && (
+          <div className="theme-panel rounded-[2rem] p-7 text-center md:p-10">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full border border-[var(--brand-green-border)] bg-[var(--brand-green-bg)]">
+              <svg className="h-8 w-8 text-[#22c55e]" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <h3 className="theme-heading text-2xl font-bold">Call ended.</h3>
+            <p className="theme-soft mt-1 text-sm">Hope that felt real. Here&apos;s what just happened.</p>
+            <div className="theme-card mt-6 divide-y divide-[var(--border)] rounded-2xl text-left">
+              {[
+                { label: 'Agent', value: 'Grace' },
+                { label: 'Built by', value: 'UponAI' },
+                { label: 'Duration', value: formatTime(elapsed) },
+              ].map((row) => (
+                <div key={row.label} className="flex items-center justify-between px-5 py-3">
+                  <span className="theme-soft text-sm">{row.label}</span>
+                  <span className="theme-heading text-sm font-semibold">{row.value}</span>
+                </div>
+              ))}
+            </div>
+            <a
+              href={uponaiBookingUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-6 block w-full rounded-full bg-[#22c55e] py-4 text-center text-base font-bold text-white shadow-[0_0_24px_rgba(34,197,94,0.3)] transition-all hover:bg-[#16a34a] hover:shadow-[0_0_32px_rgba(34,197,94,0.45)]"
+            >
+              Book a Demo
+            </a>
+            <button onClick={handleReset} className="theme-link-muted mt-4 text-sm font-medium underline underline-offset-2">
+              Talk again
+            </button>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
