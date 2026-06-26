@@ -4,7 +4,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { uponaiBookingUrl } from '@/lib/booking';
 import { useVoiceWidget } from '@/components/widget/VoiceWidgetProvider';
-import { VoiceCallButtonDynamic } from '@/components/widget/VoiceCallButtonDynamic';
+import { VoiceDemoModalDynamic } from '@/components/widget/VoiceDemoModalDynamic';
 
 type DemoState = 'idle' | 'calling' | 'ended';
 
@@ -29,7 +29,7 @@ function GraceAvatar({ pulsing = false }: { pulsing?: boolean }) {
 }
 
 export default function LiveVoiceDemo() {
-  const { callState, widgetOpen, openWidget, closeWidget } = useVoiceWidget();
+  const { callState, openWidget } = useVoiceWidget();
   const [demoState, setDemoState] = useState<DemoState>('idle');
   const [elapsed, setElapsed] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -201,28 +201,7 @@ export default function LiveVoiceDemo() {
         )}
       </div>
 
-      {/* Modal */}
-      {widgetOpen && (
-        <div
-          className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
-          style={{ backgroundColor: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)' }}
-          onClick={closeWidget}
-        >
-          <div onClick={(e) => e.stopPropagation()} className="relative w-full max-w-sm">
-            <button
-              type="button"
-              onClick={closeWidget}
-              aria-label="Close"
-              className="absolute -top-3 -right-3 z-10 flex h-8 w-8 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--surface)] text-[var(--muted)] hover:text-[var(--foreground)] transition-colors"
-            >
-              <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M18 6 6 18M6 6l12 12" />
-              </svg>
-            </button>
-            <VoiceCallButtonDynamic label="Talk to Grace" size="sm" />
-          </div>
-        </div>
-      )}
+      <VoiceDemoModalDynamic />
     </section>
   );
 }
