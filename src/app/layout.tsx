@@ -6,7 +6,6 @@ import Nav from '@/components/ui/Nav';
 import Footer from '@/components/ui/Footer';
 import CookieConsentManager from '@/components/ui/CookieConsentManager';
 import { VoiceWidgetProvider } from '@/components/widget/VoiceWidgetProvider'
-// import { WidgetLauncher } from '@/components/widget/WidgetLauncher'
 import { DEFAULT_OG_IMAGE, SITE_NAME, SITE_URL, organizationSchema, websiteSchema } from '@/lib/seo';
 
 const spaceGrotesk = Space_Grotesk({ subsets: ['latin'] });
@@ -114,7 +113,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main className="pt-20 sm:pt-24 md:pt-32">{children}</main>
           <Footer />
           <CookieConsentManager />
-          {/* <WidgetLauncher /> */}
         </VoiceWidgetProvider>
       </body>
     </html>
