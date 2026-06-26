@@ -8,12 +8,13 @@ type LeadBody = {
   email: string
   company: string
   consentContact: boolean
+  consentMarketing?: boolean
   notify?: boolean
 }
 
 export async function POST(req: Request) {
   const body = (await req.json()) as LeadBody
-  const { name, email, company, consentContact, notify = true } = body
+  const { name, email, company, consentContact, consentMarketing = false, notify = true } = body
 
   if (!name || !email || !company || !consentContact) {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
@@ -49,7 +50,7 @@ export async function POST(req: Request) {
       from: process.env.SMTP_USER,
       to: LEAD_EMAIL,
       subject: `New voice demo lead: ${name} — ${company}`,
-      html: `<p><strong>${name}</strong> (${email}) from <strong>${company}</strong> just started a voice demo on uponai.com.</p>`,
+      text: `${name} (${email}) from ${company} just started a voice demo on uponai.com.\nMarketing consent: ${consentMarketing ? 'yes' : 'no'}`,
     }).catch((err: unknown) => console.error('[create-web-call] email error', err))
   }
 

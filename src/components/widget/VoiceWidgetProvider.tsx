@@ -19,7 +19,7 @@ export function VoiceWidgetProvider({ children }: { children: ReactNode }) {
   const [callState, setCallState] = useState<CallState>('idle')
 
   const openWidget = useCallback(() => setWidgetOpen(true), [])
-  const closeWidget = useCallback(() => setWidgetOpen(false), [])
+  const closeWidget = useCallback(() => { setWidgetOpen(false); setCallState('idle') }, [])
   const onCallStateChange = useCallback((state: CallState) => setCallState(state), [])
 
   return (
