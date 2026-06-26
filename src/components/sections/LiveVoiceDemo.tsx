@@ -100,13 +100,13 @@ export default function LiveVoiceDemo() {
 
       {/* Background glows — parallax on mouse */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute left-[8%] top-16" style={{ transform: `translate(${mouse.x * 60}px, ${mouse.y * 40}px)`, transition: 'transform 0.9s cubic-bezier(0.25,0.1,0.25,1)' }}>
+        <div className="absolute left-[8%] top-16" style={{ transform: `translate(${mouse.x * 160}px, ${mouse.y * 110}px)`, transition: 'transform 0.6s cubic-bezier(0.25,0.1,0.25,1)' }}>
           <div className="h-72 w-72 rounded-full bg-[#22c55e]/10 blur-3xl" style={{ animation: 'float-blob 12s ease-in-out infinite' }} />
         </div>
-        <div className="absolute right-[8%] bottom-16" style={{ transform: `translate(${mouse.x * -45}px, ${mouse.y * -30}px)`, transition: 'transform 1.1s cubic-bezier(0.25,0.1,0.25,1)' }}>
+        <div className="absolute right-[8%] bottom-16" style={{ transform: `translate(${mouse.x * -130}px, ${mouse.y * -90}px)`, transition: 'transform 0.7s cubic-bezier(0.25,0.1,0.25,1)' }}>
           <div className="h-80 w-80 rounded-full bg-[#54d2ff]/10 blur-3xl" style={{ animation: 'float-blob 16s ease-in-out infinite 4s' }} />
         </div>
-        <div className="absolute left-1/2 bottom-8 -translate-x-1/2" style={{ transform: `translate(calc(-50% + ${mouse.x * 25}px), ${mouse.y * 50}px)`, transition: 'transform 1.4s cubic-bezier(0.25,0.1,0.25,1)' }}>
+        <div className="absolute left-1/2 bottom-8 -translate-x-1/2" style={{ transform: `translate(calc(-50% + ${mouse.x * 80}px), ${mouse.y * 130}px)`, transition: 'transform 0.9s cubic-bezier(0.25,0.1,0.25,1)' }}>
           <div className="h-60 w-60 rounded-full bg-[#22c55e]/6 blur-3xl" style={{ animation: 'float-blob 20s ease-in-out infinite 8s' }} />
         </div>
       </div>
