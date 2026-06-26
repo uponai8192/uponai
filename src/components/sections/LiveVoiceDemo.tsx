@@ -74,12 +74,26 @@ export default function LiveVoiceDemo() {
           0% { transform: scaleY(0.2); opacity: 0.6; }
           100% { transform: scaleY(1); opacity: 1; }
         }
+        @keyframes btn-ring {
+          0%   { transform: scale(1);    opacity: 0.55; }
+          100% { transform: scale(1.75); opacity: 0; }
+        }
+        @keyframes btn-glow {
+          0%, 100% { box-shadow: 0 0 28px rgba(34,197,94,0.35), 0 0 0 0 rgba(34,197,94,0.25); }
+          50%       { box-shadow: 0 0 40px rgba(34,197,94,0.55), 0 0 0 8px rgba(34,197,94,0.08); }
+        }
+        @keyframes float-blob {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          33%       { transform: translate(24px, -18px) scale(1.08); }
+          66%       { transform: translate(-16px, 12px) scale(0.95); }
+        }
       `}</style>
 
       {/* Background glows */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute left-[8%] top-16 h-72 w-72 rounded-full bg-[#22c55e]/10 blur-3xl" />
-        <div className="absolute right-[8%] bottom-16 h-80 w-80 rounded-full bg-[#54d2ff]/10 blur-3xl" />
+        <div className="absolute left-[8%] top-16 h-72 w-72 rounded-full bg-[#22c55e]/10 blur-3xl" style={{ animation: 'float-blob 12s ease-in-out infinite' }} />
+        <div className="absolute right-[8%] bottom-16 h-80 w-80 rounded-full bg-[#54d2ff]/10 blur-3xl" style={{ animation: 'float-blob 16s ease-in-out infinite 4s' }} />
+        <div className="absolute left-1/2 bottom-8 h-60 w-60 -translate-x-1/2 rounded-full bg-[#22c55e]/6 blur-3xl" style={{ animation: 'float-blob 20s ease-in-out infinite 8s' }} />
       </div>
 
       {/* Header */}
@@ -99,7 +113,7 @@ export default function LiveVoiceDemo() {
 
         {/* ── IDLE ── */}
         {demoState === 'idle' && (
-          <div className="theme-panel rounded-[2rem] p-7 md:p-10">
+          <div className="theme-panel rounded-[2rem] p-7 md:p-10 shadow-[0_0_0_1px_rgba(34,197,94,0.08),0_0_60px_rgba(34,197,94,0.06)]">
             <div className="flex flex-col items-center gap-4 text-center">
               <GraceAvatar />
               <div>
@@ -114,15 +128,21 @@ export default function LiveVoiceDemo() {
                   <span key={tag} className="theme-card rounded-full px-3 py-1 text-xs theme-body">{tag}</span>
                 ))}
               </div>
-              <button
-                onClick={openWidget}
-                className="mt-3 flex items-center gap-3 rounded-full bg-[#22c55e] px-8 py-4 text-base font-bold text-white shadow-[0_0_28px_rgba(34,197,94,0.35)] transition-all duration-200 hover:bg-[#16a34a] hover:shadow-[0_0_36px_rgba(34,197,94,0.5)] active:scale-95"
-              >
-                <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M12 1a3 3 0 0 1 3 3v8a3 3 0 0 1-6 0V4a3 3 0 0 1 3-3zm-1 17.93V21H9v2h6v-2h-2v-2.07A8 8 0 0 0 20 12h-2a6 6 0 0 1-12 0H4a8 8 0 0 0 7 7.93z" />
-                </svg>
-                Talk now
-              </button>
+              <div className="relative mt-3 inline-flex">
+                {/* Pulse rings */}
+                <span className="absolute inset-0 rounded-full bg-[#22c55e]/30" style={{ animation: 'btn-ring 2s ease-out infinite' }} aria-hidden="true" />
+                <span className="absolute inset-0 rounded-full bg-[#22c55e]/20" style={{ animation: 'btn-ring 2s ease-out infinite 0.6s' }} aria-hidden="true" />
+                <button
+                  onClick={openWidget}
+                  className="relative flex items-center gap-3 rounded-full bg-[#22c55e] px-8 py-4 text-base font-bold text-white transition-all duration-200 hover:bg-[#16a34a] active:scale-95"
+                  style={{ animation: 'btn-glow 2.5s ease-in-out infinite' }}
+                >
+                  <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 1a3 3 0 0 1 3 3v8a3 3 0 0 1-6 0V4a3 3 0 0 1 3-3zm-1 17.93V21H9v2h6v-2h-2v-2.07A8 8 0 0 0 20 12h-2a6 6 0 0 1-12 0H4a8 8 0 0 0 7 7.93z" />
+                  </svg>
+                  Talk now
+                </button>
+              </div>
             </div>
           </div>
         )}
