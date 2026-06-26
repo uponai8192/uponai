@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useState, useCallback, type ReactNode } from 'react'
+import { createContext, useContext, useState, useCallback, useRef, type ReactNode } from 'react'
 
 export type CallState = 'idle' | 'loading' | 'active' | 'ended' | 'error'
 
@@ -10,6 +10,8 @@ type VoiceWidgetContextValue = {
   openWidget: () => void
   closeWidget: () => void
   onCallStateChange: (state: CallState) => void
+  registerEndCall: (fn: (() => void) | null) => void
+  endCall: () => void
 }
 
 const VoiceWidgetContext = createContext<VoiceWidgetContextValue | null>(null)
@@ -17,13 +19,18 @@ const VoiceWidgetContext = createContext<VoiceWidgetContextValue | null>(null)
 export function VoiceWidgetProvider({ children }: { children: ReactNode }) {
   const [widgetOpen, setWidgetOpen] = useState(false)
   const [callState, setCallState] = useState<CallState>('idle')
+  const endCallRef = useRef<(() => void) | null>(null)
 
-  const openWidget = useCallback(() => setWidgetOpen(true), [])
-  const closeWidget = useCallback(() => { setWidgetOpen(false); setCallState('idle') }, [])
+  // Opening always starts from a fresh form.
+  const openWidget = useCallback(() => { setCallState('idle'); setWidgetOpen(true) }, [])
+  // Closing only hides the modal — an in-progress call keeps running on the page.
+  const closeWidget = useCallback(() => setWidgetOpen(false), [])
   const onCallStateChange = useCallback((state: CallState) => setCallState(state), [])
+  const registerEndCall = useCallback((fn: (() => void) | null) => { endCallRef.current = fn }, [])
+  const endCall = useCallback(() => { endCallRef.current?.() }, [])
 
   return (
-    <VoiceWidgetContext.Provider value={{ widgetOpen, callState, openWidget, closeWidget, onCallStateChange }}>
+    <VoiceWidgetContext.Provider value={{ widgetOpen, callState, openWidget, closeWidget, onCallStateChange, registerEndCall, endCall }}>
       {children}
     </VoiceWidgetContext.Provider>
   )

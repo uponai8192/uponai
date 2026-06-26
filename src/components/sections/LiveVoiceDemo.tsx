@@ -30,7 +30,7 @@ function GraceAvatar({ pulsing = false }: { pulsing?: boolean }) {
 }
 
 export default function LiveVoiceDemo() {
-  const { callState, openWidget } = useVoiceWidget();
+  const { callState, openWidget, endCall } = useVoiceWidget();
   const [demoState, setDemoState] = useState<DemoState>('idle');
   const [elapsed, setElapsed] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -207,6 +207,16 @@ export default function LiveVoiceDemo() {
                   <span key={tag} className="theme-card rounded-full px-3 py-1 text-xs theme-body">{tag}</span>
                 ))}
               </div>
+              <button
+                onClick={endCall}
+                className="mt-2 flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold text-[#f87171] transition-all hover:bg-[#ef4444]/10 active:scale-95"
+                style={{ border: '1px solid rgba(239,68,68,0.3)' }}
+              >
+                <svg width={12} height={12} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <rect x="5" y="5" width="14" height="14" rx="2" />
+                </svg>
+                End call
+              </button>
             </div>
           </div>
         )}
