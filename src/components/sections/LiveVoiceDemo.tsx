@@ -5,8 +5,9 @@ import { useEffect, useRef, useState } from 'react';
 import { uponaiBookingUrl } from '@/lib/booking';
 import { useVoiceWidget } from '@/components/widget/VoiceWidgetProvider';
 import { VoiceDemoModalDynamic } from '@/components/widget/VoiceDemoModalDynamic';
+import GraceCompanion from './GraceCompanion';
 
-type DemoState = 'idle' | 'calling' | 'ended';
+export type DemoState = 'idle' | 'calling' | 'ended';
 
 const waveHeights = [38, 62, 80, 52, 90, 68, 44, 84, 58, 74, 48, 86, 60, 70, 46];
 
@@ -96,6 +97,14 @@ export default function LiveVoiceDemo() {
           33%       { transform: translate(24px, -18px) scale(1.08); }
           66%       { transform: translate(-16px, 12px) scale(0.95); }
         }
+        @keyframes row-in {
+          0%   { opacity: 0; transform: translateY(8px); }
+          100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes row-pulse {
+          0%, 100% { opacity: 0.6; }
+          50%       { opacity: 1; border-color: rgba(34,197,94,0.4); }
+        }
       `}</style>
 
       {/* Background glows — parallax on mouse */}
@@ -123,12 +132,15 @@ export default function LiveVoiceDemo() {
         <p className="theme-soft mt-4 text-lg">Talk to Grace, then build yours.</p>
       </div>
 
-      {/* Demo panel */}
-      <div className="relative mx-auto mt-12 max-w-xl">
+      {/* Demo panel — two columns: Grace card + companion */}
+      <div className="relative mx-auto mt-12 grid max-w-4xl items-stretch gap-6 lg:grid-cols-2">
+
+        {/* Left column — Grace state card */}
+        <div className="flex flex-col">
 
         {/* ── IDLE ── */}
         {demoState === 'idle' && (
-          <div className="theme-panel rounded-[2rem] p-7 md:p-10 shadow-[0_0_0_1px_rgba(34,197,94,0.08),0_0_60px_rgba(34,197,94,0.06)]">
+          <div className="theme-panel flex h-full flex-col justify-center rounded-[2rem] p-7 md:p-10 shadow-[0_0_0_1px_rgba(34,197,94,0.08),0_0_60px_rgba(34,197,94,0.06)]">
             <div className="flex flex-col items-center gap-4 text-center">
               <GraceAvatar />
               <div>
@@ -164,7 +176,7 @@ export default function LiveVoiceDemo() {
 
         {/* ── CALLING ── */}
         {demoState === 'calling' && (
-          <div className="theme-panel rounded-[2rem] p-7 md:p-10">
+          <div className="theme-panel flex h-full flex-col justify-center rounded-[2rem] p-7 md:p-10">
             <div className="mb-8 flex items-center justify-between">
               <div className="theme-pill-green flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.18em]">
                 <span className="h-1.5 w-1.5 rounded-full bg-[#22c55e]" style={{ animation: 'pulse 1s infinite' }} />
@@ -201,7 +213,7 @@ export default function LiveVoiceDemo() {
 
         {/* ── ENDED ── */}
         {demoState === 'ended' && (
-          <div className="theme-panel rounded-[2rem] p-7 text-center md:p-10">
+          <div className="theme-panel flex h-full flex-col justify-center rounded-[2rem] p-7 text-center md:p-10">
             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full border border-[var(--brand-green-border)] bg-[var(--brand-green-bg)]">
               <svg className="h-8 w-8 text-[#22c55e]" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
@@ -234,6 +246,10 @@ export default function LiveVoiceDemo() {
             </button>
           </div>
         )}
+        </div>
+
+        {/* Right column — companion */}
+        <GraceCompanion demoState={demoState} />
       </div>
 
       <VoiceDemoModalDynamic />
