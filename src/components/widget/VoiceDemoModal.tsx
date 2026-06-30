@@ -1,8 +1,10 @@
 'use client'
 
 import { useState, useRef, useEffect, type FormEvent } from 'react'
-import { RetellWebClient } from 'retell-client-js-sdk'
 import { useVoiceWidget } from './VoiceWidgetProvider'
+import { activeTransportKind, type VoiceTransport } from '@/lib/voice/transport'
+import { createRetellTransport } from '@/lib/voice/retell-transport'
+import { createJambonzTransport, type JambonzSessionConfig } from '@/lib/voice/jambonz-transport'
 
 type LeadData = {
   name: string
@@ -14,6 +16,30 @@ type LeadData = {
 
 type Phase = 'form' | 'loading' | 'error'
 
+// Build the right transport from the lead. Retell = browser web call (no transfer).
+// Jambonz = SIP/WebRTC into UponAI as a phone call (transfer + Extension Directory).
+async function buildTransport(lead: LeadData): Promise<VoiceTransport> {
+  if (activeTransportKind() === 'jambonz') {
+    const res = await fetch('/api/voice/jambonz-session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...lead, notify: true }),
+    })
+    if (!res.ok) throw new Error('Failed to start Jambonz session')
+    const config = (await res.json()) as JambonzSessionConfig
+    return createJambonzTransport(config)
+  }
+
+  const res = await fetch('/api/retell/create-web-call', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ ...lead, notify: true }),
+  })
+  if (!res.ok) throw new Error('Failed to create call')
+  const { accessToken } = (await res.json()) as { accessToken: string }
+  return createRetellTransport(accessToken)
+}
+
 export function VoiceDemoModal() {
   const { widgetOpen, closeWidget, onCallStateChange, registerEndCall } = useVoiceWidget()
   const [phase, setPhase] = useState<Phase>('form')
@@ -21,52 +47,46 @@ export function VoiceDemoModal() {
   const [lead, setLead] = useState<LeadData>({
     name: '', email: '', company: '', consentContact: false, consentMarketing: false,
   })
-  const clientRef = useRef<RetellWebClient | null>(null)
+  const transportRef = useRef<VoiceTransport | null>(null)
 
-  useEffect(() => () => { clientRef.current?.stopCall() }, [])
+  useEffect(() => () => { transportRef.current?.stop() }, [])
 
-  // Reset to a fresh form each time the modal opens.
-  useEffect(() => {
+  // Reset to a fresh form each time the modal opens. Derived during render
+  // (React's "previous value" pattern) rather than in an effect.
+  const [prevOpen, setPrevOpen] = useState(widgetOpen)
+  if (widgetOpen !== prevOpen) {
+    setPrevOpen(widgetOpen)
     if (widgetOpen) { setPhase('form'); setErrorMsg(null) }
-  }, [widgetOpen])
+  }
 
   const startCall = async () => {
     setPhase('loading')
     setErrorMsg(null)
     onCallStateChange('loading')
     try {
-      const res = await fetch('/api/retell/create-web-call', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...lead, notify: true }),
-      })
-      if (!res.ok) throw new Error('Failed to create call')
-      const { accessToken } = (await res.json()) as { accessToken: string }
+      const transport = await buildTransport(lead)
+      transportRef.current = transport
 
-      const client = new RetellWebClient()
-      clientRef.current = client
-
-      client.on('call_started', () => {
-        onCallStateChange('active')
-        registerEndCall(() => client.stopCall())
-        closeWidget() // hand the live call off to the page
+      await transport.start({
+        onConnected: () => {
+          onCallStateChange('active')
+          registerEndCall(() => transport.stop())
+          closeWidget() // hand the live call off to the page
+        },
+        onEnded: () => {
+          onCallStateChange('ended')
+          registerEndCall(null)
+          transportRef.current = null
+        },
+        onError: (message) => {
+          transport.stop()
+          registerEndCall(null)
+          transportRef.current = null
+          onCallStateChange('error')
+          setPhase('error')
+          setErrorMsg(message)
+        },
       })
-      client.on('call_ended', () => {
-        onCallStateChange('ended')
-        registerEndCall(null)
-        clientRef.current = null
-      })
-      client.on('error', (err: unknown) => {
-        console.error('[VoiceDemoModal]', err)
-        client.stopCall()
-        registerEndCall(null)
-        clientRef.current = null
-        onCallStateChange('error')
-        setPhase('error')
-        setErrorMsg('Call failed. Please try again.')
-      })
-
-      await client.startCall({ accessToken })
     } catch (err) {
       console.error('[VoiceDemoModal]', err)
       onCallStateChange('error')

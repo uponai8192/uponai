@@ -9,6 +9,8 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@types/jssip": "^3.5.3",
+    "jssip": "^3.13.8",
     "next": "^15.5.15",
     "nodemailer": "^8.0.11",
     "react": "^19.2.5",

@@ -35,17 +35,20 @@ export default function LiveVoiceDemo() {
   const [elapsed, setElapsed] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Sync widget call state → demo section state
-  useEffect(() => {
+  // Sync widget call state → demo section state.
+  // Derived during render (React's "previous value" pattern) rather than in an
+  // effect, so the section updates in the same pass the call state changes.
+  const [prevCallState, setPrevCallState] = useState(callState);
+  if (callState !== prevCallState) {
+    setPrevCallState(callState);
     if (callState === 'active') {
       setDemoState('calling');
       setElapsed(0);
     } else if (callState === 'ended') {
       setDemoState('ended');
-    } else if (callState === 'idle') {
-      // only reset to idle if user explicitly resets via "Talk again"
     }
-  }, [callState]);
+    // 'idle' is intentionally ignored — reset only happens via "Talk again".
+  }
 
   // Timer
   useEffect(() => {
