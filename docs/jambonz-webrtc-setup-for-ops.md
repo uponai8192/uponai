@@ -1,107 +1,126 @@
-# Jambonz WebRTC setup — for whoever runs the Jambonz server
+# Letting the website call into Jambonz — plain-English setup guide
 
-**Goal:** let a browser (the uponai.com "Talk to Grace" demo) place a SIP call into
-Jambonz, like a softphone. When it lands as a normal call, Grace's transfer + the
-Extension Directory work — same as calling the DID.
+## The short version
 
-Browsers can only do SIP over a **secure WebSocket (WSS)**. So Jambonz needs a
-**public WSS SIP listener**. Right now it doesn't have one — that's the blocker.
+We want the "Talk to Grace" button on the website to place a real phone call into
+your Jambonz server — the same as if someone dialed the number. When it goes in that
+way, Grace can transfer people to a human, just like she does on the real phone line.
 
----
+Think of the Jambonz server as a building with several doors:
 
-## What we already found (2026-07-01)
+- The **front door** (for the admin website) is open — that's why you can log in.
+- The **phone door for web browsers** is what the website needs. **It's not built /
+  not open yet.** So when the website "knocks," nobody answers, and the call just
+  spins forever.
 
-Server: `ip-172-31-28-19`, public IP `18.224.99.87` (AWS EC2). SIP realm
-`uponai.jambonz.upon-ai.com`, SIP domain `sip.jambonz.upon-ai.com`.
+Your job: **open (or build) that phone door, and make sure the internet can reach it.**
+Nothing here is website code — it's all on the Jambonz server. Once the door's open
+and you tell us its address, we flip one setting and it works.
 
-```
-$ curl -v https://sip.jambonz.upon-ai.com:8443
-... connect to 18.224.99.87 port 8443 ... Connection refused
-
-$ sudo ss -tlnp | grep -E ':8443|:4443|:443'
-LISTEN 0 4096 0.0.0.0:443  ... users:(("docker-proxy",pid=4516))
-LISTEN 0 4096   [::]:443   ... users:(("docker-proxy",pid=4522))
-```
-
-**Reading:** only **443** is listening (the Jambonz portal, via docker). Port
-**8443** — jambonz's default WebRTC WSS port — has **nothing on it** (connection
-refused even from the box itself). So there is **no browser-facing WSS SIP endpoint**.
-It needs to be enabled and exposed.
-
-A browser test against `wss://sip.jambonz.upon-ai.com` on 443/8443/4443 confirms:
-443 answers TLS but rejects the SIP WebSocket upgrade (it's the portal); 8443 times
-out. No usable endpoint exists yet.
+The technical name for this door is a "secure WebSocket for SIP" (WSS). You don't need
+to know what that means — just that it's a door on a specific port number that has to
+be open to the public.
 
 ---
 
-## First: identify the container layout
+## What we already checked (so you don't repeat it)
 
-Run on the server and send the output back:
+Your server is the AWS box at public address `18.224.99.87`. We tested it two ways:
+
+**1. Tried knocking on the usual phone-door port (8443):**
+```
+curl -v https://sip.jambonz.upon-ai.com:8443
+→ Connection refused
+```
+"Connection refused" = **there is no door there at all.** Not locked — not built.
+
+**2. Listed which doors are actually open on the server:**
+```
+sudo ss -tlnp | grep -E ':8443|:4443|:443'
+→ only :443 is open (that's the admin website)
+```
+Only the front door (443, the admin portal) is open. The phone door is missing.
+
+So the task is: **stand up the phone door and open it to the internet.**
+
+---
+
+## Step 1 — tell us what's running (one command)
+
+Run this on the server and paste the result back to us:
 
 ```
 docker ps --format 'table {{.Names}}\t{{.Image}}\t{{.Ports}}'
 ```
 
-Look for the **SBC / drachtio** container(s) (images like `drachtio/drachtio-server`,
-`jambonz/sbc-inbound`, `jambonz/sbc-sip-sidecar`) and whatever publishes **443**.
-That tells us whether the SBC already has a WSS transport we just need to expose, or
-whether it must be enabled.
+This lists the "programs" (containers) running and which doors each one uses. We're
+looking for the piece that handles phone traffic — its name usually contains
+**`sbc`** or **`drachtio`**. From that we can tell you exactly what to switch on.
+Paste us the whole output.
 
 ---
 
-## Option A — expose the SBC WSS on 8443 (jambonz standard, recommended)
+## Step 2 — open the phone door (the recommended way)
 
-1. **Enable a SIP `wss` transport on the SBC (drachtio)** using a TLS certificate
-   valid for `sip.jambonz.upon-ai.com` (Let's Encrypt is fine). In a standard jambonz
-   deploy the drachtio SBC can serve SIP over `udp/tcp/tls/wss`; the WSS listener is
-   normally port **8443**.
-2. **Publish port 8443** from the SBC container to the host.
-3. **Open inbound TCP 8443** in the **AWS security group** for `18.224.99.87`.
-   Easy to miss — the container can listen but AWS still blocks the internet. Without
-   this the browser gets exactly the "connection refused / timeout" we saw.
+There are two ways. **Do the first one unless it's not possible.**
 
-Verify from an outside machine (not the server):
+**Way A — open door number 8443 (standard, simplest):**
+
+1. **Turn on the browser-phone door in Jambonz.** The phone-handling program needs
+   its "web browser" setting enabled, using a security certificate for the name
+   `sip.jambonz.upon-ai.com` (the free Let's Encrypt kind is fine). On a normal
+   Jambonz install this door is port **8443**.
+2. **Open port 8443 on the AWS firewall** for this server (in AWS this is the
+   "security group," inbound rule, TCP 8443, from anywhere). **This step is the one
+   people forget** — the door can be built inside the server but AWS still blocks the
+   street outside it. That's exactly the "connection refused" we saw.
+
+**Check it worked** — from any laptop (not the server):
 ```
-curl -v https://sip.jambonz.upon-ai.com:8443     # expect a TLS handshake, not "refused"
+curl -v https://sip.jambonz.upon-ai.com:8443
 ```
+- Good = it talks about a "certificate / TLS handshake" (the door answered).
+- Bad = "connection refused" or it hangs (door still closed).
 
-Reference: https://blog.jambonz.org/supporting-webrtc-clients-with-jambonz
+Jambonz's own how-to, if useful:
+https://blog.jambonz.org/supporting-webrtc-clients-with-jambonz
 
-## Option B — proxy WSS through the existing 443
-
-Since 443 is already public via a reverse proxy, add a WebSocket route there: for
-host `sip.jambonz.upon-ai.com`, upgrade the connection and forward to the SBC's
-internal WS/WSS port. Keeps one public port, but is more reverse-proxy config and
-easier to get subtly wrong. Only do this if adding 8443 to the security group isn't
-an option.
-
----
-
-## Don't forget media (RTP) — the "connected but silent" trap
-
-Signaling (WSS) is only half. Browser audio flows as **RTP through `rtpengine`**.
-Its **media UDP port range** must also be **open to the public in the AWS security
-group** (and mapped out of the container). If WSS works but there's no audio, this is
-why. Open it at the same time as 8443.
-
-TURN may also be needed for browsers behind restrictive NAT; we can add TURN creds on
-the app side once signaling + media are reachable.
+**Way B — reuse the front door (443):**
+Only if you can't open 8443. The thing already answering on 443 can be told to also
+forward browser-phone traffic to the phone program. It keeps everything on one door
+but is fiddlier to set up correctly. Prefer Way A.
 
 ---
 
-## What to send back
+## Step 3 — don't forget the sound
 
-1. The exact **`wss://host:port`** browsers should use (e.g. `wss://sip.jambonz.upon-ai.com:8443`).
-2. Confirmation that port is **open to the public** with a **valid TLS cert** for that host.
-3. Confirmation the **rtpengine media UDP range is open** to the public.
+Opening the phone door lets the call **connect**, but the actual **audio** travels a
+different way (a range of "sound doors," technical name: RTP/media ports, handled by a
+program called `rtpengine`). Those also need to be **open on the AWS firewall**, or
+you'll get a call that connects but has **no sound**. Open them at the same time so you
+only touch the firewall once. If you're unsure of the range, we'll confirm it from the
+`docker ps` output in Step 1.
 
-With #1 we set `JAMBONZ_WS_SERVER` and test the call immediately. The rest of the
-pieces are already in place on the Jambonz side:
+---
 
-- SIP client `webdemo-grace` (account UponAI) — the browser registers as this.
-- Account "Application for SIP device calls" = **UponAI Workspace – Native Transfer
-  Default**, so a registered client that dials **905** reaches Grace **with transfer**.
-- DID fallback if `905` doesn't route from a device call: `+12012280914`.
+## What to send back to us
 
-The website code is done and waiting on this — it's purely a Jambonz server
-enablement task (SBC WSS listener + firewall + cert + RTP), not application code.
+1. The **address of the phone door** — e.g. `sip.jambonz.upon-ai.com` on port `8443`.
+2. That it's **open to the internet** and has a valid certificate for that name.
+3. That the **sound ports are open** too.
+
+That's everything. With #1 we change one line on the website and test the call the
+same day.
+
+---
+
+## For reference — the website side is already done
+
+You don't need to touch any of this; it's here so you know it's waiting on you, not
+the other way around:
+
+- A phone login for the browser already exists in Jambonz (`webdemo-grace`).
+- Jambonz is already set so that a browser dialing **905** reaches Grace **with
+  transfer working**. (Backup number if needed: `+1 201-228-0914`.)
+- The website already knows how to use all of this — it just needs the phone door's
+  address, which only exists once you open it.
