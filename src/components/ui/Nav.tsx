@@ -109,7 +109,7 @@ function Dropdown({
           onMouseEnter={cancelClose}
           onMouseLeave={scheduleClose}
         >
-          <div className="theme-panel rounded-[1.5rem] p-3">
+          <div className="theme-menu rounded-[1.5rem] p-3">
             <div className="grid gap-4 p-1 md:grid-cols-2">
               {groups.map((group) => (
                 <div key={group.heading ?? group.links.map((link) => link.label).join('-')}>

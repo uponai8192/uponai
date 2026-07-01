@@ -8,6 +8,7 @@
   --text-soft: #94a3b8;
   --text-subtle: #64748b;
   --surface: rgba(9, 16, 29, 0.9);
+  --surface-solid: #0b1322;
   --surface-muted: rgba(255, 255, 255, 0.035);
   --surface-soft: rgba(255, 255, 255, 0.055);
   --surface-inset: rgba(2, 6, 23, 0.2);
@@ -42,6 +43,7 @@ html[data-theme='light'] {
   --text-soft: #475569;
   --text-subtle: #64748b;
   --surface: rgba(255, 255, 255, 0.84);
+  --surface-solid: #ffffff;
   --surface-muted: rgba(255, 255, 255, 0.72);
   --surface-soft: rgba(255, 255, 255, 0.58);
   --surface-inset: rgba(226, 232, 240, 0.72);
@@ -125,6 +127,14 @@ body {
     background: var(--surface);
     box-shadow: 0 20px 70px rgba(var(--shadow-rgb), 0.18);
     backdrop-filter: blur(24px);
+  }
+
+  /* Opaque surface for floating menus (dropdowns) so overlapped page
+     content never bleeds through and labels stay legible. */
+  .theme-menu {
+    border: 1px solid var(--border-strong);
+    background: var(--surface-solid);
+    box-shadow: 0 24px 70px rgba(var(--shadow-rgb), 0.25);
   }
 
   .theme-card {
