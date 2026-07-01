@@ -1,0 +1,9 @@
+services:
+  uponai-website:
+    build: .
+    container_name: uponai-website
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env.local
