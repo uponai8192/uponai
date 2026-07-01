@@ -29,23 +29,38 @@ function GraceAvatar({ pulsing = false }: { pulsing?: boolean }) {
   );
 }
 
-export default function LiveVoiceDemo() {
+type LiveVoiceDemoProps = {
+  eyebrow?: string;
+  heading?: React.ReactNode;
+  subheading?: string;
+};
+
+export default function LiveVoiceDemo({
+  eyebrow = 'Live Voice Demo',
+  heading = (
+    <>Hear what your AI agent<br />could sound like</>
+  ),
+  subheading = 'Talk to Grace, then build yours.',
+}: LiveVoiceDemoProps = {}) {
   const { callState, openWidget, endCall } = useVoiceWidget();
   const [demoState, setDemoState] = useState<DemoState>('idle');
   const [elapsed, setElapsed] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Sync widget call state → demo section state
-  useEffect(() => {
+  // Sync widget call state → demo section state.
+  // Derived during render (React's "previous value" pattern) rather than in an
+  // effect, so the section updates in the same pass the call state changes.
+  const [prevCallState, setPrevCallState] = useState(callState);
+  if (callState !== prevCallState) {
+    setPrevCallState(callState);
     if (callState === 'active') {
       setDemoState('calling');
       setElapsed(0);
     } else if (callState === 'ended') {
       setDemoState('ended');
-    } else if (callState === 'idle') {
-      // only reset to idle if user explicitly resets via "Talk again"
     }
-  }, [callState]);
+    // 'idle' is intentionally ignored — reset only happens via "Talk again".
+  }
 
   // Timer
   useEffect(() => {
@@ -124,12 +139,12 @@ export default function LiveVoiceDemo() {
       <div className="relative mx-auto max-w-3xl text-center">
         <div className="theme-pill-green inline-flex items-center gap-2.5 rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.24em]">
           <span className="h-2 w-2 rounded-full bg-[#22c55e] shadow-[0_0_10px_rgba(34,197,94,0.8)]" style={{ animation: 'pulse 2s infinite' }} />
-          Live Voice Demo
+          {eyebrow}
         </div>
         <h2 className="theme-heading mt-6 text-4xl font-bold leading-tight md:text-5xl">
-          Hear what your AI agent<br />could sound like
+          {heading}
         </h2>
-        <p className="theme-soft mt-4 text-lg">Talk to Grace, then build yours.</p>
+        <p className="theme-soft mt-4 text-lg">{subheading}</p>
       </div>
 
       {/* Demo panel — two columns: Grace card + companion */}

@@ -25,10 +25,13 @@ export function VoiceDemoModal() {
 
   useEffect(() => () => { clientRef.current?.stopCall() }, [])
 
-  // Reset to a fresh form each time the modal opens.
-  useEffect(() => {
+  // Reset to a fresh form each time the modal opens. Derived during render
+  // (React's "previous value" pattern) rather than in an effect.
+  const [prevOpen, setPrevOpen] = useState(widgetOpen)
+  if (widgetOpen !== prevOpen) {
+    setPrevOpen(widgetOpen)
     if (widgetOpen) { setPhase('form'); setErrorMsg(null) }
-  }, [widgetOpen])
+  }
 
   const startCall = async () => {
     setPhase('loading')
