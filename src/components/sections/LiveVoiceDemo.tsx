@@ -175,7 +175,7 @@ export default function LiveVoiceDemo({
                 <span className="absolute inset-0 rounded-full bg-[#22c55e]/30" style={{ animation: 'btn-ring 2s ease-out infinite' }} aria-hidden="true" />
                 <span className="absolute inset-0 rounded-full bg-[#22c55e]/20" style={{ animation: 'btn-ring 2s ease-out infinite 0.6s' }} aria-hidden="true" />
                 <button
-                  onClick={openWidget}
+                  onClick={() => openWidget()}
                   className="relative flex items-center gap-3 rounded-full bg-[#22c55e] px-8 py-4 text-base font-bold text-white transition-all duration-200 hover:bg-[#16a34a] active:scale-95"
                   style={{ animation: 'btn-glow 2.5s ease-in-out infinite' }}
                 >

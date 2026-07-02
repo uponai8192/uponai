@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import LiveVoiceDemo from '@/components/sections/LiveVoiceDemo';
 import GraceTalkButton from '@/components/grace/GraceTalkButton';
+import GraceBuilder from '@/components/grace/GraceBuilder';
+import GraceBuildThread from '@/components/grace/GraceBuildThread';
 import { uponaiBookingUrl } from '@/lib/booking';
 import { uponaiIndustriesMenu } from '@/lib/uponai-pages';
 
@@ -211,6 +213,28 @@ export default function GracePage() {
             <div className="mt-6">
               <GraceTalkButton label="Talk to Grace" className="w-full" />
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── UNDER THE HOOD: BUILD AN AGENT ── */}
+      <section className="px-4 py-20">
+        <div className="mx-auto max-w-6xl">
+          <div className="mb-10 max-w-3xl">
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-green-text)]">Under the hood</p>
+            <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">She isn&apos;t magic. She&apos;s built.</h2>
+            <p className="theme-soft mt-4 text-lg leading-8">
+              Assemble an agent from the same blocks we build Grace from — then hear the real one answer for your business.
+            </p>
+          </div>
+
+          <GraceBuilder />
+
+          <div className="mt-16">
+            <p className="mb-8 text-center text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-cyan-text)]">
+              The real pipeline
+            </p>
+            <GraceBuildThread />
           </div>
         </div>
       </section>

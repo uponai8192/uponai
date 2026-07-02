@@ -15,7 +15,7 @@ type LeadData = {
 type Phase = 'form' | 'loading' | 'error'
 
 export function VoiceDemoModal() {
-  const { widgetOpen, closeWidget, onCallStateChange, registerEndCall } = useVoiceWidget()
+  const { widgetOpen, prefillCompany, closeWidget, onCallStateChange, registerEndCall } = useVoiceWidget()
   const [phase, setPhase] = useState<Phase>('form')
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
   const [lead, setLead] = useState<LeadData>({
@@ -30,7 +30,11 @@ export function VoiceDemoModal() {
   const [prevOpen, setPrevOpen] = useState(widgetOpen)
   if (widgetOpen !== prevOpen) {
     setPrevOpen(widgetOpen)
-    if (widgetOpen) { setPhase('form'); setErrorMsg(null) }
+    if (widgetOpen) {
+      setPhase('form')
+      setErrorMsg(null)
+      if (prefillCompany) setLead(l => ({ ...l, company: prefillCompany }))
+    }
   }
 
   const startCall = async () => {
