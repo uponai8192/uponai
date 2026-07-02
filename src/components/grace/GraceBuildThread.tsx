@@ -31,11 +31,12 @@ export default function GraceBuildThread() {
     return () => ob.disconnect();
   }, []);
 
+  // Opaque fill so the connecting line passes behind the circle (not through the number).
   const dotClass = (active: boolean) =>
-    `flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full text-xs font-bold transition-all duration-500 ${
+    `relative z-10 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-[var(--background)] text-xs font-bold transition-all duration-500 ${
       active
-        ? 'border border-[#22c55e] bg-[#22c55e]/15 text-[#4ade80] shadow-[0_0_16px_rgba(34,197,94,0.35)]'
-        : 'theme-card theme-subtle border border-[var(--border-strong)]'
+        ? 'border border-[#22c55e] text-[#4ade80] shadow-[0_0_16px_rgba(34,197,94,0.35)]'
+        : 'theme-subtle border border-[var(--border-strong)]'
     }`;
 
   return (
