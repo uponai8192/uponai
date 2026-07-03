@@ -2,7 +2,7 @@
 
 **Date:** 2026-07-03
 **Branch:** `feat/site-redesign` (from `feat/grace-page`, carrying Grace features)
-**Sources:** `uponai-landing-2.html` mockup (team member), `UponAI - Redesign.pdf` (text extraction pending — tooling outage; assumed to mirror the HTML mockup, to be verified before implementation starts)
+**Sources:** `uponai-landing-2.html` mockup (team member), `UponAI - Redesign.pdf` (verified: Coolors palette sheet — `#0157A3`, `#E0ECF7`, `#D1D9E0`, `#525155`, `#28313D` — matches the HTML mockup exactly)
 
 ## 1. Context
 
@@ -106,6 +106,6 @@ No layout changes. After the token swap: a visual QA sweep across representative
 
 ## 10. Open items
 
-1. **PDF unverified** — extract `UponAI - Redesign.pdf` text before implementation; reconcile any direction that differs from the HTML.
+1. ~~PDF unverified~~ — resolved: PDF is a Coolors palette sheet matching the HTML mockup; no additional direction.
 2. Playbook asset (the "AI Voice Playbook") doesn't exist — capture works without it; asset is a content task.
 3. Follow-up passes (separate specs if desired): interior page layout refresh, `/grace` visual alignment tweaks.
