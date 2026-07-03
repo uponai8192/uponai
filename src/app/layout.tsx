@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Space_Grotesk } from 'next/font/google';
+import { Bricolage_Grotesque, IBM_Plex_Mono, Inter } from 'next/font/google';
 import Script from 'next/script';
 import './globals.css';
 import Nav from '@/components/ui/Nav';
@@ -8,7 +8,9 @@ import CookieConsentManager from '@/components/ui/CookieConsentManager';
 import { VoiceWidgetProvider } from '@/components/widget/VoiceWidgetProvider'
 import { DEFAULT_OG_IMAGE, SITE_NAME, SITE_URL, organizationSchema, websiteSchema } from '@/lib/seo';
 
-const spaceGrotesk = Space_Grotesk({ subsets: ['latin'] });
+const displayFont = Bricolage_Grotesque({ subsets: ['latin'], variable: '--font-display' });
+const bodyFont = Inter({ subsets: ['latin'], variable: '--font-body' });
+const monoFont = IBM_Plex_Mono({ subsets: ['latin'], weight: ['400', '500', '600'], variable: '--font-mono' });
 const themeInitScript = `(() => {
   try {
     const stored = window.localStorage.getItem('uponai-theme');
@@ -107,7 +109,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
       </head>
-      <body className={`${spaceGrotesk.className} bg-[var(--background)] text-[var(--foreground)] antialiased transition-[background-color,color] duration-300`}>
+      <body className={`${bodyFont.variable} ${displayFont.variable} ${monoFont.variable} bg-[var(--background)] text-[var(--foreground)] antialiased transition-[background-color,color] duration-300`}>
         <VoiceWidgetProvider>
           <Nav />
           <main className="pt-20 sm:pt-24 md:pt-32">{children}</main>

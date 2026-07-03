@@ -87,6 +87,12 @@ body {
   transition:
     background-color 250ms ease,
     color 250ms ease;
+  font-family: var(--font-body), system-ui, sans-serif;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display), var(--font-body), system-ui, sans-serif;
+  letter-spacing: -0.02em;
 }
 
 @theme inline {
