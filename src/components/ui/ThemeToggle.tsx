@@ -33,11 +33,11 @@ function syncTheme(theme: Theme) {
 }
 
 export default function ThemeToggle({ mobile = false }: { mobile?: boolean }) {
-  const [theme, setTheme] = useState<Theme>('dark');
+  const [theme, setTheme] = useState<Theme>('light');
 
   useEffect(() => {
     const updateTheme = () => {
-      const nextTheme = document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';
+      const nextTheme = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
       setTheme(nextTheme);
     };
 

@@ -14,13 +14,13 @@ const monoFont = IBM_Plex_Mono({ subsets: ['latin'], weight: ['400', '500', '600
 const themeInitScript = `(() => {
   try {
     const stored = window.localStorage.getItem('uponai-theme');
-    const theme = stored === 'light' ? 'light' : 'dark';
+    const theme = stored === 'dark' ? 'dark' : 'light';
     const root = document.documentElement;
     root.dataset.theme = theme;
     root.style.colorScheme = theme;
   } catch (error) {
-    document.documentElement.dataset.theme = 'dark';
-    document.documentElement.style.colorScheme = 'dark';
+    document.documentElement.dataset.theme = 'light';
+    document.documentElement.style.colorScheme = 'light';
   }
 })();`;
 
@@ -88,7 +88,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" data-theme="dark" suppressHydrationWarning>
+    <html lang="en" data-theme="light" suppressHydrationWarning>
       <head>
         <Script id="theme-init" strategy="beforeInteractive">
           {themeInitScript}
