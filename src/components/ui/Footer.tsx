@@ -51,13 +51,13 @@ export default function Footer() {
             <div className="mt-6 grid gap-3 xl:grid-cols-2">
               <a
                 href="tel:+18887876624"
-                className="theme-pill-green rounded-2xl px-4 py-3 text-sm font-semibold transition-colors hover:text-[var(--text-strong)]"
+                className="theme-pill-primary rounded-2xl px-4 py-3 text-sm font-semibold transition-colors hover:text-[var(--text-strong)]"
               >
                 (888) 787-6624
               </a>
               <a
                 href="mailto:info@uponai.com"
-                className="theme-pill-cyan min-w-0 break-all rounded-2xl px-4 py-3 text-sm font-semibold transition-colors hover:text-[var(--text-strong)]"
+                className="theme-pill-accent min-w-0 break-all rounded-2xl px-4 py-3 text-sm font-semibold transition-colors hover:text-[var(--text-strong)]"
               >
                 info@uponai.com
               </a>
@@ -65,7 +65,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="mb-4 text-sm font-semibold uppercase tracking-[0.24em] text-[var(--brand-green-text)]">Useful Information</h3>
+            <h3 className="mb-4 text-sm font-semibold uppercase tracking-[0.24em] text-[var(--brand-primary-text)]">Useful Information</h3>
             <ul className="space-y-3">
               {uponaiFooterInfo.map((item) => (
                 <li key={item.label}>
@@ -89,7 +89,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="mb-4 text-sm font-semibold uppercase tracking-[0.24em] text-[var(--brand-cyan-text)]">Head Office</h3>
+            <h3 className="mb-4 text-sm font-semibold uppercase tracking-[0.24em] text-[var(--brand-accent-text)]">Head Office</h3>
             <div className="theme-soft space-y-4 text-sm">
               <a
                 href="https://www.google.com/maps?q=711+Moorefield+Park+Drive,+Suite+A,+North+Chesterfield,+Virginia,+23236"
@@ -120,7 +120,7 @@ export default function Footer() {
         <div className="theme-card mt-10 rounded-[2rem] px-6 py-5">
           <div className="grid gap-8 lg:grid-cols-4">
             <div>
-              <h3 className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-green-text)]">
+              <h3 className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-primary-text)]">
                 Resources
               </h3>
               <div className="flex flex-wrap gap-3 text-sm">
@@ -145,7 +145,7 @@ export default function Footer() {
             </div>
 
             <div>
-              <h3 className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-cyan-text)]">
+              <h3 className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-accent-text)]">
                 Services
               </h3>
               <div className="flex flex-wrap gap-3 text-sm">
@@ -158,7 +158,7 @@ export default function Footer() {
             </div>
 
             <div>
-              <h3 className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-green-text)]">
+              <h3 className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-primary-text)]">
                 Industries
               </h3>
               <div className="flex flex-wrap gap-3 text-sm">
@@ -171,7 +171,7 @@ export default function Footer() {
             </div>
 
             <div>
-              <h3 className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-cyan-text)]">
+              <h3 className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-accent-text)]">
                 Top Markets
               </h3>
               <div className="flex flex-wrap gap-3 text-sm">

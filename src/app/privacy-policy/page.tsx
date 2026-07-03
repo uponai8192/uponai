@@ -26,7 +26,7 @@ export default function PrivacyPolicyPage() {
 
       <div className="max-w-4xl mx-auto px-4 py-12 text-sm leading-relaxed space-y-8 theme-body">
         <div className="theme-panel rounded-xl p-5">
-          <p className="text-[var(--brand-cyan-text)] font-semibold mb-1">Your Privacy Matters</p>
+          <p className="text-[var(--brand-accent-text)] font-semibold mb-1">Your Privacy Matters</p>
           <p>
             UponAI is committed to protecting the information you share with us. This page explains what we collect,
             how we use it, and the choices you have when you visit our site, request a demo, download a resource, or

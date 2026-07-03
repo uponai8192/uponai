@@ -97,7 +97,7 @@ export default function UponAILandingPage({ page }: { page: UponAIPage }) {
 
         <div className="relative mx-auto grid max-w-7xl gap-14 lg:grid-cols-[1.02fr_0.98fr] lg:items-center">
           <div>
-            <div className="theme-pill-cyan inline-flex items-center rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em]">
+            <div className="theme-pill-accent inline-flex items-center rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em]">
               {page.eyebrow}
             </div>
             <h1 className="theme-heading mt-6 max-w-4xl text-5xl font-bold leading-[0.95] md:text-7xl">
@@ -110,7 +110,7 @@ export default function UponAILandingPage({ page }: { page: UponAIPage }) {
                 <div key={item} className="theme-card rounded-[1.5rem] p-4">
                   <p
                     className={`text-xs font-semibold uppercase tracking-[0.24em] ${
-                      index % 2 === 0 ? 'text-[var(--brand-cyan-text)]' : 'text-[var(--brand-green-text)]'
+                      index % 2 === 0 ? 'text-[var(--brand-accent-text)]' : 'text-[var(--brand-primary-text)]'
                     }`}
                   >
                     Priority Focus
@@ -151,7 +151,7 @@ export default function UponAILandingPage({ page }: { page: UponAIPage }) {
               <div className="mt-3 grid gap-3 md:grid-cols-2">
                 {page.sections.slice(0, 2).map((section) => (
                   <div key={section.title} className="theme-card-soft rounded-[1.25rem] p-4">
-                    <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-green-text)]">
+                    <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-primary-text)]">
                       {section.title}
                     </p>
                     <p className="theme-soft mt-2 text-sm leading-7">{section.body}</p>
@@ -166,7 +166,7 @@ export default function UponAILandingPage({ page }: { page: UponAIPage }) {
       <section className="px-4 pb-8 pt-4 md:pb-12">
         <div className="mx-auto max-w-7xl">
           <div className="mb-10 max-w-3xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-green-text)]">Where It Helps</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-primary-text)]">Where It Helps</p>
             <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">
               Built around the places where teams lose time, miss calls, or create inconsistent handoffs.
             </h2>
@@ -195,7 +195,7 @@ export default function UponAILandingPage({ page }: { page: UponAIPage }) {
           <div className="mx-auto max-w-7xl">
             <div className="mb-12 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
               <div className="max-w-3xl">
-                <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-cyan-text)]">Capabilities</p>
+                <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-accent-text)]">Capabilities</p>
                 <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">
                   More of the older solution-page detail, rebuilt into the new UponAI layout.
                 </h2>
@@ -221,7 +221,7 @@ export default function UponAILandingPage({ page }: { page: UponAIPage }) {
       <section className="px-4 py-20">
         <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-[1.1fr_0.9fr]">
           <div className="theme-panel rounded-[2rem] p-6 md:p-8">
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-green-text)]">Operational Coverage</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-primary-text)]">Operational Coverage</p>
             <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">How this page fits into the broader UponAI site.</h2>
             <p className="theme-soft mt-4 max-w-3xl text-base leading-8">
               The earlier site had more supporting detail across solution pages. This layout brings that back through practical
@@ -233,7 +233,7 @@ export default function UponAILandingPage({ page }: { page: UponAIPage }) {
                 <div key={item} className="theme-card-soft rounded-[1.25rem] px-5 py-4">
                   <div className="flex items-start gap-3">
                     <span className="theme-card flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full">
-                      <span className="h-2.5 w-2.5 rounded-full bg-[var(--brand-green-text)]" />
+                      <span className="h-2.5 w-2.5 rounded-full bg-[var(--brand-primary-text)]" />
                     </span>
                     <p className="theme-body text-sm leading-7">{item}</p>
                   </div>
@@ -243,7 +243,7 @@ export default function UponAILandingPage({ page }: { page: UponAIPage }) {
           </div>
 
           <div className="theme-panel rounded-[2rem] p-6 md:p-8">
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-cyan-text)]">Related Pages</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-accent-text)]">Related Pages</p>
             <h2 className="theme-heading mt-3 text-2xl font-bold md:text-3xl">Explore connected use cases, solutions, and resources.</h2>
             <div className="mt-6 grid gap-3">
               {relatedLinks.map((item) => (
@@ -254,7 +254,7 @@ export default function UponAILandingPage({ page }: { page: UponAIPage }) {
                 >
                   <div className="flex items-center justify-between gap-4">
                     <span className="theme-body text-sm font-medium">{item.label}</span>
-                    <span className="text-[var(--brand-green-text)]">&rarr;</span>
+                    <span className="text-[var(--brand-primary-text)]">&rarr;</span>
                   </div>
                 </Link>
               ))}
@@ -267,7 +267,7 @@ export default function UponAILandingPage({ page }: { page: UponAIPage }) {
         <section className="theme-section-alt px-4 py-20">
           <div className="mx-auto max-w-5xl">
             <div className="text-center">
-              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-cyan-text)]">FAQ</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-accent-text)]">FAQ</p>
               <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">Questions teams usually ask before rollout.</h2>
               <p className="theme-soft mx-auto mt-4 max-w-2xl text-lg leading-8">
                 These answers help carry forward the context the old site used to provide around deployment, team fit, and
@@ -290,7 +290,7 @@ export default function UponAILandingPage({ page }: { page: UponAIPage }) {
         <div className="mx-auto max-w-7xl">
           <div className="mb-10 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-3xl">
-              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-green-text)]">Office Coverage</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-primary-text)]">Office Coverage</p>
               <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">
                 Built for businesses operating across North American markets.
               </h2>

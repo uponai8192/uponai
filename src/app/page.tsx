@@ -28,13 +28,13 @@ const solutionCards = [
   {
     title: 'AI Voice Systems',
     href: '/services/ivr-system',
-    tone: 'border-[var(--brand-green-border)] bg-[var(--brand-green-bg)] shadow-[0_18px_40px_rgba(var(--shadow-rgb),0.08)]',
+    tone: 'border-[var(--brand-primary-border)] bg-[var(--brand-primary-bg)] shadow-[0_18px_40px_rgba(var(--shadow-rgb),0.08)]',
     desc: 'Deploy branded voice experiences that greet callers, qualify intent, answer common questions, and route live conversations cleanly.',
   },
   {
     title: 'AI Chatbots',
     href: '/services/ai-chatbots',
-    tone: 'border-[var(--brand-cyan-border)] bg-[var(--brand-cyan-bg)] shadow-[0_18px_40px_rgba(var(--shadow-rgb),0.08)]',
+    tone: 'border-[var(--brand-accent-border)] bg-[var(--brand-accent-bg)] shadow-[0_18px_40px_rgba(var(--shadow-rgb),0.08)]',
     desc: 'Capture website demand instantly with conversational flows that mirror your call logic and move visitors toward the right next step.',
   },
   {
@@ -71,21 +71,21 @@ export default function HomePage() {
     <>
       <section className="relative overflow-hidden px-4 pb-16 pt-12 md:pb-24 md:pt-20">
         <div className="absolute inset-0">
-          <div className="absolute left-[6%] top-10 h-56 w-56 rounded-full bg-[#22c55e]/18 blur-3xl" />
-          <div className="absolute right-[10%] top-24 h-72 w-72 rounded-full bg-[#54d2ff]/14 blur-3xl" />
-          <div className="absolute bottom-0 left-1/2 h-80 w-80 -translate-x-1/2 rounded-full bg-[#22c55e]/10 blur-3xl" />
+          <div className="absolute left-[6%] top-10 h-56 w-56 rounded-full bg-[#1e78cc]/18 blur-3xl" />
+          <div className="absolute right-[10%] top-24 h-72 w-72 rounded-full bg-[#63ade5]/14 blur-3xl" />
+          <div className="absolute bottom-0 left-1/2 h-80 w-80 -translate-x-1/2 rounded-full bg-[#1e78cc]/10 blur-3xl" />
         </div>
 
         <div className="relative mx-auto grid max-w-7xl gap-14 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
           <div>
-            <div className="theme-pill-green inline-flex items-center gap-3 rounded-full px-5 py-2 text-sm font-medium">
-              <span className="inline-flex h-2.5 w-2.5 rounded-full bg-[#22c55e] shadow-[0_0_16px_rgba(34,197,94,0.75)]" />
+            <div className="theme-pill-primary inline-flex items-center gap-3 rounded-full px-5 py-2 text-sm font-medium">
+              <span className="inline-flex h-2.5 w-2.5 rounded-full bg-[#1e78cc] shadow-[0_0_16px_rgba(30, 120, 204,0.75)]" />
               AI voice systems for modern teams
             </div>
 
             <h1 className="theme-heading mt-7 max-w-4xl text-5xl font-bold leading-[0.95] md:text-7xl">
               Powering
-              <span className="block text-[#22c55e]">Tomorrow&apos;s Conversations</span>
+              <span className="block text-[#1e78cc]">Tomorrow&apos;s Conversations</span>
             </h1>
 
             <p className="theme-body mt-7 max-w-2xl text-lg leading-8 md:text-xl">
@@ -130,8 +130,8 @@ export default function HomePage() {
           </div>
 
           <div className="relative">
-            <div className="absolute -left-8 top-10 h-28 w-28 rounded-[2rem] border border-[#54d2ff]/20 bg-[#54d2ff]/8 blur-xl" />
-            <div className="absolute -right-6 bottom-16 h-32 w-32 rounded-full border border-[#22c55e]/20 bg-[#22c55e]/12 blur-xl" />
+            <div className="absolute -left-8 top-10 h-28 w-28 rounded-[2rem] border border-[#63ade5]/20 bg-[#63ade5]/8 blur-xl" />
+            <div className="absolute -right-6 bottom-16 h-32 w-32 rounded-full border border-[#1e78cc]/20 bg-[#1e78cc]/12 blur-xl" />
 
             <div className="theme-panel relative space-y-4 rounded-[2rem] p-5">
               <div className="theme-card-gradient rounded-[1.5rem] p-5">
@@ -140,7 +140,7 @@ export default function HomePage() {
                     <p className="theme-subtle text-xs uppercase tracking-[0.28em]">Live Session</p>
                     <h2 className="theme-heading mt-2 text-2xl font-semibold">Voice orchestration panel</h2>
                   </div>
-                  <div className="theme-pill-green rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em]">
+                  <div className="theme-pill-primary rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em]">
                     Active
                   </div>
                 </div>
@@ -152,7 +152,7 @@ export default function HomePage() {
                         <p className="theme-soft text-sm">Incoming voice intent</p>
                         <p className="theme-heading mt-1 text-lg font-semibold">Healthcare scheduling</p>
                       </div>
-                      <span className="theme-pill-cyan rounded-full px-3 py-1 text-xs font-semibold">
+                      <span className="theme-pill-accent rounded-full px-3 py-1 text-xs font-semibold">
                         Routed
                       </span>
                     </div>
@@ -162,7 +162,7 @@ export default function HomePage() {
                         <div
                           key={`${height}-${index}`}
                           className={`w-full rounded-full ${
-                            index % 3 === 0 ? 'bg-[#22c55e]' : 'bg-[#54d2ff]'
+                            index % 3 === 0 ? 'bg-[#1e78cc]' : 'bg-[#63ade5]'
                           }`}
                           style={{ height: `${height}%` }}
                         />
@@ -185,13 +185,13 @@ export default function HomePage() {
               </div>
 
               <div className="grid gap-4 md:grid-cols-3">
-                <div className="rounded-[1.5rem] border border-[var(--brand-green-border)] bg-[var(--brand-green-bg)] p-4">
-                  <p className="text-xs uppercase tracking-[0.24em] text-[var(--brand-green-text)]">Response Layer</p>
+                <div className="rounded-[1.5rem] border border-[var(--brand-primary-border)] bg-[var(--brand-primary-bg)] p-4">
+                  <p className="text-xs uppercase tracking-[0.24em] text-[var(--brand-primary-text)]">Response Layer</p>
                   <p className="theme-heading mt-3 text-3xl font-bold">24/7</p>
                   <p className="theme-body mt-2 text-sm">Always-on voice coverage with prompt-controlled handoff.</p>
                 </div>
-                <div className="rounded-[1.5rem] border border-[var(--brand-cyan-border)] bg-[var(--brand-cyan-bg)] p-4">
-                  <p className="text-xs uppercase tracking-[0.24em] text-[var(--brand-cyan-text)]">Escalation</p>
+                <div className="rounded-[1.5rem] border border-[var(--brand-accent-border)] bg-[var(--brand-accent-bg)] p-4">
+                  <p className="text-xs uppercase tracking-[0.24em] text-[var(--brand-accent-text)]">Escalation</p>
                   <p className="theme-heading mt-3 text-3xl font-bold">Live</p>
                   <p className="theme-body mt-2 text-sm">Transfer paths stay available when a person is the better answer.</p>
                 </div>
@@ -222,7 +222,7 @@ export default function HomePage() {
       <section className="px-4 py-20">
         <div className="mx-auto max-w-7xl">
           <div className="mb-12 max-w-3xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-green-text)]">What UponAI Builds</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-primary-text)]">What UponAI Builds</p>
             <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">
               AI voice products shaped around how calls actually move.
             </h2>
@@ -286,7 +286,7 @@ export default function HomePage() {
           </div>
 
           <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-cyan-text)]">Why The Redesign Works</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-accent-text)]">Why The Redesign Works</p>
             <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">
               A clearer UponAI identity across the shell and homepage.
             </h2>
@@ -318,7 +318,7 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl">
           <div className="mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div className="max-w-2xl">
-              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-green-text)]">Industries</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-primary-text)]">Industries</p>
               <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">Voice AI tailored to real operating environments.</h2>
             </div>
             <p className="theme-soft max-w-xl text-base leading-7">
@@ -333,8 +333,8 @@ export default function HomePage() {
                 href={item.href}
                 className={`rounded-[1.75rem] border p-5 transition-transform duration-200 hover:-translate-y-1 ${
                   index % 2 === 0
-                    ? 'border-[#22c55e]/20 bg-[#22c55e]/8'
-                    : 'border-[#54d2ff]/18 bg-[#54d2ff]/8'
+                    ? 'border-[#1e78cc]/20 bg-[#1e78cc]/8'
+                    : 'border-[#63ade5]/18 bg-[#63ade5]/8'
                 }`}
               >
                 <div className="flex items-center justify-between gap-4">
@@ -350,7 +350,7 @@ export default function HomePage() {
       <section className="theme-section-alt px-4 py-20">
         <div className="mx-auto max-w-6xl">
           <div className="text-center">
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-cyan-text)]">Use Cases</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-accent-text)]">Use Cases</p>
             <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">Built around the moments that usually break teams.</h2>
             <p className="theme-soft mx-auto mt-4 max-w-3xl text-lg leading-8">
               Booking, overflow, sales outreach, support queues, and industry-specific intake all need different logic.
@@ -368,7 +368,7 @@ export default function HomePage() {
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <span className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] ${
-                      index % 2 === 0 ? 'theme-pill-green' : 'theme-pill-cyan'
+                      index % 2 === 0 ? 'theme-pill-primary' : 'theme-pill-accent'
                     }`}>
                       Workflow
                     </span>

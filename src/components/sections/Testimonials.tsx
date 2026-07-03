@@ -30,7 +30,7 @@ export default function Testimonials() {
     <section className="theme-section-alt px-4 py-20">
       <div className="mx-auto max-w-7xl">
         <div className="text-center mb-12">
-          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-cyan-text)]">Client Perspective</p>
+          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-accent-text)]">Client Perspective</p>
           <h2 className="theme-heading mb-4 text-3xl font-bold md:text-4xl">What Clients Say</h2>
           <p className="theme-soft text-lg">
             Teams use UponAI to make real operational improvements, not just to run isolated demos.
@@ -48,7 +48,7 @@ export default function Testimonials() {
               </div>
               <p className="theme-body mb-5 text-sm leading-relaxed italic">&ldquo;{t.text}&rdquo;</p>
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-[#22c55e] text-sm font-bold text-white">
+                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-[#1e78cc] text-sm font-bold text-white">
                   {t.initials}
                 </div>
                 <div>

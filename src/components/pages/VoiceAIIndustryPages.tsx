@@ -98,7 +98,7 @@ export function VoiceAIIndustryLandingPage({ page }: { page: VoiceAIIndustryPage
 
         <div className="relative mx-auto grid max-w-7xl gap-14 lg:grid-cols-[1.02fr_0.98fr] lg:items-center">
           <div>
-            <div className="theme-pill-cyan inline-flex items-center rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em]">
+            <div className="theme-pill-accent inline-flex items-center rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em]">
               {page.eyebrow}
             </div>
             <h1 className="theme-heading mt-6 max-w-4xl text-5xl font-bold leading-[0.95] md:text-7xl">
@@ -113,7 +113,7 @@ export function VoiceAIIndustryLandingPage({ page }: { page: VoiceAIIndustryPage
                 <div key={stat.label} className="theme-card rounded-[1.5rem] p-4">
                   <p
                     className={`text-xs font-semibold uppercase tracking-[0.24em] ${
-                      index === 0 ? 'text-[var(--brand-cyan-text)]' : 'text-[var(--brand-green-text)]'
+                      index === 0 ? 'text-[var(--brand-accent-text)]' : 'text-[var(--brand-primary-text)]'
                     }`}
                   >
                     {stat.label}
@@ -154,7 +154,7 @@ export function VoiceAIIndustryLandingPage({ page }: { page: VoiceAIIndustryPage
               <div className="mt-3 grid gap-3 md:grid-cols-2">
                 {page.stats.slice(2).map((stat) => (
                   <div key={stat.label} className="theme-card-soft rounded-[1.25rem] p-4">
-                    <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-green-text)]">
+                    <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-primary-text)]">
                       {stat.label}
                     </p>
                     <p className="theme-heading mt-2 text-lg font-semibold">{stat.value}</p>
@@ -169,7 +169,7 @@ export function VoiceAIIndustryLandingPage({ page }: { page: VoiceAIIndustryPage
       <section className="px-4 pb-8 pt-4 md:pb-12">
         <div className="mx-auto max-w-7xl">
           <div className="mb-10 max-w-3xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-green-text)]">Where It Helps</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-primary-text)]">Where It Helps</p>
             <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">
               Designed around real inbound conversations, not canned IVR logic.
             </h2>
@@ -198,7 +198,7 @@ export function VoiceAIIndustryLandingPage({ page }: { page: VoiceAIIndustryPage
           <div className="mx-auto max-w-7xl">
             <div className="grid gap-5 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
               <div className="max-w-3xl">
-                <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-cyan-text)]">Integrations</p>
+                <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-accent-text)]">Integrations</p>
                 <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">{page.integrations.title}</h2>
                 <p className="theme-soft mt-4 text-lg leading-8">{page.integrations.body}</p>
               </div>
@@ -231,7 +231,7 @@ export function VoiceAIIndustryLandingPage({ page }: { page: VoiceAIIndustryPage
         <div className="mx-auto max-w-7xl">
           <div className="mb-12 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-3xl">
-              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-cyan-text)]">Capabilities</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-accent-text)]">Capabilities</p>
               <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">
                 Voice AI that supports the work your team is already trying to keep up with.
               </h2>
@@ -256,7 +256,7 @@ export function VoiceAIIndustryLandingPage({ page }: { page: VoiceAIIndustryPage
       <section className="px-4 py-20">
         <div className="mx-auto max-w-7xl">
           <div className="mb-10 max-w-3xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-green-text)]">Outcomes</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-primary-text)]">Outcomes</p>
             <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">What teams usually want fixed first.</h2>
           </div>
 
@@ -265,7 +265,7 @@ export function VoiceAIIndustryLandingPage({ page }: { page: VoiceAIIndustryPage
               <div key={item} className="theme-card rounded-[1.5rem] px-5 py-4">
                 <div className="flex items-start gap-3">
                   <span className="theme-card-soft mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full">
-                    <span className="h-2.5 w-2.5 rounded-full bg-[var(--brand-green-text)]" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-[var(--brand-primary-text)]" />
                   </span>
                   <p className="theme-body text-sm leading-7">{item}</p>
                 </div>
@@ -279,7 +279,7 @@ export function VoiceAIIndustryLandingPage({ page }: { page: VoiceAIIndustryPage
         <div className="mx-auto max-w-7xl">
           <div className="mb-12 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-3xl">
-              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-green-text)]">Rollout Path</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-primary-text)]">Rollout Path</p>
               <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">
                 How most teams turn this from a pilot into a real workflow.
               </h2>
@@ -306,7 +306,7 @@ export function VoiceAIIndustryLandingPage({ page }: { page: VoiceAIIndustryPage
           <div className="mx-auto max-w-7xl">
             <div className="mb-12 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
               <div className="max-w-3xl">
-                <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-cyan-text)]">Expanded Detail</p>
+                <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-accent-text)]">Expanded Detail</p>
                 <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">
                   Information carried forward from the earlier industry page.
                 </h2>
@@ -340,7 +340,7 @@ export function VoiceAIIndustryLandingPage({ page }: { page: VoiceAIIndustryPage
         <div className="mx-auto max-w-7xl">
           <div className="mb-10 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-3xl">
-              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-cyan-text)]">Related Pages</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-accent-text)]">Related Pages</p>
               <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">
                 Strengthen the topic cluster around this workflow.
               </h2>
@@ -353,7 +353,7 @@ export function VoiceAIIndustryLandingPage({ page }: { page: VoiceAIIndustryPage
 
           <div className="grid gap-4 lg:grid-cols-2">
             <div className="theme-panel rounded-[2rem] p-5">
-              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-green-text)]">Related Voice AI Pages</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-primary-text)]">Related Voice AI Pages</p>
               <div className="mt-5 grid gap-3 sm:grid-cols-2">
                 {relatedIndustryPages.map((item) => (
                   <Link
@@ -369,7 +369,7 @@ export function VoiceAIIndustryLandingPage({ page }: { page: VoiceAIIndustryPage
             </div>
 
             <div className="theme-panel rounded-[2rem] p-5">
-              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-cyan-text)]">Related Solutions And Use Cases</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-accent-text)]">Related Solutions And Use Cases</p>
               <div className="mt-5 grid gap-3 sm:grid-cols-2">
                 {relatedWorkflowLinks.map((item) => (
                   <Link
@@ -391,7 +391,7 @@ export function VoiceAIIndustryLandingPage({ page }: { page: VoiceAIIndustryPage
         <div className="mx-auto max-w-7xl">
           <div className="mb-10 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-3xl">
-              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-cyan-text)]">City Pages</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-accent-text)]">City Pages</p>
               <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">
                 Dedicated {page.label.toLowerCase()} voice AI pages for major markets.
               </h2>
@@ -419,7 +419,7 @@ export function VoiceAIIndustryLandingPage({ page }: { page: VoiceAIIndustryPage
       <section className="px-4 py-20">
         <div className="mx-auto max-w-5xl">
           <div className="text-center">
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-green-text)]">FAQs</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-primary-text)]">FAQs</p>
             <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">Common questions about this workflow.</h2>
           </div>
 
@@ -549,7 +549,7 @@ export function VoiceAIIndustryCityPage({
 
           <div className="grid gap-14 lg:grid-cols-[1.04fr_0.96fr] lg:items-center">
             <div>
-              <div className="theme-pill-cyan inline-flex items-center rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em]">
+              <div className="theme-pill-accent inline-flex items-center rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em]">
                 {page.label} in {location}
               </div>
               <h1 className="theme-heading mt-6 max-w-4xl text-5xl font-bold leading-[0.95] md:text-7xl">
@@ -562,14 +562,14 @@ export function VoiceAIIndustryCityPage({
 
               <div className="mt-8 grid gap-3 sm:grid-cols-2">
                 <div className="theme-card rounded-[1.5rem] p-4">
-                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-cyan-text)]">
+                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-accent-text)]">
                     Local Demand
                   </p>
                   <p className="theme-heading mt-3 text-xl font-bold">{override?.marketHeadline ?? market.headline}</p>
                   <p className="theme-soft mt-2 text-sm leading-6">{override?.marketBody ?? market.body}</p>
                 </div>
                 <div className="theme-card rounded-[1.5rem] p-4">
-                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-green-text)]">
+                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-primary-text)]">
                     Coverage
                   </p>
                   <p className="theme-heading mt-3 text-xl font-bold">{page.stats[0]?.value ?? '24/7'}</p>
@@ -616,7 +616,7 @@ export function VoiceAIIndustryCityPage({
       <section className="px-4 pb-8 pt-4 md:pb-12">
         <div className="mx-auto max-w-7xl">
           <div className="mb-10 max-w-3xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-green-text)]">Local Use Cases</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-primary-text)]">Local Use Cases</p>
             <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">
               What teams in {city.name} usually automate first.
             </h2>
@@ -636,7 +636,7 @@ export function VoiceAIIndustryCityPage({
         <div className="mx-auto max-w-7xl">
           <div className="mb-12 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-3xl">
-              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-cyan-text)]">Workflow Support</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-accent-text)]">Workflow Support</p>
               <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">
                 Built for how {page.label.toLowerCase()} calls actually come in.
               </h2>
@@ -661,7 +661,7 @@ export function VoiceAIIndustryCityPage({
         <div className="mx-auto max-w-7xl">
           <div className="mb-12 grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-green-text)]">Market Context</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-primary-text)]">Market Context</p>
               <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">
                 Why {city.name} needs a different voice workflow than a generic national page.
               </h2>
@@ -683,7 +683,7 @@ export function VoiceAIIndustryCityPage({
       <section className="theme-section-alt px-4 py-20">
         <div className="mx-auto max-w-7xl">
           <div className="mb-10 max-w-4xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-cyan-text)]">Why This Page Exists</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-accent-text)]">Why This Page Exists</p>
             <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">
               A stronger local page should say more than the city name.
             </h2>
@@ -703,7 +703,7 @@ export function VoiceAIIndustryCityPage({
         <section className="theme-section-alt px-4 py-20">
           <div className="mx-auto max-w-7xl">
             <div className="mb-10 max-w-3xl">
-              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-green-text)]">Local Focus</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-primary-text)]">Local Focus</p>
               <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">
                 Why this page matters specifically in {location}.
               </h2>
@@ -725,7 +725,7 @@ export function VoiceAIIndustryCityPage({
         <section className="theme-section-alt px-4 py-20">
           <div className="mx-auto max-w-7xl">
             <div className="mb-10 max-w-3xl">
-              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-cyan-text)]">Expanded Local Detail</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-accent-text)]">Expanded Local Detail</p>
               <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">
                 Older site detail, adapted for {location}.
               </h2>
@@ -760,7 +760,7 @@ export function VoiceAIIndustryCityPage({
         <div className="mx-auto max-w-7xl">
           <div className="mb-10 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-3xl">
-              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-green-text)]">Related Local Pages</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-primary-text)]">Related Local Pages</p>
               <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">
                 Other UponAI voice workflows in {city.name}.
               </h2>
@@ -772,7 +772,7 @@ export function VoiceAIIndustryCityPage({
 
           <div className="grid gap-4 lg:grid-cols-2">
             <div className="theme-panel rounded-[2rem] p-5">
-              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-cyan-text)]">Same City, Different Voice AI Workflows</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-accent-text)]">Same City, Different Voice AI Workflows</p>
               <div className="mt-5 grid gap-3 sm:grid-cols-2">
                 {siblingIndustryPages.map((item) => (
                   <Link
@@ -788,7 +788,7 @@ export function VoiceAIIndustryCityPage({
             </div>
 
             <div className="theme-panel rounded-[2rem] p-5">
-              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-green-text)]">Broader UponAI Workflows</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-primary-text)]">Broader UponAI Workflows</p>
               <div className="mt-5 grid gap-3 sm:grid-cols-2">
                 {relatedWorkflowLinks.map((item) => (
                   <Link
@@ -810,7 +810,7 @@ export function VoiceAIIndustryCityPage({
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-12 lg:grid-cols-[1fr_0.95fr] lg:items-start">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-green-text)]">Capabilities</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-primary-text)]">Capabilities</p>
               <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">
                 How {location} teams use voice AI in practice.
               </h2>
@@ -826,7 +826,7 @@ export function VoiceAIIndustryCityPage({
             </div>
 
             <div className="theme-panel rounded-[2rem] p-5">
-              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-cyan-text)]">Nearby Coverage</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-accent-text)]">Nearby Coverage</p>
               <h2 className="theme-heading mt-3 text-2xl font-bold">Serving more than one market in {city.state}?</h2>
               <p className="theme-soft mt-3 text-sm leading-7">
                 Many teams want one voice workflow that still respects local demand across nearby cities and service areas.
@@ -865,7 +865,7 @@ export function VoiceAIIndustryCityPage({
       <section className="theme-section-alt px-4 py-20">
         <div className="mx-auto max-w-5xl">
           <div className="text-center">
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-green-text)]">FAQs</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-primary-text)]">FAQs</p>
             <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">
               Questions teams in {city.name} usually ask first.
             </h2>

@@ -95,18 +95,18 @@ export default function GracePage() {
       {/* ── HERO ── */}
       <section className="relative overflow-hidden px-4 pb-8 pt-12 md:pt-20">
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute left-[8%] top-10 h-64 w-64 rounded-full bg-[#22c55e]/14 blur-3xl" />
-          <div className="absolute right-[10%] top-24 h-72 w-72 rounded-full bg-[#54d2ff]/12 blur-3xl" />
+          <div className="absolute left-[8%] top-10 h-64 w-64 rounded-full bg-[#1e78cc]/14 blur-3xl" />
+          <div className="absolute right-[10%] top-24 h-72 w-72 rounded-full bg-[#63ade5]/12 blur-3xl" />
         </div>
 
         <div className="relative mx-auto max-w-3xl text-center">
-          <div className="theme-pill-green inline-flex items-center gap-2.5 rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.24em]">
-            <span className="h-2 w-2 rounded-full bg-[#22c55e] shadow-[0_0_10px_rgba(34,197,94,0.8)]" style={{ animation: 'pulse 2s infinite' }} />
+          <div className="theme-pill-primary inline-flex items-center gap-2.5 rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.24em]">
+            <span className="h-2 w-2 rounded-full bg-[#1e78cc] shadow-[0_0_10px_rgba(30, 120, 204,0.8)]" style={{ animation: 'pulse 2s infinite' }} />
             UponAI Voice Agent
           </div>
 
           <h1 className="theme-heading mt-7 text-5xl font-bold leading-[0.98] md:text-7xl">
-            Meet <span className="text-[#22c55e]">Grace</span>
+            Meet <span className="text-[#1e78cc]">Grace</span>
           </h1>
 
           <p className="theme-body mx-auto mt-6 max-w-2xl text-lg leading-8 md:text-xl">
@@ -139,7 +139,7 @@ export default function GracePage() {
       <section className="px-4 py-20">
         <div className="mx-auto max-w-6xl">
           <div className="mb-10 max-w-3xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-green-text)]">Under the hood</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-primary-text)]">Under the hood</p>
             <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">She isn&apos;t magic. She&apos;s built.</h2>
             <p className="theme-soft mt-4 text-lg leading-8">
               Assemble an agent from the same blocks we build Grace from — then hear the real one answer for your business.
@@ -149,7 +149,7 @@ export default function GracePage() {
           <GraceBuilder />
 
           <div className="mt-16">
-            <p className="mb-8 text-center text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-cyan-text)]">
+            <p className="mb-8 text-center text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-accent-text)]">
               The real pipeline
             </p>
             <GraceBuildThread />
@@ -168,7 +168,7 @@ export default function GracePage() {
       <section className="px-4 py-20">
         <div className="mx-auto max-w-7xl">
           <div className="mb-12 max-w-3xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-green-text)]">What Grace does</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-primary-text)]">What Grace does</p>
             <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">One agent, the whole front line.</h2>
           </div>
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
@@ -186,7 +186,7 @@ export default function GracePage() {
       <section className="theme-section-alt px-4 py-20">
         <div className="mx-auto max-w-6xl">
           <div className="mb-12 text-center">
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-cyan-text)]">How it works</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-accent-text)]">How it works</p>
             <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">Every call, handled the same clean way.</h2>
           </div>
           <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
@@ -207,7 +207,7 @@ export default function GracePage() {
       <section className="px-4 py-20">
         <div className="mx-auto grid max-w-7xl gap-14 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-green-text)]">What Grace can talk about</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-primary-text)]">What Grace can talk about</p>
             <h2 className="theme-heading mt-3 text-3xl font-bold md:text-4xl">She knows the whole UponAI offering.</h2>
             <div className="mt-8 grid gap-4 sm:grid-cols-2">
               {offerings.map((o) => (
@@ -220,12 +220,12 @@ export default function GracePage() {
           </div>
 
           <div className="theme-panel rounded-[2rem] p-7 md:p-9">
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#22c55e]">Try asking</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#1e78cc]">Try asking</p>
             <h3 className="theme-heading mt-2 text-xl font-semibold">Not sure where to start?</h3>
             <div className="mt-5 flex flex-col gap-2.5">
               {tryAsking.map((prompt) => (
                 <div key={prompt} className="theme-card flex items-center gap-3 rounded-xl px-4 py-2.5">
-                  <svg className="h-4 w-4 flex-shrink-0 text-[#22c55e]" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <svg className="h-4 w-4 flex-shrink-0 text-[#1e78cc]" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M7.17 6A5.17 5.17 0 0 0 2 11.17V18h6.83v-6.83H5.5A3.67 3.67 0 0 1 9.17 7.5V6h-2zm10 0A5.17 5.17 0 0 0 12 11.17V18h6.83v-6.83H15.5A3.67 3.67 0 0 1 19.17 7.5V6h-2z" />
                   </svg>
                   <span className="theme-body text-sm">{prompt}</span>
@@ -243,7 +243,7 @@ export default function GracePage() {
       <section className="theme-section-alt px-4 py-20">
         <div className="mx-auto max-w-7xl">
           <div className="mb-12 max-w-3xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-cyan-text)]">Use cases</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-accent-text)]">Use cases</p>
             <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">Grace adapts to your industry.</h2>
             <p className="theme-soft mt-4 text-lg leading-8">
               The same agent, tuned to how calls actually move in your field — intake, scheduling,
@@ -256,7 +256,7 @@ export default function GracePage() {
                 key={item.href}
                 href={item.href}
                 className={`rounded-[1.75rem] border p-5 transition-transform duration-200 hover:-translate-y-1 ${
-                  index % 2 === 0 ? 'border-[#22c55e]/20 bg-[#22c55e]/8' : 'border-[#54d2ff]/18 bg-[#54d2ff]/8'
+                  index % 2 === 0 ? 'border-[#1e78cc]/20 bg-[#1e78cc]/8' : 'border-[#63ade5]/18 bg-[#63ade5]/8'
                 }`}
               >
                 <div className="flex items-center justify-between gap-4">
@@ -273,7 +273,7 @@ export default function GracePage() {
       <section className="px-4 py-20">
         <div className="mx-auto max-w-6xl">
           <div className="mb-12 text-center">
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-green-text)]">Built on UponAI</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-primary-text)]">Built on UponAI</p>
             <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">Ready for real operations.</h2>
           </div>
 
@@ -307,7 +307,7 @@ export default function GracePage() {
       <section className="theme-section-alt px-4 py-20">
         <div className="mx-auto max-w-3xl">
           <div className="mb-10 text-center">
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-cyan-text)]">FAQ</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-accent-text)]">FAQ</p>
             <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">Good questions to ask.</h2>
           </div>
           <div className="flex flex-col gap-3">

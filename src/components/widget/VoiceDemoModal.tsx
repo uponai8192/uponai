@@ -86,8 +86,8 @@ export function VoiceDemoModal() {
   const handleRetry = () => { setPhase('form'); setErrorMsg(null); onCallStateChange('idle') }
 
   const onFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-    e.target.style.borderColor = 'rgba(34,197,94,0.45)'
-    e.target.style.boxShadow = '0 0 0 3px rgba(34,197,94,0.08)'
+    e.target.style.borderColor = 'rgba(30, 120, 204,0.45)'
+    e.target.style.boxShadow = '0 0 0 3px rgba(30, 120, 204,0.08)'
   }
   const onBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     e.target.style.borderColor = 'rgba(148,163,184,0.15)'
@@ -117,8 +117,8 @@ export function VoiceDemoModal() {
         style={{
           animation: 'modal-slide-up 0.26s cubic-bezier(0.16,1,0.3,1) forwards',
           background: 'rgba(6,13,26,0.98)',
-          border: '1px solid rgba(34,197,94,0.14)',
-          boxShadow: '0 0 0 1px rgba(0,0,0,0.6), 0 48px 96px rgba(0,0,0,0.7), 0 0 80px rgba(34,197,94,0.07)',
+          border: '1px solid rgba(30, 120, 204,0.14)',
+          boxShadow: '0 0 0 1px rgba(0,0,0,0.6), 0 48px 96px rgba(0,0,0,0.7), 0 0 80px rgba(30, 120, 204,0.07)',
         }}
         onClick={e => e.stopPropagation()}
       >
@@ -131,13 +131,13 @@ export function VoiceDemoModal() {
               style={{ borderBottom: '1px solid rgba(148,163,184,0.07)' }}
             >
               <div className="relative flex-shrink-0">
-                <div className="h-[52px] w-[52px] rounded-full bg-gradient-to-br from-[#22c55e] to-[#54d2ff] flex items-center justify-center shadow-[0_0_20px_rgba(34,197,94,0.28)]">
+                <div className="h-[52px] w-[52px] rounded-full bg-gradient-to-br from-[#1e78cc] to-[#63ade5] flex items-center justify-center shadow-[0_0_20px_rgba(30, 120, 204,0.28)]">
                   <span className="text-xl font-bold text-white select-none">G</span>
                 </div>
-                <span className="absolute bottom-0.5 right-0.5 h-3 w-3 rounded-full bg-[#22c55e] border-2 border-[rgba(6,13,26,1)]" />
+                <span className="absolute bottom-0.5 right-0.5 h-3 w-3 rounded-full bg-[#1e78cc] border-2 border-[rgba(6,13,26,1)]" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-[10px] font-bold uppercase tracking-[0.22em]" style={{ color: '#22c55e' }}>UponAI Agent</p>
+                <p className="text-[10px] font-bold uppercase tracking-[0.22em]" style={{ color: '#1e78cc' }}>UponAI Agent</p>
                 <h2 className="text-lg font-bold leading-tight" style={{ color: '#f1f5f9' }}>Talk to Grace</h2>
                 <p className="text-xs mt-0.5" style={{ color: '#475569' }}>AI voice · Available now</p>
               </div>
@@ -200,7 +200,7 @@ export function VoiceDemoModal() {
                     checked={lead.consentContact}
                     onChange={e => setLead(p => ({ ...p, consentContact: e.target.checked }))}
                     className="mt-0.5 flex-shrink-0"
-                    style={{ accentColor: '#22c55e' }}
+                    style={{ accentColor: '#1e78cc' }}
                   />
                   <span className="text-xs leading-relaxed" style={{ color: '#475569' }}>
                     I consent to UponAI contacting me regarding my enquiry.{' '}
@@ -214,7 +214,7 @@ export function VoiceDemoModal() {
                     checked={lead.consentMarketing}
                     onChange={e => setLead(p => ({ ...p, consentMarketing: e.target.checked }))}
                     className="mt-0.5 flex-shrink-0"
-                    style={{ accentColor: '#22c55e' }}
+                    style={{ accentColor: '#1e78cc' }}
                   />
                   <span className="text-xs leading-relaxed" style={{ color: '#475569' }}>
                     I agree to receive newsletters and marketing from UponAI.
@@ -231,9 +231,9 @@ export function VoiceDemoModal() {
                 disabled={phase === 'loading'}
                 className="flex w-full items-center justify-center gap-2.5 rounded-xl py-3.5 text-sm font-semibold transition-all duration-200 hover:opacity-90 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed"
                 style={{
-                  background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)',
+                  background: 'linear-gradient(135deg, #1e78cc 0%, #0157a3 100%)',
                   color: '#fff',
-                  boxShadow: '0 0 28px rgba(34,197,94,0.28)',
+                  boxShadow: '0 0 28px rgba(30, 120, 204,0.28)',
                 }}
               >
                 {phase === 'loading' ? (
@@ -282,7 +282,7 @@ export function VoiceDemoModal() {
               type="button"
               onClick={handleRetry}
               className="rounded-xl px-8 py-3 text-sm font-semibold transition-all hover:opacity-80"
-              style={{ background: 'rgba(34,197,94,0.09)', border: '1px solid rgba(34,197,94,0.2)', color: '#22c55e' }}
+              style={{ background: 'rgba(30, 120, 204,0.09)', border: '1px solid rgba(30, 120, 204,0.2)', color: '#1e78cc' }}
             >
               Try again
             </button>

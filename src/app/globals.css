@@ -22,13 +22,13 @@
   --brand: #0157a3;
   --brand-strong: #01498a;
   --brand-2: #1668b5;
-  --brand-green-bg: rgba(1, 87, 163, 0.1);
-  --brand-green-border: rgba(1, 87, 163, 0.24);
-  --brand-green-text: #0157a3;
+  --brand-primary-bg: rgba(1, 87, 163, 0.1);
+  --brand-primary-border: rgba(1, 87, 163, 0.24);
+  --brand-primary-text: #0157a3;
   --brand-cool: #2e7cc4;
-  --brand-cyan-bg: rgba(46, 124, 196, 0.12);
-  --brand-cyan-border: rgba(46, 124, 196, 0.26);
-  --brand-cyan-text: #2e7cc4;
+  --brand-accent-bg: rgba(46, 124, 196, 0.12);
+  --brand-accent-border: rgba(46, 124, 196, 0.26);
+  --brand-accent-text: #2e7cc4;
   --wash-1: rgba(1, 87, 163, 0.14);
   --wash-2: rgba(1, 87, 163, 0.09);
   /* Compat: decorative blur orbs on interior pages still reference these. */
@@ -59,13 +59,13 @@ html[data-theme='dark'] {
   --brand: #4da3e8;
   --brand-strong: #6bb5f0;
   --brand-2: #2e86d9;
-  --brand-green-bg: rgba(77, 163, 232, 0.12);
-  --brand-green-border: rgba(77, 163, 232, 0.26);
-  --brand-green-text: #8ec8f2;
+  --brand-primary-bg: rgba(77, 163, 232, 0.12);
+  --brand-primary-border: rgba(77, 163, 232, 0.26);
+  --brand-primary-text: #8ec8f2;
   --brand-cool: #5cb8d9;
-  --brand-cyan-bg: rgba(92, 184, 217, 0.1);
-  --brand-cyan-border: rgba(92, 184, 217, 0.24);
-  --brand-cyan-text: #a5dcef;
+  --brand-accent-bg: rgba(92, 184, 217, 0.1);
+  --brand-accent-border: rgba(92, 184, 217, 0.24);
+  --brand-accent-text: #a5dcef;
   --wash-1: rgba(46, 134, 217, 0.1);
   --wash-2: rgba(77, 163, 232, 0.07);
   /* Compat: decorative blur orbs on interior pages still reference these. */
@@ -207,16 +207,16 @@ h1, h2, h3, h4 {
     color: var(--text-strong);
   }
 
-  .theme-pill-green {
-    border: 1px solid var(--brand-green-border);
-    background: var(--brand-green-bg);
-    color: var(--brand-green-text);
+  .theme-pill-primary {
+    border: 1px solid var(--brand-primary-border);
+    background: var(--brand-primary-bg);
+    color: var(--brand-primary-text);
   }
 
-  .theme-pill-cyan {
-    border: 1px solid var(--brand-cyan-border);
-    background: var(--brand-cyan-bg);
-    color: var(--brand-cyan-text);
+  .theme-pill-accent {
+    border: 1px solid var(--brand-accent-border);
+    background: var(--brand-accent-bg);
+    color: var(--brand-accent-text);
   }
 }
 
@@ -270,8 +270,8 @@ html[data-theme='light'] [class*='bg-slate-900/40'] {
 
 html[data-theme='light'] [class*='bg-blue-600'][class*='text-white'],
 html[data-theme='light'] [class*='bg-violet-600'][class*='text-white'],
-html[data-theme='light'] [class*='bg-[#22c55e]'][class*='text-white'],
-html[data-theme='light'] [class*='bg-[#16a34a]'][class*='text-white'] {
+html[data-theme='light'] [class*='bg-[#1e78cc]'][class*='text-white'],
+html[data-theme='light'] [class*='bg-[#0157a3]'][class*='text-white'] {
   color: #ffffff;
 }
 

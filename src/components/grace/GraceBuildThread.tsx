@@ -35,7 +35,7 @@ export default function GraceBuildThread() {
   const dotClass = (active: boolean) =>
     `relative z-10 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-[var(--background)] text-xs font-bold transition-all duration-500 ${
       active
-        ? 'border border-[#22c55e] text-[#4ade80] shadow-[0_0_16px_rgba(34,197,94,0.35)]'
+        ? 'border border-[#1e78cc] text-[#4ade80] shadow-[0_0_16px_rgba(30, 120, 204,0.35)]'
         : 'theme-subtle border border-[var(--border-strong)]'
     }`;
 
@@ -45,8 +45,8 @@ export default function GraceBuildThread() {
       <div className="relative hidden md:block">
         <div className="absolute h-[2px] bg-[var(--border-strong)]" style={{ top: 19, left: '8.33%', right: '8.33%' }} />
         <div
-          className="absolute h-[2px] bg-[#22c55e]"
-          style={{ top: 19, left: '8.33%', width: inView ? '83.34%' : 0, transition: 'width 1.9s cubic-bezier(0.25,0.1,0.25,1) 0.1s', boxShadow: '0 0 12px rgba(34,197,94,0.5)' }}
+          className="absolute h-[2px] bg-[#1e78cc]"
+          style={{ top: 19, left: '8.33%', width: inView ? '83.34%' : 0, transition: 'width 1.9s cubic-bezier(0.25,0.1,0.25,1) 0.1s', boxShadow: '0 0 12px rgba(30, 120, 204,0.5)' }}
         />
         <div className="relative flex justify-between">
           {steps.map((step, i) => (
@@ -66,7 +66,7 @@ export default function GraceBuildThread() {
       <div className="relative md:hidden">
         <div className="absolute w-[2px] bg-[var(--border-strong)]" style={{ left: 19, top: 20, bottom: 20 }} />
         <div
-          className="absolute w-[2px] bg-[#22c55e]"
+          className="absolute w-[2px] bg-[#1e78cc]"
           style={{ left: 19, top: 20, height: inView ? 'calc(100% - 40px)' : 0, transition: 'height 1.9s cubic-bezier(0.25,0.1,0.25,1) 0.1s' }}
         />
         <div className="relative flex flex-col gap-5">

@@ -17,11 +17,11 @@ export default function CTASection({
   return (
     <section className="relative overflow-hidden px-4 py-16">
       <div className="absolute inset-0">
-        <div className="absolute -right-16 -top-24 h-80 w-80 rounded-full bg-[#54d2ff]/16 blur-3xl" />
-        <div className="absolute -bottom-20 -left-16 h-80 w-80 rounded-full bg-[#22c55e]/16 blur-3xl" />
+        <div className="absolute -right-16 -top-24 h-80 w-80 rounded-full bg-[#63ade5]/16 blur-3xl" />
+        <div className="absolute -bottom-20 -left-16 h-80 w-80 rounded-full bg-[#1e78cc]/16 blur-3xl" />
       </div>
       <div className="theme-panel relative mx-auto max-w-5xl rounded-[2.25rem] px-6 py-12 text-center md:px-10">
-        <div className="theme-pill-green mx-auto inline-flex rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em]">
+        <div className="theme-pill-primary mx-auto inline-flex rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em]">
           AI Voice Demo
         </div>
         <h2 className="theme-heading mx-auto mt-5 max-w-3xl text-3xl font-bold md:text-5xl">{displayHeading}</h2>
