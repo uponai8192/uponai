@@ -233,6 +233,19 @@ h1, h2, h3, h4 {
   .animate-brand-pulse { animation: none; }
 }
 
+@keyframes wave-bar {
+  0%, 100% { height: 14%; }
+  50% { height: 100%; }
+}
+
+.animate-wave-bar {
+  animation: wave-bar 1.1s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-wave-bar { animation: none; height: 40% !important; }
+}
+
 html[data-theme='light'] .text-white {
   color: var(--text-strong);
 }
