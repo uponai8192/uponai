@@ -184,7 +184,8 @@ export default function Nav() {
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex min-h-[72px] items-center justify-between gap-4 md:min-h-[88px]">
-          <Link href="/" className="flex flex-shrink-0 items-center">
+          <Link href="/" className="inline-flex flex-shrink-0 items-center gap-2">
+            <span aria-hidden className="animate-brand-pulse inline-flex h-2.5 w-2.5 rounded-full bg-[var(--brand)] shadow-[0_0_10px_var(--brand)]" />
             <div className="relative h-12 w-36 overflow-hidden sm:h-14 sm:w-40 md:h-20 md:w-56">
               <Image
                 src="/logo.png"

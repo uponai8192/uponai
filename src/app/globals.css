@@ -220,6 +220,19 @@ h1, h2, h3, h4 {
   }
 }
 
+@keyframes brand-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.7); }
+}
+
+.animate-brand-pulse {
+  animation: brand-pulse 2.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-brand-pulse { animation: none; }
+}
+
 html[data-theme='light'] .text-white {
   color: var(--text-strong);
 }
