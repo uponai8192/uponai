@@ -246,6 +246,22 @@ h1, h2, h3, h4 {
   .animate-wave-bar { animation: none; height: 40% !important; }
 }
 
+@keyframes marquee-scroll {
+  to { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee-scroll 34s linear infinite;
+}
+
+.marquee-mask:hover .animate-marquee {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee { animation: none; }
+}
+
 html[data-theme='light'] .text-white {
   color: var(--text-strong);
 }
