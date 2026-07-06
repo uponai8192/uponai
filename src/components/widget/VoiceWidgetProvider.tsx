@@ -1,6 +1,7 @@
 'use client'
 
 import { createContext, useContext, useState, useCallback, useRef, type ReactNode } from 'react'
+import { VoiceDemoModalDynamic } from '@/components/widget/VoiceDemoModalDynamic'
 
 export type CallState = 'idle' | 'loading' | 'active' | 'ended' | 'error'
 
@@ -41,6 +42,7 @@ export function VoiceWidgetProvider({ children }: { children: ReactNode }) {
   return (
     <VoiceWidgetContext.Provider value={{ widgetOpen, callState, prefillCompany, openWidget, closeWidget, onCallStateChange, registerEndCall, endCall }}>
       {children}
+      <VoiceDemoModalDynamic />
     </VoiceWidgetContext.Provider>
   )
 }

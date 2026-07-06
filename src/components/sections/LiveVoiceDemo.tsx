@@ -4,7 +4,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { uponaiBookingUrl } from '@/lib/booking';
 import { useVoiceWidget } from '@/components/widget/VoiceWidgetProvider';
-import { VoiceDemoModalDynamic } from '@/components/widget/VoiceDemoModalDynamic';
 import GraceCompanion from './GraceCompanion';
 
 export type DemoState = 'idle' | 'calling' | 'ended';
@@ -276,8 +275,6 @@ export default function LiveVoiceDemo({
         {/* Right column — companion */}
         <GraceCompanion demoState={demoState} />
       </div>
-
-      <VoiceDemoModalDynamic />
     </section>
   );
 }
