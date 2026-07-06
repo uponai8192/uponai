@@ -160,6 +160,26 @@ function buildContactEmailHtml(d: Record<string, string>) {
   </div>`;
 }
 
+function buildLeadEmailHtml(d: Record<string, string>) {
+  return `
+  <div style="font-family:Arial,Helvetica,sans-serif;background:#f8fafc;padding:32px 16px;color:#0f172a">
+    <div style="max-width:600px;margin:0 auto;background:#ffffff;border-radius:12px;overflow:hidden;border:1px solid #dbe4ee">
+      <div style="background:#0157a3;padding:24px 28px">
+        <h2 style="margin:0;color:#ffffff;font-size:20px;line-height:1.3">New Website Lead</h2>
+        <p style="margin:6px 0 0;color:#dbeafe;font-size:14px;line-height:1.5">Submitted via uponai.com</p>
+      </div>
+      <table style="width:100%;border-collapse:collapse;background:#ffffff">
+        <tr><td style="padding:10px 14px;color:#475569;font-size:14px;font-weight:600;width:200px">Email</td><td style="padding:10px 14px;color:#0f172a;font-size:14px">${formatEmailValue(d.email)}</td></tr>
+        <tr><td style="padding:10px 14px;color:#475569;font-size:14px;font-weight:600;border-top:1px solid #e2e8f0">Source</td><td style="padding:10px 14px;color:#0f172a;font-size:14px;border-top:1px solid #e2e8f0">${formatEmailValue(d.sourceTag)}</td></tr>
+        <tr><td style="padding:10px 14px;color:#475569;font-size:14px;font-weight:600;border-top:1px solid #e2e8f0;vertical-align:top">Details</td><td style="padding:10px 14px;color:#0f172a;font-size:14px;border-top:1px solid #e2e8f0;line-height:1.6">${formatEmailValue(d.details)}</td></tr>
+      </table>
+      <div style="padding:20px 24px 24px;background:#ffffff">
+        <a href="mailto:${escapeHtml(d.email)}" style="display:inline-block;background:#0157a3;color:#ffffff;padding:10px 20px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:600">Reply</a>
+      </div>
+    </div>
+  </div>`;
+}
+
 function buildDownloadEmailHtml(d: Record<string, string>) {
   return `
   <div style="font-family:Arial,Helvetica,sans-serif;background:#f8fafc;padding:32px 16px;color:#0f172a">
@@ -296,6 +316,39 @@ export async function POST(req: Request) {
 
       if (!ghlResult.ok) {
         console.warn('Resource download saved without GHL sync:', ghlResult.error);
+      }
+
+      return NextResponse.json({ success: true });
+    }
+
+    if (formType === 'lead') {
+      const { email, sourceTag, details } = body;
+
+      if (!email || !sourceTag) {
+        return NextResponse.json({ error: 'Email is required.' }, { status: 400 });
+      }
+
+      const ghlResult = await pushToGHL(
+        {
+          email,
+          source: 'UponAI Website Lead Capture',
+          tags: ['website-lead', String(sourceTag)],
+        },
+        [{ key: 'lead_details', field_value: String(details ?? '') }],
+      );
+
+      const emailResult = await sendNotification(
+        `🎯 New Website Lead (${sourceTag})`,
+        buildLeadEmailHtml({ email: String(email), sourceTag: String(sourceTag), details: String(details ?? '') }),
+        String(email),
+      );
+
+      if (!emailResult.ok) {
+        return NextResponse.json({ error: `Lead captured, but email alert failed: ${emailResult.error}` }, { status: 502 });
+      }
+
+      if (!ghlResult.ok) {
+        console.warn('Lead saved without GHL sync:', ghlResult.error);
       }
 
       return NextResponse.json({ success: true });
