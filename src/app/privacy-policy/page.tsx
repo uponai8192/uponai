@@ -99,6 +99,12 @@ export default function PrivacyPolicyPage() {
             preferences, and measure the effectiveness of our communications. You can control cookies through your
             browser settings, though some site functionality may be affected if cookies are disabled.
           </p>
+          <p className="mt-4">
+            With your consent, we also use non-essential cookies that enable analytics and lead-attribution
+            providers. These third-party services help us measure site engagement and identify business interest
+            in our products. You can accept or decline these non-essential cookies at any time using the cookie
+            preferences control on our site, and declining will not affect your ability to use the website.
+          </p>
         </section>
 
         <section>

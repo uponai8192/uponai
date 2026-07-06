@@ -3,6 +3,7 @@
 import { useEffect, useState, useSyncExternalStore } from 'react';
 import Link from 'next/link';
 import {
+  consentEnabled,
   consentEventName,
   consentStorageKey,
   type ConsentChoice,
@@ -59,7 +60,7 @@ export default function CookieConsentManager() {
   );
 
   useEffect(() => {
-    if (consent === 'accepted') {
+    if (consentEnabled && consent === 'accepted') {
       loadTrackingScripts();
     }
   }, [consent]);
@@ -82,52 +83,38 @@ export default function CookieConsentManager() {
     setBannerOpen(false);
   }
 
-  const statusLabel =
-    consent === 'accepted'
-      ? 'Analytics and marketing cookies enabled'
-      : consent === 'rejected'
-        ? 'Only essential site cookies enabled'
-        : 'Choose whether to allow analytics and marketing cookies';
+  // Dormant: never render the banner while the system is disabled.
+  if (!consentEnabled) return null;
 
   if (!(bannerOpen || consent === null)) return null;
 
   return (
     <div className="fixed inset-x-0 bottom-4 z-[70] px-4">
-      <div className="theme-panel mx-auto max-w-4xl rounded-[1.75rem] p-5 shadow-[0_24px_70px_rgba(var(--shadow-rgb),0.28)] md:p-6">
-        <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
-          <div className="max-w-2xl">
-            <div className="theme-pill-green inline-flex rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em]">
-              Cookie Consent
-            </div>
-            <h2 className="theme-heading mt-4 text-2xl font-bold">Control analytics and marketing tracking on UponAI.</h2>
-            <p className="theme-body mt-3 text-sm leading-7 md:text-base">
-              UponAI uses non-essential tracking tools for analytics and lead attribution. Accepting allows RB2B and
-              Snitcher to load. Rejecting keeps those scripts off until you opt in later.
-            </p>
-            <p className="theme-soft mt-3 text-xs uppercase tracking-[0.22em]">{statusLabel}</p>
-            <div className="mt-3">
-              <Link href="/privacy-policy" className="theme-link-muted text-sm">
-                Review the privacy policy
-              </Link>
-            </div>
-          </div>
+      <div className="theme-panel mx-auto flex max-w-3xl flex-col gap-3 rounded-2xl p-4 shadow-[0_18px_50px_rgba(var(--shadow-rgb),0.24)] sm:flex-row sm:items-center sm:gap-4">
+        <p className="theme-body text-xs leading-5 sm:flex-1">
+          We use cookies to improve your experience, analyze performance, and support our marketing. Declining
+          won&apos;t affect your use of the site.{' '}
+          <Link href="/privacy-policy" className="theme-link-muted underline">
+            Privacy policy
+          </Link>
+          .
+        </p>
 
-          <div className="flex flex-col gap-3 sm:flex-row">
-            <button
-              type="button"
-              onClick={() => saveConsent('rejected')}
-              className="theme-secondary-button rounded-full px-5 py-3 text-sm font-semibold"
-            >
-              Reject Non-Essential
-            </button>
-            <button
-              type="button"
-              onClick={() => saveConsent('accepted')}
-              className="theme-primary-button rounded-full px-5 py-3 text-sm font-bold"
-            >
-              Accept All
-            </button>
-          </div>
+        <div className="flex shrink-0 gap-2">
+          <button
+            type="button"
+            onClick={() => saveConsent('rejected')}
+            className="theme-secondary-button rounded-full px-4 py-2 text-xs font-semibold"
+          >
+            Decline
+          </button>
+          <button
+            type="button"
+            onClick={() => saveConsent('accepted')}
+            className="theme-primary-button rounded-full px-4 py-2 text-xs font-bold"
+          >
+            Accept
+          </button>
         </div>
       </div>
     </div>
