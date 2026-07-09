@@ -41,7 +41,7 @@ export default function GraceBuildThread() {
 
   return (
     <div ref={ref}>
-      {/* Desktop — horizontal thread */}
+      {/* Desktop - horizontal thread */}
       <div className="relative hidden md:block">
         <div className="absolute h-[2px] bg-[var(--border-strong)]" style={{ top: 19, left: '8.33%', right: '8.33%' }} />
         <div
@@ -62,7 +62,7 @@ export default function GraceBuildThread() {
         </div>
       </div>
 
-      {/* Mobile — vertical thread */}
+      {/* Mobile - vertical thread */}
       <div className="relative md:hidden">
         <div className="absolute w-[2px] bg-[var(--border-strong)]" style={{ left: 19, top: 20, bottom: 20 }} />
         <div

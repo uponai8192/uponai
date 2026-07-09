@@ -101,7 +101,7 @@ function escapeHtml(value: string) {
 }
 
 function formatEmailValue(value?: string) {
-  if (!value) return '—';
+  if (!value) return '-';
   return escapeHtml(value).replaceAll('\n', '<br />');
 }
 
@@ -380,7 +380,7 @@ export async function POST(req: Request) {
       );
 
       const emailResult = await sendNotification(
-        `🚀 New UponAI Consultation Request: ${firstName} ${lastName} — ${company || 'No Company'}`,
+        `🚀 New UponAI Consultation Request: ${firstName} ${lastName} - ${company || 'No Company'}`,
         buildQuoteEmailHtml({ firstName, lastName, email, phone, company, seats, deskPhones, deskPhonesQty, mobileUsers, aiReceptionist, callRecording, smsConsent: String(smsConsent) }),
         email,
       );

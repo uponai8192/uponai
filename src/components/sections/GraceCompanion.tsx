@@ -74,7 +74,7 @@ export default function GraceCompanion({ demoState }: { demoState: DemoState }) 
         </svg>
       </div>
       <p className="theme-soft mt-2 text-sm">
-        {isCalling ? 'Grace is listening — say one of these.' : 'Not sure what to say? Try one of these.'}
+        {isCalling ? 'Grace is listening - say one of these.' : 'Not sure what to say? Try one of these.'}
       </p>
 
       <div className="mt-5 flex flex-col gap-2.5">

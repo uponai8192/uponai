@@ -10,12 +10,12 @@ const cards = [
       'Need coverage every hour without more headcount',
       'Want leads captured and synced automatically',
     ],
-    note: 'Human handoff is still available — route to your mobile anytime.',
+    note: 'Human handoff is still available - route to your mobile anytime.',
   },
   {
     tag: 'Augment',
     title: 'You WITH an existing team',
-    body: 'Bring UponAI in as overflow and after-hours backup so your people handle the conversations that need a human — and nothing else slips through.',
+    body: 'Bring UponAI in as overflow and after-hours backup so your people handle the conversations that need a human - and nothing else slips through.',
     items: [
       'Staff pulled off work by a ringing phone',
       'Calls dropped during surges and busy periods',
@@ -23,7 +23,7 @@ const cards = [
       'Need clean escalation with full context',
       'Want every outcome tracked and reported',
     ],
-    note: 'Your team stays in control — you set exactly when a person takes over.',
+    note: 'Your team stays in control - you set exactly when a person takes over.',
   },
 ];
 
@@ -37,7 +37,7 @@ export default function FitCards() {
           </span>
           <h2 className="theme-heading mt-4 text-3xl font-bold md:text-4xl">Is UponAI right for you?</h2>
           <p className="theme-soft mt-3 text-lg">
-            Built for teams that want faster call handling and cleaner conversations — whether AI handles the whole
+            Built for teams that want faster call handling and cleaner conversations - whether AI handles the whole
             line or backs up the people you already have.
           </p>
         </div>

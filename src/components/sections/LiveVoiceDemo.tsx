@@ -58,7 +58,7 @@ export default function LiveVoiceDemo({
     } else if (callState === 'ended') {
       setDemoState('ended');
     }
-    // 'idle' is intentionally ignored — reset only happens via "Talk again".
+    // 'idle' is intentionally ignored - reset only happens via "Talk again".
   }
 
   // Timer
@@ -121,7 +121,7 @@ export default function LiveVoiceDemo({
         }
       `}</style>
 
-      {/* Background glows — parallax on mouse */}
+      {/* Background glows - parallax on mouse */}
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute left-[8%] top-16" style={{ transform: `translate(${mouse.x * 160}px, ${mouse.y * 110}px)`, transition: 'transform 0.6s cubic-bezier(0.25,0.1,0.25,1)' }}>
           <div className="h-72 w-72 rounded-full bg-[#1e78cc]/10 blur-3xl" style={{ animation: 'float-blob 12s ease-in-out infinite' }} />
@@ -146,10 +146,10 @@ export default function LiveVoiceDemo({
         <p className="theme-soft mt-4 text-lg">{subheading}</p>
       </div>
 
-      {/* Demo panel — two columns: Grace card + companion */}
+      {/* Demo panel - two columns: Grace card + companion */}
       <div className="relative mx-auto mt-12 grid max-w-4xl items-stretch gap-6 lg:grid-cols-2">
 
-        {/* Left column — Grace state card */}
+        {/* Left column - Grace state card */}
         <div className="flex flex-col">
 
         {/* ── IDLE ── */}
@@ -272,7 +272,7 @@ export default function LiveVoiceDemo({
         )}
         </div>
 
-        {/* Right column — companion */}
+        {/* Right column - companion */}
         <GraceCompanion demoState={demoState} />
       </div>
     </section>

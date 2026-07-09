@@ -4384,7 +4384,7 @@ export const voiceAIIndustryPages: VoiceAIIndustryPage[] = [
       {
         question: 'Can voice AI handle chiropractic appointment scheduling?',
         answer:
-          'Yes. Voice AI can capture appointment requests, collect basic intake information, and route the caller to the right next step — whether that is a confirmed slot or a callback from the scheduling team.',
+          'Yes. Voice AI can capture appointment requests, collect basic intake information, and route the caller to the right next step - whether that is a confirmed slot or a callback from the scheduling team.',
       },
       {
         question: 'Will new patients still reach a live person if they need one?',

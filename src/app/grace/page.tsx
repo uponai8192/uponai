@@ -8,14 +8,14 @@ import { uponaiBookingUrl } from '@/lib/booking';
 import { uponaiIndustriesMenu } from '@/lib/uponai-pages';
 
 export const metadata: Metadata = {
-  title: "Meet Grace — UponAI's AI Voice Agent",
+  title: "Meet Grace - UponAI's AI Voice Agent",
   description:
     'Grace is UponAI’s AI voice agent. She answers questions, books appointments, routes and transfers callers, works 24/7 and multilingual, and logs to your CRM. Talk to her live.',
   alternates: { canonical: 'https://uponai.com/grace' },
   openGraph: {
-    title: "Meet Grace — UponAI's AI Voice Agent",
+    title: "Meet Grace - UponAI's AI Voice Agent",
     description:
-      'Talk to Grace live. She answers questions, books appointments, routes to your team, and logs to your CRM — 24/7 and multilingual.',
+      'Talk to Grace live. She answers questions, books appointments, routes to your team, and logs to your CRM - 24/7 and multilingual.',
     url: 'https://uponai.com/grace',
     type: 'website',
   },
@@ -24,10 +24,10 @@ export const metadata: Metadata = {
 const heroChips = ['Answers questions', 'Books appointments', 'Routes & transfers', '24/7', 'Multilingual'];
 
 const capabilities = [
-  { title: 'Answers your questions', body: 'Handles product and service questions in natural conversation — no keypad menus, no scripts that dead-end.' },
+  { title: 'Answers your questions', body: 'Handles product and service questions in natural conversation - no keypad menus, no scripts that dead-end.' },
   { title: 'Books appointments & demos', body: 'Collects the details, checks availability, and confirms the booking before the call ends.' },
-  { title: 'Routes & transfers', body: 'Warm-transfers to the right person, department, or extension — with voicemail or take-a-message fallback.' },
-  { title: '24/7 and multilingual', body: 'Answers every call, day or night, in the caller’s language — no missed after-hours opportunities.' },
+  { title: 'Routes & transfers', body: 'Warm-transfers to the right person, department, or extension - with voicemail or take-a-message fallback.' },
+  { title: '24/7 and multilingual', body: 'Answers every call, day or night, in the caller’s language - no missed after-hours opportunities.' },
   { title: 'Logs to your CRM', body: 'Syncs contacts and outcomes to Salesforce, HubSpot, Zoho, n8n, or Zapier automatically.' },
   { title: 'Outbound calling', body: 'Runs first-touch outreach and follow-ups, then hands warm, qualified leads to your team.' },
 ];
@@ -36,7 +36,7 @@ const steps = [
   { title: 'Greets & understands', body: 'Picks up instantly and works out what the caller actually needs.' },
   { title: 'Answers or qualifies', body: 'Resolves the question, or gathers the right details to move things forward.' },
   { title: 'Books or routes', body: 'Schedules the meeting or transfers to the right person or department.' },
-  { title: 'Logs & hands off', body: 'Writes the outcome to your CRM with full context — no lost notes.' },
+  { title: 'Logs & hands off', body: 'Writes the outcome to your CRM with full context - no lost notes.' },
 ];
 
 const offerings = [
@@ -77,7 +77,7 @@ const faqs = [
   },
   {
     q: 'Does Grace support other languages?',
-    a: 'Yes — Grace handles calls 24/7 in multiple languages.',
+    a: 'Yes - Grace handles calls 24/7 in multiple languages.',
   },
   {
     q: 'Can Grace hand off to a human?',
@@ -111,7 +111,7 @@ export default function GracePage() {
 
           <p className="theme-body mx-auto mt-6 max-w-2xl text-lg leading-8 md:text-xl">
             Grace is UponAI’s AI voice agent. She answers your callers, books appointments,
-            routes them to the right person, and logs every outcome — 24/7, in their language.
+            routes them to the right person, and logs every outcome - 24/7, in their language.
             Talk to her right now.
           </p>
 
@@ -142,7 +142,7 @@ export default function GracePage() {
             <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-primary-text)]">Under the hood</p>
             <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">She isn&apos;t magic. She&apos;s built.</h2>
             <p className="theme-soft mt-4 text-lg leading-8">
-              Assemble an agent from the same blocks we build Grace from — then hear the real one answer for your business.
+              Assemble an agent from the same blocks we build Grace from - then hear the real one answer for your business.
             </p>
           </div>
 
@@ -161,7 +161,7 @@ export default function GracePage() {
       <LiveVoiceDemo
         eyebrow="Live Demo"
         heading={<>Talk to Grace,<br />right now</>}
-        subheading="Ask her anything — she answers, books, and points you to the right team."
+        subheading="Ask her anything - she answers, books, and points you to the right team."
       />
 
       {/* ── CAPABILITIES ── */}
@@ -246,7 +246,7 @@ export default function GracePage() {
             <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-accent-text)]">Use cases</p>
             <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">Grace adapts to your industry.</h2>
             <p className="theme-soft mt-4 text-lg leading-8">
-              The same agent, tuned to how calls actually move in your field — intake, scheduling,
+              The same agent, tuned to how calls actually move in your field - intake, scheduling,
               after-hours, qualification, and clean human handoff.
             </p>
           </div>

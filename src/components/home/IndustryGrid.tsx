@@ -13,7 +13,7 @@ export default function IndustryGrid() {
             Voice AI built for real operating environments
           </h2>
           <p className="theme-soft mt-3 text-lg">
-            Each path is a productized voice experience — tuned to the calls, questions, and handoffs that define
+            Each path is a productized voice experience - tuned to the calls, questions, and handoffs that define
             your industry.
           </p>
         </div>

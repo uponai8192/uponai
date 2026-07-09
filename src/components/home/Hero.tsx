@@ -32,7 +32,7 @@ export default function Hero() {
           </h1>
           <p className="theme-body mt-6 max-w-xl text-lg leading-8">
             UponAI builds phone and chat workflows that qualify intent, book appointments, and route live
-            conversations — escalating to your team only when a person is the better answer.
+            conversations - escalating to your team only when a person is the better answer.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <a

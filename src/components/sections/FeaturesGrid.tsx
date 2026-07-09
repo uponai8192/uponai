@@ -15,7 +15,7 @@ const features = [
       </svg>
     ),
     title: 'Web Softphone',
-    desc: 'Make and receive calls right from your browser. No hardware required — perfect for remote workers.',
+    desc: 'Make and receive calls right from your browser. No hardware required - perfect for remote workers.',
   },
   {
     icon: (
@@ -42,7 +42,7 @@ const features = [
       </svg>
     ),
     title: 'Auto-Attendants',
-    desc: 'Professional call routing with custom greetings. Route to the right person every time — automatically.',
+    desc: 'Professional call routing with custom greetings. Route to the right person every time - automatically.',
   },
   {
     icon: (
@@ -62,7 +62,7 @@ export default function FeaturesGrid() {
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Popular VoIP Features</h2>
           <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-            Everything your business needs to communicate professionally — included in every plan.
+            Everything your business needs to communicate professionally - included in every plan.
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

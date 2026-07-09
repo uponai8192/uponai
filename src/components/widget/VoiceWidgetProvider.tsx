@@ -33,7 +33,7 @@ export function VoiceWidgetProvider({ children }: { children: ReactNode }) {
     setCallState('idle')
     setWidgetOpen(true)
   }, [])
-  // Closing only hides the modal — an in-progress call keeps running on the page.
+  // Closing only hides the modal - an in-progress call keeps running on the page.
   const closeWidget = useCallback(() => setWidgetOpen(false), [])
   const onCallStateChange = useCallback((state: CallState) => setCallState(state), [])
   const registerEndCall = useCallback((fn: (() => void) | null) => { endCallRef.current = fn }, [])

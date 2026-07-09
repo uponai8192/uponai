@@ -87,7 +87,7 @@ export default function ContactForm() {
           <span className="text-green-400 text-xs font-semibold uppercase tracking-wider">We reply within 1 business day</span>
         </div>
         <h2 className="text-xl font-bold text-white">Contact Us</h2>
-        <p className="text-slate-400 text-sm mt-1">Questions, support, billing — we&apos;re here to help.</p>
+        <p className="text-slate-400 text-sm mt-1">Questions, support, billing - we&apos;re here to help.</p>
       </div>
 
       <div className="px-7 py-6 space-y-5">
@@ -127,7 +127,7 @@ export default function ContactForm() {
             required
             value={form.message}
             onChange={(e) => set('message', e.target.value)}
-            placeholder="Tell us what you need — support question, billing inquiry, general info..."
+            placeholder="Tell us what you need - support question, billing inquiry, general info..."
             className={INPUT + ' resize-none'}
           />
         </div>

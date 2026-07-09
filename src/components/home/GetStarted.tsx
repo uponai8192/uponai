@@ -17,7 +17,7 @@ export default function GetStarted() {
           </span>
           <h2 className="theme-heading mt-4 text-3xl font-bold md:text-4xl">Either path, same simple setup</h2>
           <p className="theme-soft my-5 text-base">
-            No software to install, no scripts to write from scratch. Bring what you have — we map the rest with
+            No software to install, no scripts to write from scratch. Bring what you have - we map the rest with
             you.
           </p>
           <a

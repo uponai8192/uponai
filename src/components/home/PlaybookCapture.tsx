@@ -10,7 +10,7 @@ export default function PlaybookCapture() {
           </span>
           <h2 className="theme-heading mt-4 text-3xl font-bold md:text-4xl">Unlock the AI Voice Playbook</h2>
           <p className="theme-soft mt-3.5">
-            A practical guide to mapping call flows, qualifying inbound intent, and designing clean human handoff —
+            A practical guide to mapping call flows, qualifying inbound intent, and designing clean human handoff -
             built for operations leaders across healthcare, legal, home services, and more.
           </p>
           <EmailCaptureForm

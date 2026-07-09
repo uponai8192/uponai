@@ -22,7 +22,7 @@ export default function PersonaCarousel() {
           </h2>
           <p className="theme-soft mt-3 text-lg">
             Pick the operating environment that matches yours. Every path is tuned to how those calls actually
-            move — from first ring to logged outcome.
+            move - from first ring to logged outcome.
           </p>
         </div>
       </div>

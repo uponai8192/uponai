@@ -6,7 +6,7 @@ const steps = [
   {
     tab: 'Design',
     heading: 'Map how your calls actually move',
-    body: 'We chart your real call journey — greet, capture, qualify, route, escalate, log — so every workflow starts from how your business operates, not a generic bot script.',
+    body: 'We chart your real call journey - greet, capture, qualify, route, escalate, log - so every workflow starts from how your business operates, not a generic bot script.',
     bullets: ['Call-flow mapping session', 'Industry-specific intent paths', 'Escalation rules you control'],
     visual: [
       { n: '01', l: 'Greet & identify caller', t: 'auto' },
@@ -18,7 +18,7 @@ const steps = [
   {
     tab: 'Deploy',
     heading: 'Launch a branded voice agent',
-    body: 'Your agent goes live on the numbers you already use, with a voice and greeting that sound like your team — connected to your telecom and routing rules without operational sprawl.',
+    body: 'Your agent goes live on the numbers you already use, with a voice and greeting that sound like your team - connected to your telecom and routing rules without operational sprawl.',
     bullets: ['Works with your existing numbers', 'UCaaS & telephony integrations', 'Live in days, not months'],
     visual: [
       { n: '◗', l: 'Connected to your phone system', t: 'UCaaS' },
@@ -29,7 +29,7 @@ const steps = [
   {
     tab: 'Route',
     heading: 'Qualify, answer, and route live calls',
-    body: "Every caller is greeted instantly, understood, and moved toward the right next step — a booking, an answer, or a clean transfer to the person who's the better answer.",
+    body: "Every caller is greeted instantly, understood, and moved toward the right next step - a booking, an answer, or a clean transfer to the person who's the better answer.",
     bullets: ['Sub-2-second first response', 'Answers common questions on its own', 'Human handoff kept available'],
     visual: [
       { n: '→', l: 'Intent understood', t: 'instant' },
@@ -40,7 +40,7 @@ const steps = [
   {
     tab: 'Analyze',
     heading: 'Track outcomes and sync to your CRM',
-    body: 'Every conversation becomes a logged outcome — captured, transcribed, and pushed to the tools your team already uses, with post-call analysis you can act on.',
+    body: 'Every conversation becomes a logged outcome - captured, transcribed, and pushed to the tools your team already uses, with post-call analysis you can act on.',
     bullets: ['Post-call analysis & transcripts', 'CRM-ready lead capture', 'Coverage & outcome reporting'],
     visual: [
       { n: '✓', l: 'Call transcribed & tagged', t: 'done' },

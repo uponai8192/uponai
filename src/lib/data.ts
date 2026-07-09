@@ -34,9 +34,9 @@ export const services: Service[] = [
     slug: 'contact-centers',
     name: 'Contact Center Solutions',
     shortName: 'Contact Centers',
-    tagline: 'Omnichannel contact center — voice, SMS, chat & video',
+    tagline: 'Omnichannel contact center - voice, SMS, chat & video',
     description:
-      'Modern contact centers do much more than power telephone interactions. Connect with your customers over multiple channels including SMS, in-app chat, video, and more — all from one unified platform.',
+      'Modern contact centers do much more than power telephone interactions. Connect with your customers over multiple channels including SMS, in-app chat, video, and more - all from one unified platform.',
     features: [
       'Omnichannel routing (voice, SMS, chat, email)',
       'Real-time agent dashboards',
@@ -72,7 +72,7 @@ export const services: Service[] = [
     slug: 'hosted-fax',
     name: 'Hosted Fax (Cloud Fax)',
     shortName: 'Hosted Fax',
-    tagline: 'Send & receive faxes from any device — no fax machine needed',
+    tagline: 'Send & receive faxes from any device - no fax machine needed',
     description:
       'Fax remains essential in healthcare, legal, and operations-heavy teams. UponAI cloud fax keeps documents moving securely without physical machines or fragmented workflows.',
     features: [
@@ -110,7 +110,7 @@ export const services: Service[] = [
     slug: 'web-video-conferencing',
     name: 'Web & Video Conferencing',
     shortName: 'Video Conferencing',
-    tagline: 'HD meetings, screen sharing & webinars — no extra software',
+    tagline: 'HD meetings, screen sharing & webinars - no extra software',
     description:
       'Run meetings, demos, webinars, and internal collaboration sessions from the same communications platform your team already uses for calls and messaging.',
     features: [
@@ -150,11 +150,11 @@ export const services: Service[] = [
     shortName: 'AI Voice Agents',
     tagline: 'Replace your IVR with a human-sounding AI that never sleeps',
     description:
-      'Powered by UponAI technology, our AI Voice Agents answer every call with natural conversation — qualifying leads, booking appointments, handling FAQs, and routing callers intelligently without a single hold queue.',
+      'Powered by UponAI technology, our AI Voice Agents answer every call with natural conversation - qualifying leads, booking appointments, handling FAQs, and routing callers intelligently without a single hold queue.',
     features: [
       'Human-sounding conversational AI',
       'Replaces outdated touch-tone IVR',
-      'Answers calls 24/7/365 — no hold queues',
+      'Answers calls 24/7/365 - no hold queues',
       'Lead qualification & instant routing',
       'Appointment scheduling via voice',
       'Multi-language & accent support',
@@ -169,7 +169,7 @@ export const services: Service[] = [
     shortName: 'AI Chatbots',
     tagline: 'Engage, qualify, and convert website visitors automatically',
     description:
-      'Powered by UponAI, our AI chatbots deliver personalized support around the clock — answering questions, capturing leads, and routing customers to the right team instantly. No wait times, no missed opportunities.',
+      'Powered by UponAI, our AI chatbots deliver personalized support around the clock - answering questions, capturing leads, and routing customers to the right team instantly. No wait times, no missed opportunities.',
     features: [
       'Conversational AI trained on your business',
       'Lead capture & qualification automation',

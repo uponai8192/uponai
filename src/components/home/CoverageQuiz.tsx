@@ -24,7 +24,7 @@ const questions = [
 const resultBullets = [
   'An always-on AI voice agent greeting every caller in under 2 seconds.',
   "Intent qualification tuned to your industry's most common requests.",
-  'Live routing to the right person — with clean escalation when it matters.',
+  'Live routing to the right person - with clean escalation when it matters.',
   'Every outcome logged and CRM-ready, including after-hours calls.',
 ];
 

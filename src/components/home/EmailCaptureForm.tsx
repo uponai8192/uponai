@@ -41,7 +41,7 @@ export default function EmailCaptureForm({ sourceTag, details, buttonLabel, fine
   if (status === 'sent') {
     return (
       <p className="theme-pill-primary mt-5 inline-flex rounded-xl px-4 py-3 text-sm font-semibold">
-        ✓ Sent — check your inbox shortly.
+        ✓ Sent - check your inbox shortly.
       </p>
     );
   }

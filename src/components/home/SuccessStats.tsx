@@ -23,7 +23,7 @@ export default function SuccessStats() {
           </span>
           <h2 className="theme-heading mt-4 text-3xl font-bold md:text-4xl">Know exactly how you win with UponAI</h2>
           <p className="theme-soft mt-3 text-lg">
-            Real operational improvements — whether you&apos;re replacing an answering service or giving your team
+            Real operational improvements - whether you&apos;re replacing an answering service or giving your team
             overflow coverage.
           </p>
         </div>

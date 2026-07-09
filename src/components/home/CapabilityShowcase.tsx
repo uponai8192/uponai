@@ -16,7 +16,7 @@ const transcript = [
   { who: 'Caller', ai: false, text: 'Hi, I need to move my appointment to next week.' },
   { who: 'UponAI Agent', ai: true, text: 'Of course. I can see your Tuesday 2:00 PM visit. Would Wednesday at 10:00 or Thursday at 3:00 work better?' },
   { who: 'Caller', ai: false, text: 'Thursday at 3 is perfect.' },
-  { who: 'UponAI Agent', ai: true, text: "Done — you're confirmed for Thursday at 3:00 PM. I've sent a text confirmation and updated your chart." },
+  { who: 'UponAI Agent', ai: true, text: "Done - you're confirmed for Thursday at 3:00 PM. I've sent a text confirmation and updated your chart." },
 ];
 
 export default function CapabilityShowcase() {
@@ -32,7 +32,7 @@ export default function CapabilityShowcase() {
           </h2>
           <p className="theme-soft mt-3.5 text-lg">
             One conversational engine greets callers, understands intent, answers common questions, books time,
-            and routes live — then logs the outcome where your team already works.
+            and routes live - then logs the outcome where your team already works.
           </p>
           <div className="mt-6 flex flex-wrap gap-2.5">
             {capabilities.map((cap) => (

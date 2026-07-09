@@ -16,8 +16,8 @@ const skillList = ['Books appointments', 'Transfers to a human', 'Follows up'];
 function greeting(company: string, tone: string) {
   const co = company.trim() || 'Acme Dental';
   if (tone === 'Sharp') return `${co}, this is Grace. How can I help?`;
-  if (tone === 'Playful') return `You've reached ${co} — Grace here. What can I get sorted for you?`;
-  return `Hi there — thanks so much for calling ${co}! This is Grace. What can I do for you today?`;
+  if (tone === 'Playful') return `You've reached ${co} - Grace here. What can I get sorted for you?`;
+  return `Hi there - thanks so much for calling ${co}! This is Grace. What can I do for you today?`;
 }
 
 export default function GraceBuilder() {
@@ -128,7 +128,7 @@ export default function GraceBuilder() {
             </svg>
             Hear Grace answer for {co} →
           </button>
-          <p className="theme-subtle mt-2 text-center text-xs">Go on — try to stump her.</p>
+          <p className="theme-subtle mt-2 text-center text-xs">Go on - try to stump her.</p>
         </div>
       </div>
     </div>

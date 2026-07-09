@@ -8,7 +8,7 @@ import CTASection from '@/components/sections/CTASection';
 export const metadata: Metadata = {
   title: 'AI Chatbots for Business',
   description:
-    'Deploy AI chatbots that engage website visitors, qualify leads, and route customers 24/7 — powered by UponAI. Never miss an inquiry, even when your team is offline.',
+    'Deploy AI chatbots that engage website visitors, qualify leads, and route customers 24/7 - powered by UponAI. Never miss an inquiry, even when your team is offline.',
   alternates: { canonical: 'https://uponai.com/services/ai-chatbots' },
   openGraph: {
     title: 'AI Chatbots for Business',
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 const features = [
   {
     title: 'Trained on Your Business',
-    desc: 'Upload your FAQs, product docs, pricing, and policies. The chatbot answers questions specific to your business — not generic responses.',
+    desc: 'Upload your FAQs, product docs, pricing, and policies. The chatbot answers questions specific to your business - not generic responses.',
     icon: (
       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
@@ -28,7 +28,7 @@ const features = [
   },
   {
     title: 'Lead Capture & Qualification',
-    desc: "Automatically collect name, email, phone, and budget — then score leads and route hot prospects directly to your sales team while they're still on your site.",
+    desc: "Automatically collect name, email, phone, and budget - then score leads and route hot prospects directly to your sales team while they're still on your site.",
     icon: (
       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -37,7 +37,7 @@ const features = [
   },
   {
     title: 'Live Agent Handoff',
-    desc: 'When a customer needs a human, the chatbot transfers the full conversation history to a live agent instantly — no repeating, no friction.',
+    desc: 'When a customer needs a human, the chatbot transfers the full conversation history to a live agent instantly - no repeating, no friction.',
     icon: (
       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -46,7 +46,7 @@ const features = [
   },
   {
     title: 'CRM Integration',
-    desc: 'Every conversation, lead, and data point automatically syncs to your CRM — Salesforce, HubSpot, Zoho, or your existing stack.',
+    desc: 'Every conversation, lead, and data point automatically syncs to your CRM - Salesforce, HubSpot, Zoho, or your existing stack.',
     icon: (
       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" />
@@ -55,7 +55,7 @@ const features = [
   },
   {
     title: 'Multi-Channel Deployment',
-    desc: 'Launch on your website, embed in SMS, connect to Facebook Messenger, WhatsApp, and more — one bot, every channel, consistent experience.',
+    desc: 'Launch on your website, embed in SMS, connect to Facebook Messenger, WhatsApp, and more - one bot, every channel, consistent experience.',
     icon: (
       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" />
@@ -64,7 +64,7 @@ const features = [
   },
   {
     title: 'Analytics & Conversation Data',
-    desc: 'See exactly what visitors are asking, which topics convert, and where drop-offs happen — with real-time dashboards and weekly reports.',
+    desc: 'See exactly what visitors are asking, which topics convert, and where drop-offs happen - with real-time dashboards and weekly reports.',
     icon: (
       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
@@ -74,10 +74,10 @@ const features = [
 ];
 
 const useCases = [
-  { industry: 'Healthcare', use: 'Appointment booking, insurance verification, patient FAQs — without tying up your front desk.' },
+  { industry: 'Healthcare', use: 'Appointment booking, insurance verification, patient FAQs - without tying up your front desk.' },
   { industry: 'Real Estate', use: 'Qualify buyers and sellers instantly, schedule showings, and capture leads 24/7 from your listings.' },
-  { industry: 'Legal', use: 'Intake new clients, gather case details, and schedule consultations — even after office hours.' },
-  { industry: 'E-Commerce', use: 'Answer product questions, track orders, handle returns, and upsell — automatically.' },
+  { industry: 'Legal', use: 'Intake new clients, gather case details, and schedule consultations - even after office hours.' },
+  { industry: 'E-Commerce', use: 'Answer product questions, track orders, handle returns, and upsell - automatically.' },
   { industry: 'Financial Services', use: 'Pre-qualify loan applicants, schedule advisor meetings, and answer compliance-safe FAQs.' },
   { industry: 'SaaS / Tech', use: 'Onboard new users, troubleshoot common issues, and route complex tickets to the right tier.' },
 ];
@@ -124,17 +124,17 @@ export default function AIChatbotsPage() {
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-5 leading-tight">
               AI Chatbots That{' '}
               <span className="text-violet-400">Engage Every Visitor</span>
-              {' '}— 24/7
+              {' '}- 24/7
             </h1>
             <p className="text-xl text-slate-300 mb-4 leading-relaxed">
-              Stop losing leads to contact forms and slow response times. Our AI chatbots engage visitors the moment they land on your site — answering questions, qualifying leads, and booking meetings automatically.
+              Stop losing leads to contact forms and slow response times. Our AI chatbots engage visitors the moment they land on your site - answering questions, qualifying leads, and booking meetings automatically.
             </p>
             <p className="text-slate-400 mb-8 leading-relaxed">
               Powered by{' '}
               <a href="https://uponai.com" target="_blank" rel="noopener noreferrer" className="text-violet-400 hover:text-violet-300 underline">
                 UponAI
               </a>{' '}
-              and integrated natively with your UponAI workflow — so a chat can instantly escalate to a call with the right agent.
+              and integrated natively with your UponAI workflow - so a chat can instantly escalate to a call with the right agent.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link href="/contact" className="bg-violet-600 hover:bg-violet-500 text-white font-bold px-8 py-4 rounded-xl transition-colors text-lg text-center">
@@ -152,7 +152,7 @@ export default function AIChatbotsPage() {
             <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-black/60 border border-slate-700/60">
               <Image
                 src={brandPhotos.chatbotPhone}
-                alt="AI chatbot engaging a mobile user — powered by UponAI"
+                alt="AI chatbot engaging a mobile user - powered by UponAI"
                 width={700}
                 height={500}
                 className="w-full h-auto object-cover"
@@ -203,11 +203,11 @@ export default function AIChatbotsPage() {
               A contact form is not a conversation. Visitors fill it out, wait hours for a reply, and by then they&apos;ve already called your competitor.
             </p>
             <p className="text-slate-400 leading-relaxed mb-6">
-              An AI chatbot starts the conversation the second they land — qualifying them, answering their questions, and booking a call before they ever leave.
+              An AI chatbot starts the conversation the second they land - qualifying them, answering their questions, and booking a call before they ever leave.
             </p>
             <ul className="space-y-3">
               {[
-                'Respond instantly — even at 2am on a Sunday',
+                'Respond instantly - even at 2am on a Sunday',
                 'Qualify leads before they reach your team',
                 'Book meetings directly on your calendar',
                 'Sync every conversation to your CRM',
@@ -250,7 +250,7 @@ export default function AIChatbotsPage() {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-white mb-4">Everything Your AI Chatbot Can Do</h2>
             <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-              Built on the UponAI platform and connected natively to UponAI — not a generic chatbot widget.
+              Built on the UponAI platform and connected natively to UponAI - not a generic chatbot widget.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -274,13 +274,13 @@ export default function AIChatbotsPage() {
             <span className="text-violet-400 text-sm font-semibold uppercase tracking-wider">The UponAI Advantage</span>
             <h2 className="text-3xl font-bold text-white mt-2 mb-4">Chat That Can Instantly Become a Call</h2>
             <p className="text-slate-400 leading-relaxed mb-5">
-              Because your AI chatbot runs on the same platform as your UponAI workflow, a chat conversation can escalate to a live call — or an AI voice agent — in one click. No other provider can do this natively.
+              Because your AI chatbot runs on the same platform as your UponAI workflow, a chat conversation can escalate to a live call - or an AI voice agent - in one click. No other provider can do this natively.
             </p>
             <ul className="space-y-4">
               {[
                 { title: 'One-Click Call Escalation', desc: 'A chat can trigger a live call to the right agent, with full context passed automatically.' },
                 { title: 'Unified Inbox', desc: 'Chat, SMS, and voice conversations appear in a single UponAI dashboard.' },
-                { title: 'Shared Knowledge Base', desc: 'Your chatbot and AI voice agent share the same knowledge base — consistent answers everywhere.' },
+                { title: 'Shared Knowledge Base', desc: 'Your chatbot and AI voice agent share the same knowledge base - consistent answers everywhere.' },
                 { title: 'One Vendor, One Bill', desc: 'VoIP service and AI on a single invoice with one support team.' },
               ].map((item) => (
                 <li key={item.title} className="flex items-start gap-4 bg-slate-800/40 border border-slate-700 rounded-xl p-4">
@@ -319,7 +319,7 @@ export default function AIChatbotsPage() {
                 { from: 'user', text: 'We have about 25 people across 3 offices.' },
                 { from: 'bot', text: "Great! For a distributed team like yours, our Business VoIP + Contact Center package is a great fit. Would you like me to schedule a free demo with one of our specialists?" },
                 { from: 'user', text: 'Yes, tomorrow works.' },
-                { from: 'bot', text: "Perfect — I've booked a 30-min call for tomorrow at 10am. You'll receive a confirmation at your email. Is there anything else I can help with?" },
+                { from: 'bot', text: "Perfect - I've booked a 30-min call for tomorrow at 10am. You'll receive a confirmation at your email. Is there anything else I can help with?" },
               ].map((msg, i) => (
                 <div key={i} className={`flex ${msg.from === 'user' ? 'justify-end' : 'justify-start'}`}>
                   <div className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-sm ${msg.from === 'bot' ? 'bg-slate-700 text-slate-200 rounded-tl-sm' : 'bg-violet-600 text-white rounded-tr-sm'}`}>
@@ -346,7 +346,7 @@ export default function AIChatbotsPage() {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-white mb-4">AI Chatbots for Every Industry</h2>
             <p className="text-slate-400 max-w-2xl mx-auto">
-              Deployed and customized for your specific business workflows — not a generic FAQ bot.
+              Deployed and customized for your specific business workflows - not a generic FAQ bot.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
