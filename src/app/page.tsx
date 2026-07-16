@@ -1,41 +1,33 @@
 import type { Metadata } from 'next';
-import Hero from '@/components/home/Hero';
-import PersonaCarousel from '@/components/home/PersonaCarousel';
-import Marquee from '@/components/home/Marquee';
-import CoverageQuiz from '@/components/home/CoverageQuiz';
-import CapabilityShowcase from '@/components/home/CapabilityShowcase';
-import HowItWorks from '@/components/home/HowItWorks';
-import SuccessStats from '@/components/home/SuccessStats';
-import IndustryGrid from '@/components/home/IndustryGrid';
-import FitCards from '@/components/home/FitCards';
-import GetStarted from '@/components/home/GetStarted';
-import PlaybookCapture from '@/components/home/PlaybookCapture';
-import Testimonials from '@/components/sections/Testimonials';
-import CTASection from '@/components/sections/CTASection';
+import PlatformHero from '@/components/home/PlatformHero';
+import SocialProof from '@/components/home/SocialProof';
+import OldWay from '@/components/home/OldWay';
+import IntroSolution from '@/components/home/IntroSolution';
+import Capabilities from '@/components/home/Capabilities';
+import AllFeatures from '@/components/home/AllFeatures';
+import HowItWorksSteps from '@/components/home/HowItWorksSteps';
+import CustomerStories from '@/components/home/CustomerStories';
+import FinalCTA from '@/components/home/FinalCTA';
 
 export const metadata: Metadata = {
-  title: 'AI Voice Systems For Modern Customer Conversations',
+  title: 'Enterprise AI Agents for Phone, Chat, and Web',
   description:
-    'UponAI builds AI voice agents, AI chatbots, and conversation workflows for businesses that need faster call handling, better qualification, and cleaner escalation.',
+    'UponAI is the all-in-one platform to build and deploy AI agents across phone, chat, and web, augmenting your workforce with visibility, speed, and scale. Train once, deploy everywhere.',
   alternates: { canonical: 'https://uponai.com' },
 };
 
 export default function HomePage() {
   return (
     <>
-      <Hero />
-      <PersonaCarousel />
-      <Marquee />
-      <CoverageQuiz />
-      <CapabilityShowcase />
-      <HowItWorks />
-      <SuccessStats />
-      <IndustryGrid />
-      <FitCards />
-      <GetStarted />
-      <PlaybookCapture />
-      <Testimonials />
-      <CTASection />
+      <PlatformHero />
+      <SocialProof />
+      <OldWay />
+      <IntroSolution />
+      <Capabilities />
+      <AllFeatures />
+      <HowItWorksSteps />
+      <CustomerStories />
+      <FinalCTA />
     </>
   );
 }
