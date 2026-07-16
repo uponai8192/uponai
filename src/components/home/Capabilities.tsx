@@ -93,8 +93,8 @@ const capabilities: Capability[] = [
       kind: 'intelligence',
       head: 'Operations intelligence',
       bars: [
-        { label: 'Resolved by agent', width: '72%' },
-        { label: 'Escalated to human', width: '28%' },
+        { label: 'Resolved by agent', width: '66%' },
+        { label: 'Escalated to human', width: '34%' },
       ],
       leadRow: { label: 'Leads auto-captured', tag: 'synced to CRM' },
       footRow: { label: 'Transcripts synced to CRM', tag: 'real-time' },
