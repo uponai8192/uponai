@@ -1,110 +1,93 @@
-// Per-vertical voice agent configuration.
+// Per-vertical voice agent configuration (client-safe).
 //
-// Each industry page shows a live agent card instead of a stock photo. The
-// card sends its `verticalKey` when starting a web call so the server can
-// route to the agent trained for that vertical (see the API route). Keys here
-// are the allowlist: anything not listed falls back to the default agent.
+// Seven verticals have a dedicated demo agent in the UponAI workspace. Those
+// are showcases: each one walks a caller through a fixed set of workflows
+// rather than running a full production deployment, so the copy here stays
+// scoped to what the agent actually demonstrates.
+//
+// Every other page falls back to Grace, the general UponAI website agent.
+//
+// Agent ids are deliberately NOT in this file: it is imported by a client
+// component, so anything here ships in the browser bundle. The key sent to the
+// server is resolved to an agent id server-side (see vertical-agents.server.ts).
 
 export type VerticalAgent = {
   /** Stable key sent to the server and mapped to an agent id. */
   key: string;
-  /** Vertical shown next to the agent name, e.g. "UponAI agent · Healthcare". */
+  /** The agent's own name, e.g. "Aria". */
+  name: string;
+  /** Vertical shown under the name, e.g. "UponAI agent · Healthcare". */
   contextLabel: string;
-  /** One line on what this agent handles for this vertical. */
+  /** What this agent actually walks through on a call. */
   blurb: string;
-  /** Three short capabilities, tuned per vertical. */
+  /** Three capabilities, matching the agent's real demo scope. */
   chips: [string, string, string];
+  /** True for the scoped showcase agents, false for the general website agent. */
+  demo: boolean;
 };
 
-const AGENT_NAME = 'Grace';
-
-/** Persona name is shared across verticals; only the training differs. */
-export const verticalAgentName = AGENT_NAME;
+/** The general website agent, used wherever there is no dedicated demo agent. */
+const graceFallback = {
+  name: 'Grace',
+  demo: false,
+} as const;
 
 const verticalAgents: VerticalAgent[] = [
   {
     key: 'healthcare',
-    contextLabel: 'Healthcare',
-    blurb: 'Books and reschedules patients, answers hours and insurance questions, and routes urgent calls to your staff.',
-    chips: ['Books appointments', 'Insurance questions', 'Urgent routing'],
+    name: 'Aria',
+    contextLabel: 'Healthcare & Life Sciences',
+    blurb: 'Walks through patient triage intake, clinical documentation summaries, and research query handling.',
+    chips: ['Triage intake', 'Clinical summaries', 'Research queries'],
+    demo: true,
   },
   {
     key: 'financial-services',
+    name: 'Maxwell',
     contextLabel: 'Financial Services',
-    blurb: 'Handles account and product questions, qualifies enquiries, and routes regulated requests to a licensed person.',
-    chips: ['Qualifies enquiries', 'Product questions', 'Compliant handoff'],
+    blurb: 'Walks through risk analysis briefings, compliance document review, research summarisation, and account support queries.',
+    chips: ['Risk briefings', 'Compliance review', 'Research summaries'],
+    demo: true,
   },
   {
     key: 'legal',
-    contextLabel: 'Legal',
-    blurb: 'Screens new matters, captures case details, and books consultations without pulling your team off billable work.',
-    chips: ['Screens matters', 'Captures details', 'Books consults'],
+    name: 'Lex',
+    contextLabel: 'Legal & Professional Services',
+    blurb: 'Walks through contract clause review, discovery query handling, and first-draft document generation.',
+    chips: ['Clause review', 'Discovery queries', 'Draft generation'],
+    demo: true,
   },
   {
     key: 'retail',
+    name: 'Sage',
     contextLabel: 'Retail & E-Commerce',
-    blurb: 'Answers order, stock, and returns questions around the clock, and escalates the ones that need a person.',
-    chips: ['Order status', 'Returns support', 'Product questions'],
+    blurb: 'Walks through product discovery, personalised recommendations, order support, and catalogue generation.',
+    chips: ['Product discovery', 'Recommendations', 'Order support'],
+    demo: true,
   },
   {
     key: 'hospitality',
+    name: 'Maren',
     contextLabel: 'Hospitality & Travel',
-    blurb: 'Takes bookings, answers guest questions, and passes on requests the front desk needs to see.',
-    chips: ['Takes bookings', 'Guest questions', 'Front-desk handoff'],
+    blurb: 'Walks through trip planning and building a personalised itinerary the way a travel advisor would.',
+    chips: ['Trip planning', 'Itinerary building', 'Traveller questions'],
+    demo: true,
   },
   {
     key: 'education',
+    name: 'Nova',
     contextLabel: 'Education',
-    blurb: 'Fields admissions, enrolment, and campus questions, and routes students to the right department.',
-    chips: ['Admissions questions', 'Enrolment support', 'Department routing'],
+    blurb: 'Walks through conversational student tutoring and curriculum development support.',
+    chips: ['Student tutoring', 'Curriculum support', 'Learner questions'],
+    demo: true,
   },
   {
     key: 'government',
+    name: 'Max',
     contextLabel: 'Government & Public Sector',
-    blurb: 'Answers routine constituent questions, handles surges, and routes cases to the right office.',
-    chips: ['Constituent questions', 'Surge coverage', 'Case routing'],
-  },
-  {
-    key: 'insurance',
-    contextLabel: 'Insurance',
-    blurb: 'Captures claim and policy enquiries, qualifies intent, and routes to the right adjuster or agent.',
-    chips: ['Policy questions', 'Claim intake', 'Agent routing'],
-  },
-  {
-    key: 'home-services',
-    contextLabel: 'Home Services',
-    blurb: 'Captures service requests, qualifies urgency, and books the job to the right crew.',
-    chips: ['Books jobs', 'Qualifies urgency', 'Dispatch handoff'],
-  },
-  {
-    key: 'real-estate',
-    contextLabel: 'Real Estate',
-    blurb: 'Answers listing enquiries instantly, books showings, and keeps leads out of voicemail.',
-    chips: ['Listing enquiries', 'Books showings', 'Lead capture'],
-  },
-  {
-    key: 'dental',
-    contextLabel: 'Dental',
-    blurb: 'Fills the schedule, confirms visits, and answers the questions that tie up your front desk.',
-    chips: ['Books appointments', 'Confirms visits', 'Cuts no-shows'],
-  },
-  {
-    key: 'veterinary',
-    contextLabel: 'Veterinary',
-    blurb: 'Books visits, answers common pet-owner questions, and flags urgent cases for your team.',
-    chips: ['Books visits', 'Owner questions', 'Urgent triage'],
-  },
-  {
-    key: 'restaurants',
-    contextLabel: 'Restaurants',
-    blurb: 'Takes reservations and answers the basics so the phone stops pulling staff off the floor.',
-    chips: ['Takes reservations', 'Hours & menu', 'Large bookings'],
-  },
-  {
-    key: 'telecom',
-    contextLabel: 'Telecommunications',
-    blurb: 'Handles support and provisioning questions at volume, and routes technical cases to your engineers.',
-    chips: ['Support questions', 'High call volume', 'Technical routing'],
+    blurb: 'Walks through service queries, application status checks, public information requests, and form guidance.',
+    chips: ['Service queries', 'Application status', 'Form guidance'],
+    demo: true,
   },
 ];
 
@@ -114,20 +97,13 @@ const byKey = new Map(verticalAgents.map((agent) => [agent.key, agent]));
 export const verticalAgentKeys = verticalAgents.map((agent) => agent.key);
 
 /**
- * Route slugs (voice-ai-* pages and /industries/* entries) mapped to a vertical
- * key. Anything absent here falls back to the generic profile.
+ * Route slugs mapped to a vertical key. Only slugs with a dedicated demo agent
+ * appear here; everything else falls back to the general website agent.
  */
 const slugToVerticalKey: Record<string, string> = {
   // voice-ai-* landing pages
   'voice-ai-for-healthcare-page': 'healthcare',
   'voice-ai-for-legal-services': 'legal',
-  'voice-ai-for-insurance-page': 'insurance',
-  'voice-ai-for-home-services-page': 'home-services',
-  'voice-ai-real-estate': 'real-estate',
-  'voice-ai-for-dental-offices': 'dental',
-  'voice-ai-veterinary-clinics': 'veterinary',
-  'for-restaurant-page': 'restaurants',
-  'voice-ai-for-telecommunication': 'telecom',
   // /industries/* entries
   healthcare: 'healthcare',
   'law-firms': 'legal',
@@ -136,30 +112,28 @@ const slugToVerticalKey: Record<string, string> = {
   'hotels-hospitality': 'hospitality',
   education: 'education',
   government: 'government',
-  insurance: 'insurance',
-  'real-estate': 'real-estate',
-  dental: 'dental',
-  restaurants: 'restaurants',
-  'home-services': 'home-services',
 };
 
-/** Resolve the agent shown on a page from its route slug. */
-export function getVerticalAgentForSlug(slug: string, fallbackLabel: string): VerticalAgent {
-  return getVerticalAgent(slugToVerticalKey[slug], fallbackLabel);
-}
-
 /**
- * Look up a vertical agent, falling back to a generic profile built from the
- * page's own label so every industry page can show the card.
+ * Look up a vertical agent, falling back to the general website agent. The
+ * fallback copy stays generic on purpose: Grace is not trained per vertical,
+ * so promising vertical-specific skills there would overstate what she does.
  */
 export function getVerticalAgent(key: string | undefined, fallbackLabel: string): VerticalAgent {
   const found = key ? byKey.get(key) : undefined;
   if (found) return found;
 
   return {
-    key: key ?? 'general',
+    key: 'general',
+    name: graceFallback.name,
     contextLabel: fallbackLabel,
-    blurb: `Answers questions, books appointments, and routes callers to the right person, tuned to how ${fallbackLabel.toLowerCase()} teams actually work.`,
-    chips: ['Answers questions', 'Books appointments', 'Routes callers'],
+    blurb: 'Answers questions about UponAI and how a voice agent would handle calls for your team.',
+    chips: ['Answers questions', 'Explains workflows', 'Books a demo'],
+    demo: graceFallback.demo,
   };
+}
+
+/** Resolve the agent shown on a page from its route slug. */
+export function getVerticalAgentForSlug(slug: string, fallbackLabel: string): VerticalAgent {
+  return getVerticalAgent(slugToVerticalKey[slug], fallbackLabel);
 }

@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import nodemailer from 'nodemailer'
-import { verticalAgentKeys } from '@/lib/vertical-agents'
+import { resolveAgentId } from '@/lib/vertical-agents.server'
 
 const LEAD_EMAIL = 'melvin@uponai.com'
 
@@ -12,22 +12,6 @@ type LeadBody = {
   consentMarketing?: boolean
   notify?: boolean
   vertical?: string
-}
-
-/**
- * Resolve which agent answers this call. The client only ever sends a vertical
- * key, never an agent id, and the key must be one we published - so a caller
- * cannot point the widget at an arbitrary agent. Any vertical without its own
- * configured agent falls back to the default website agent.
- */
-function resolveAgentId(vertical?: string): string | undefined {
-  const key = vertical?.trim()
-  if (key && verticalAgentKeys.includes(key)) {
-    const envName = `UPONAI_AGENT_ID_${key.toUpperCase().replace(/-/g, '_')}`
-    const scoped = process.env[envName]?.trim()
-    if (scoped) return scoped
-  }
-  return process.env.UPONAI_AGENT_ID
 }
 
 export async function POST(req: NextRequest) {

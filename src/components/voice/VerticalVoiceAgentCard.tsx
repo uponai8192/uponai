@@ -2,7 +2,7 @@
 
 import { useMemo } from 'react';
 import { useVoiceWidget } from '@/components/widget/VoiceWidgetProvider';
-import { verticalAgentName, type VerticalAgent } from '@/lib/vertical-agents';
+import type { VerticalAgent } from '@/lib/vertical-agents';
 
 const micPath =
   'M12 1a3 3 0 0 1 3 3v8a3 3 0 0 1-6 0V4a3 3 0 0 1 3-3zm-1 17.93V21H9v2h6v-2h-2v-2.07A8 8 0 0 0 20 12h-2a6 6 0 0 1-12 0H4a8 8 0 0 0 7 7.93z';
@@ -35,7 +35,7 @@ export default function VerticalVoiceAgentCard({ agent }: { agent: VerticalAgent
         <div className="flex items-center justify-between">
           <span className="theme-pill-primary inline-flex items-center gap-2 rounded-full px-3 py-1 text-[10.5px] font-semibold uppercase tracking-[0.16em] font-[family-name:var(--font-mono)]">
             <span className="animate-brand-pulse inline-flex h-1.5 w-1.5 rounded-full bg-current" />
-            Live
+            {agent.demo ? 'Live demo' : 'Live'}
           </span>
           <span className="theme-subtle text-[10.5px] uppercase tracking-[0.18em] font-[family-name:var(--font-mono)]">
             AI voice agent
@@ -59,7 +59,7 @@ export default function VerticalVoiceAgentCard({ agent }: { agent: VerticalAgent
             style={{ background: 'linear-gradient(150deg, var(--brand), var(--brand-2))' }}
           >
             <span className="font-[family-name:var(--font-display)] leading-none">
-              {verticalAgentName.charAt(0)}
+              {agent.name.charAt(0)}
             </span>
             <span
               aria-hidden
@@ -79,7 +79,7 @@ export default function VerticalVoiceAgentCard({ agent }: { agent: VerticalAgent
         </div>
 
         <div className="mt-5 text-center">
-          <h3 className="theme-heading text-[28px] font-bold leading-none">{verticalAgentName}</h3>
+          <h3 className="theme-heading text-[28px] font-bold leading-none">{agent.name}</h3>
           <p className="theme-subtle mt-2.5 text-[10.5px] uppercase tracking-[0.18em] font-[family-name:var(--font-mono)]">
             UponAI agent · {agent.contextLabel}
           </p>
@@ -105,11 +105,13 @@ export default function VerticalVoiceAgentCard({ agent }: { agent: VerticalAgent
           <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
             <path d={micPath} />
           </svg>
-          Talk to {verticalAgentName}
+          Talk to {agent.name}
         </button>
 
-        <p className="theme-subtle mt-3.5 text-center text-[10.5px] font-[family-name:var(--font-mono)]">
-          Runs in your browser. No download.
+        <p className="theme-subtle mt-3.5 text-center text-[10.5px] leading-4 font-[family-name:var(--font-mono)]">
+          {agent.demo
+            ? 'Showcase agent, scoped to the workflows above. Runs in your browser.'
+            : 'Runs in your browser. No download.'}
         </p>
       </div>
     </div>
