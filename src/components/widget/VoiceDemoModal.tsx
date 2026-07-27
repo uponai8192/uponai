@@ -15,7 +15,7 @@ type LeadData = {
 type Phase = 'form' | 'loading' | 'error'
 
 export function VoiceDemoModal() {
-  const { widgetOpen, prefillCompany, closeWidget, onCallStateChange, registerEndCall } = useVoiceWidget()
+  const { widgetOpen, prefillCompany, vertical, closeWidget, onCallStateChange, registerEndCall } = useVoiceWidget()
   const [phase, setPhase] = useState<Phase>('form')
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
   const [lead, setLead] = useState<LeadData>({
@@ -45,7 +45,7 @@ export function VoiceDemoModal() {
       const res = await fetch('/api/retell/create-web-call', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...lead, notify: true }),
+        body: JSON.stringify({ ...lead, vertical, notify: true }),
       })
       if (!res.ok) throw new Error('Failed to create call')
       const { accessToken } = (await res.json()) as { accessToken: string }

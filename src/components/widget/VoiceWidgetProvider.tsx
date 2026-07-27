@@ -5,12 +5,14 @@ import { VoiceDemoModalDynamic } from '@/components/widget/VoiceDemoModalDynamic
 
 export type CallState = 'idle' | 'loading' | 'active' | 'ended' | 'error'
 
-type OpenOptions = { company?: string }
+type OpenOptions = { company?: string; vertical?: string }
 
 type VoiceWidgetContextValue = {
   widgetOpen: boolean
   callState: CallState
   prefillCompany: string
+  /** Vertical the call was started from, so the server can pick that agent. */
+  vertical: string
   openWidget: (options?: OpenOptions) => void
   closeWidget: () => void
   onCallStateChange: (state: CallState) => void
@@ -24,12 +26,15 @@ export function VoiceWidgetProvider({ children }: { children: ReactNode }) {
   const [widgetOpen, setWidgetOpen] = useState(false)
   const [callState, setCallState] = useState<CallState>('idle')
   const [prefillCompany, setPrefillCompany] = useState('')
+  const [vertical, setVertical] = useState('')
   const endCallRef = useRef<(() => void) | null>(null)
 
   // Opening always starts from a fresh form. An optional company pre-fills the
   // form (e.g. the "Hear Grace answer for X" builder CTA) so it isn't asked twice.
+  // An optional vertical tells the server which trained agent to use.
   const openWidget = useCallback((options?: OpenOptions) => {
     setPrefillCompany(options?.company ?? '')
+    setVertical(options?.vertical ?? '')
     setCallState('idle')
     setWidgetOpen(true)
   }, [])
@@ -40,7 +45,7 @@ export function VoiceWidgetProvider({ children }: { children: ReactNode }) {
   const endCall = useCallback(() => { endCallRef.current?.() }, [])
 
   return (
-    <VoiceWidgetContext.Provider value={{ widgetOpen, callState, prefillCompany, openWidget, closeWidget, onCallStateChange, registerEndCall, endCall }}>
+    <VoiceWidgetContext.Provider value={{ widgetOpen, callState, prefillCompany, vertical, openWidget, closeWidget, onCallStateChange, registerEndCall, endCall }}>
       {children}
       <VoiceDemoModalDynamic />
     </VoiceWidgetContext.Provider>

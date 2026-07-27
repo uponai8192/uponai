@@ -1,12 +1,13 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
 import { industries, services, getIndustryBySlug } from '@/lib/data';
 import { rotatingBrandPhotos } from '@/lib/brand-photos';
 import { getIndustryContent, getServiceContent } from '@/lib/site-content';
 import { buildBreadcrumbSchema, buildPageMetadata, buildServiceSchema } from '@/lib/seo';
 import { getFeaturedCities } from '@/lib/voice-ai-industries';
+import VerticalVoiceAgentCard from '@/components/voice/VerticalVoiceAgentCard';
+import { getVerticalAgentForSlug } from '@/lib/vertical-agents';
 import CTASection from '@/components/sections/CTASection';
 import FeaturesBento from '@/components/sections/FeaturesBento';
 
@@ -120,18 +121,7 @@ export default async function IndustryPage({ params }: Props) {
             </div>
 
             <div className="relative">
-              <div className={`absolute -inset-3 ${c.bg} rounded-3xl blur-2xl opacity-40`} />
-              <div className="relative overflow-hidden rounded-2xl border border-slate-700/60 shadow-2xl shadow-black/60">
-                <Image src={heroPhoto} alt={`${industry.name} communication workflows`} width={680} height={480} className="h-auto w-full object-cover" priority unoptimized />
-                <div className="absolute bottom-4 left-4 rounded-xl border border-slate-700 bg-slate-900/90 px-4 py-2.5 shadow-xl backdrop-blur-sm">
-                  <div className={`text-xl font-black ${c.text}`}>{content.stats[0]?.value}</div>
-                  <div className="text-xs text-slate-300">{content.stats[0]?.label}</div>
-                </div>
-                <div className="absolute right-4 top-4 rounded-xl border border-slate-700 bg-slate-900/90 px-4 py-2.5 shadow-xl backdrop-blur-sm">
-                  <div className="text-sm font-black text-green-400">{content.stats[1]?.label}</div>
-                  <div className={`text-lg font-black ${c.text}`}>{content.stats[1]?.value}</div>
-                </div>
-              </div>
+              <VerticalVoiceAgentCard agent={getVerticalAgentForSlug(industry.slug, industry.name)} />
               <div className="mt-4 grid grid-cols-2 gap-3">
                 {content.stats.slice(2, 4).map((stat) => (
                   <div key={stat.label} className={`rounded-xl border ${c.border} ${c.bg} p-4 text-center`}>

@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import nodemailer from 'nodemailer'
+import { verticalAgentKeys } from '@/lib/vertical-agents'
 
 const LEAD_EMAIL = 'melvin@uponai.com'
 
@@ -10,11 +11,28 @@ type LeadBody = {
   consentContact: boolean
   consentMarketing?: boolean
   notify?: boolean
+  vertical?: string
+}
+
+/**
+ * Resolve which agent answers this call. The client only ever sends a vertical
+ * key, never an agent id, and the key must be one we published - so a caller
+ * cannot point the widget at an arbitrary agent. Any vertical without its own
+ * configured agent falls back to the default website agent.
+ */
+function resolveAgentId(vertical?: string): string | undefined {
+  const key = vertical?.trim()
+  if (key && verticalAgentKeys.includes(key)) {
+    const envName = `UPONAI_AGENT_ID_${key.toUpperCase().replace(/-/g, '_')}`
+    const scoped = process.env[envName]?.trim()
+    if (scoped) return scoped
+  }
+  return process.env.UPONAI_AGENT_ID
 }
 
 export async function POST(req: NextRequest) {
   const body = (await req.json()) as LeadBody
-  const { name, email, company, consentContact, consentMarketing = false, notify = true } = body
+  const { name, email, company, consentContact, consentMarketing = false, notify = true, vertical } = body
 
   if (!name?.trim() || !email?.trim() || !company?.trim() || !consentContact) {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
@@ -27,7 +45,7 @@ export async function POST(req: NextRequest) {
       Authorization: `Bearer ${process.env.UPONAI_API_KEY}`,
     },
     body: JSON.stringify({
-      agentId: process.env.UPONAI_AGENT_ID,
+      agentId: resolveAgentId(vertical),
       retell_llm_dynamic_variables: { name: name.trim(), company: company.trim() },
     }),
   })

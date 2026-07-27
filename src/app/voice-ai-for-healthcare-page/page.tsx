@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { uponaiBookingUrl } from '@/lib/booking';
 import CTASection from '@/components/sections/CTASection';
 import { brandPhotos } from '@/lib/brand-photos';
+import VerticalVoiceAgentCard from '@/components/voice/VerticalVoiceAgentCard';
+import { getVerticalAgentForSlug } from '@/lib/vertical-agents';
 import {
   buildBreadcrumbSchema,
   buildFaqSchema,
@@ -192,31 +194,19 @@ export default function VoiceAIForHealthcarePage() {
           </div>
 
           <div className="relative">
-            <div className="theme-panel overflow-hidden rounded-[2rem] p-3">
-              <div className="overflow-hidden rounded-[1.5rem] border border-[var(--border)]">
-                <Image
-                  src={brandPhotos.voiceSearch}
-                  alt="UponAI healthcare voice workflow support"
-                  width={1200}
-                  height={800}
-                  className="h-full w-full object-cover"
-                  priority
-                  unoptimized
-                />
+            <VerticalVoiceAgentCard agent={getVerticalAgentForSlug('voice-ai-for-healthcare-page', 'Healthcare')} />
+            <div className="mt-3 grid gap-3 md:grid-cols-2">
+              <div className="theme-card-soft rounded-[1.25rem] p-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-primary-text)]">
+                  Patient Questions
+                </p>
+                <p className="theme-heading mt-2 text-lg font-semibold">Hours, insurance, providers, directions</p>
               </div>
-              <div className="mt-3 grid gap-3 md:grid-cols-2">
-                <div className="theme-card-soft rounded-[1.25rem] p-4">
-                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-primary-text)]">
-                    Patient Questions
-                  </p>
-                  <p className="theme-heading mt-2 text-lg font-semibold">Hours, insurance, providers, directions</p>
-                </div>
-                <div className="theme-card-soft rounded-[1.25rem] p-4">
-                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-accent-text)]">
-                    Staff Relief
-                  </p>
-                  <p className="theme-heading mt-2 text-lg font-semibold">Less voicemail, fewer hold-time bottlenecks</p>
-                </div>
+              <div className="theme-card-soft rounded-[1.25rem] p-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-accent-text)]">
+                  Staff Relief
+                </p>
+                <p className="theme-heading mt-2 text-lg font-semibold">Less voicemail, fewer hold-time bottlenecks</p>
               </div>
             </div>
           </div>

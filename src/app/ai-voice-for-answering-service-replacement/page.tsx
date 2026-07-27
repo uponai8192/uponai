@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
 import { uponaiBookingUrl } from '@/lib/booking';
 import {
@@ -9,6 +8,8 @@ import {
   buildServiceSchema,
 } from '@/lib/seo';
 import { brandPhotos } from '@/lib/brand-photos';
+import VerticalVoiceAgentCard from '@/components/voice/VerticalVoiceAgentCard';
+import { getVerticalAgentForSlug } from '@/lib/vertical-agents';
 import { getFeaturedCities, requireVoiceAIIndustryPage } from '@/lib/voice-ai-industries';
 
 const page = requireVoiceAIIndustryPage('ai-voice-for-answering-service-replacement');
@@ -261,31 +262,21 @@ export default function AnsweringServiceReplacementPage() {
           </div>
 
           <div className="relative">
-            <div className="theme-panel overflow-hidden rounded-[2rem] p-3">
-              <div className="overflow-hidden rounded-[1.5rem] border border-[var(--border)]">
-                <Image
-                  src={brandPhotos.voiceMic}
-                  alt="UponAI AI voice answering service replacement"
-                  width={1200}
-                  height={820}
-                  className="h-full w-full object-cover"
-                  priority
-                  unoptimized
-                />
+            <VerticalVoiceAgentCard
+              agent={getVerticalAgentForSlug('ai-voice-for-answering-service-replacement', 'Answering service')}
+            />
+            <div className="mt-3 grid gap-3 md:grid-cols-2">
+              <div className="theme-card-soft rounded-[1.25rem] p-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-accent-text)]">
+                  Coverage
+                </p>
+                <p className="theme-heading mt-2 text-lg font-semibold">24/7 call handling</p>
               </div>
-              <div className="mt-3 grid gap-3 md:grid-cols-2">
-                <div className="theme-card-soft rounded-[1.25rem] p-4">
-                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-accent-text)]">
-                    Coverage
-                  </p>
-                  <p className="theme-heading mt-2 text-lg font-semibold">24/7 call handling</p>
-                </div>
-                <div className="theme-card-soft rounded-[1.25rem] p-4">
-                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-primary-text)]">
-                    Outcome
-                  </p>
-                  <p className="theme-heading mt-2 text-lg font-semibold">Fewer missed leads and cleaner routing</p>
-                </div>
+              <div className="theme-card-soft rounded-[1.25rem] p-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-primary-text)]">
+                  Outcome
+                </p>
+                <p className="theme-heading mt-2 text-lg font-semibold">Fewer missed leads and cleaner routing</p>
               </div>
             </div>
           </div>

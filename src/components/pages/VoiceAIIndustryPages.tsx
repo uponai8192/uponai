@@ -1,5 +1,6 @@
-import Image from 'next/image';
 import Link from 'next/link';
+import VerticalVoiceAgentCard from '@/components/voice/VerticalVoiceAgentCard';
+import { getVerticalAgentForSlug } from '@/lib/vertical-agents';
 import CTASection from '@/components/sections/CTASection';
 import { uponaiBookingUrl } from '@/lib/booking';
 import type { City } from '@/lib/data';
@@ -139,28 +140,16 @@ export function VoiceAIIndustryLandingPage({ page }: { page: VoiceAIIndustryPage
           </div>
 
           <div className="relative">
-            <div className="theme-panel overflow-hidden rounded-[2rem] p-3">
-              <div className="overflow-hidden rounded-[1.5rem] border border-[var(--border)]">
-                <Image
-                  src={page.image}
-                  alt={page.imageAlt}
-                  width={1200}
-                  height={820}
-                  className="h-full w-full object-cover"
-                  priority
-                  unoptimized
-                />
-              </div>
-              <div className="mt-3 grid gap-3 md:grid-cols-2">
-                {page.stats.slice(2).map((stat) => (
-                  <div key={stat.label} className="theme-card-soft rounded-[1.25rem] p-4">
-                    <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-primary-text)]">
-                      {stat.label}
-                    </p>
-                    <p className="theme-heading mt-2 text-lg font-semibold">{stat.value}</p>
-                  </div>
-                ))}
-              </div>
+            <VerticalVoiceAgentCard agent={getVerticalAgentForSlug(page.slug, page.label)} />
+            <div className="mt-3 grid gap-3 md:grid-cols-2">
+              {page.stats.slice(2).map((stat) => (
+                <div key={stat.label} className="theme-card-soft rounded-[1.25rem] p-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-primary-text)]">
+                    {stat.label}
+                  </p>
+                  <p className="theme-heading mt-2 text-lg font-semibold">{stat.value}</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -455,7 +444,6 @@ export function VoiceAIIndustryCityPage({
   const cityTitle = override?.heroTitle ?? `${page.label} voice AI in ${location}`;
   const cityDescription = override?.heroDescription ?? `${page.cityLead} ${location} ${page.citySupport}`;
   const cityImage = override?.image ?? page.image;
-  const cityImageAlt = override?.imageAlt ?? `${page.imageAlt} in ${location}`;
   const siblingIndustryPages = voiceAIIndustryPages.filter((item) => item.slug !== page.slug).slice(0, 6);
   const relatedWorkflowLinks = [
     ...uponaiUseCasesMenu.filter((item) => item.href !== `/${page.slug}`),
@@ -595,19 +583,7 @@ export function VoiceAIIndustryCityPage({
             </div>
 
             <div className="relative">
-              <div className="theme-panel overflow-hidden rounded-[2rem] p-3">
-                <div className="overflow-hidden rounded-[1.5rem] border border-[var(--border)]">
-                  <Image
-                    src={cityImage}
-                    alt={cityImageAlt}
-                    width={1200}
-                    height={820}
-                    className="h-full w-full object-cover"
-                    priority
-                    unoptimized
-                  />
-                </div>
-              </div>
+              <VerticalVoiceAgentCard agent={getVerticalAgentForSlug(page.slug, page.label)} />
             </div>
           </div>
         </div>
