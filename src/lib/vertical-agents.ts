@@ -133,6 +133,15 @@ export function getVerticalAgent(key: string | undefined, fallbackLabel: string)
   };
 }
 
+/**
+ * Name of the agent for a vertical key, for UI that only knows the key (the
+ * shared call modal). Falls back to the general website agent.
+ */
+export function getVerticalAgentName(key: string | undefined): string {
+  const found = key ? byKey.get(key) : undefined;
+  return found?.name ?? graceFallback.name;
+}
+
 /** Resolve the agent shown on a page from its route slug. */
 export function getVerticalAgentForSlug(slug: string, fallbackLabel: string): VerticalAgent {
   return getVerticalAgent(slugToVerticalKey[slug], fallbackLabel);

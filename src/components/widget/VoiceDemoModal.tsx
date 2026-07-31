@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, type FormEvent } from 'react'
 import { RetellWebClient } from 'retell-client-js-sdk'
 import { useVoiceWidget } from './VoiceWidgetProvider'
+import { getVerticalAgentName } from '@/lib/vertical-agents'
 
 type LeadData = {
   name: string
@@ -16,6 +17,9 @@ type Phase = 'form' | 'loading' | 'error'
 
 export function VoiceDemoModal() {
   const { widgetOpen, prefillCompany, vertical, closeWidget, onCallStateChange, registerEndCall } = useVoiceWidget()
+  // The modal is shared across verticals, so it takes its agent name from the
+  // vertical the call was started from.
+  const agentName = getVerticalAgentName(vertical)
   const [phase, setPhase] = useState<Phase>('form')
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
   const [lead, setLead] = useState<LeadData>({
@@ -112,7 +116,7 @@ export function VoiceDemoModal() {
       <div
         role="dialog"
         aria-modal="true"
-        aria-label="Talk to Grace"
+        aria-label={`Talk to ${agentName}`}
         className="relative w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl overflow-hidden"
         style={{
           animation: 'modal-slide-up 0.26s cubic-bezier(0.16,1,0.3,1) forwards',
@@ -132,13 +136,13 @@ export function VoiceDemoModal() {
             >
               <div className="relative flex-shrink-0">
                 <div className="h-[52px] w-[52px] rounded-full bg-gradient-to-br from-[#1e78cc] to-[#63ade5] flex items-center justify-center shadow-[0_0_20px_rgba(30, 120, 204,0.28)]">
-                  <span className="text-xl font-bold text-white select-none">G</span>
+                  <span className="text-xl font-bold text-[#ffffff] select-none">{agentName.charAt(0)}</span>
                 </div>
                 <span className="absolute bottom-0.5 right-0.5 h-3 w-3 rounded-full bg-[#1e78cc] border-2 border-[rgba(6,13,26,1)]" />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-[10px] font-bold uppercase tracking-[0.22em]" style={{ color: '#1e78cc' }}>UponAI Agent</p>
-                <h2 className="text-lg font-bold leading-tight" style={{ color: '#f1f5f9' }}>Talk to Grace</h2>
+                <h2 className="text-lg font-bold leading-tight" style={{ color: '#f1f5f9' }}>Talk to {agentName}</h2>
                 <p className="text-xs mt-0.5" style={{ color: '#475569' }}>AI voice · Available now</p>
               </div>
               <button
@@ -248,7 +252,7 @@ export function VoiceDemoModal() {
                       <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
                       <line x1="12" x2="12" y1="19" y2="22" />
                     </svg>
-                    Start call with Grace
+                    Start call with {agentName}
                   </>
                 )}
               </button>
