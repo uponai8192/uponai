@@ -16,7 +16,7 @@ type LeadData = {
 type Phase = 'form' | 'loading' | 'error'
 
 export function VoiceDemoModal() {
-  const { widgetOpen, prefillCompany, vertical, closeWidget, onCallStateChange, registerEndCall } = useVoiceWidget()
+  const { widgetOpen, prefillCompany, vertical, closeWidget, onCallStateChange, registerEndCall, markLeadCaptured, registerStartCall } = useVoiceWidget()
   // The modal is shared across verticals, so it takes its agent name from the
   // vertical the call was started from.
   const agentName = getVerticalAgentName(vertical)
@@ -41,7 +41,10 @@ export function VoiceDemoModal() {
     }
   }
 
-  const startCall = async () => {
+  // `verticalOverride` lets a reconnect pass its vertical directly, without
+  // waiting on the provider's state update. Repeat calls in the same session
+  // skip the lead email so the same visitor is not reported twice.
+  const startCall = async (verticalOverride?: string, options?: { notify?: boolean }) => {
     setPhase('loading')
     setErrorMsg(null)
     onCallStateChange('loading')
@@ -49,10 +52,16 @@ export function VoiceDemoModal() {
       const res = await fetch('/api/retell/create-web-call', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...lead, vertical, notify: true }),
+        body: JSON.stringify({
+          ...lead,
+          vertical: verticalOverride ?? vertical,
+          notify: options?.notify ?? true,
+        }),
       })
       if (!res.ok) throw new Error('Failed to create call')
       const { accessToken } = (await res.json()) as { accessToken: string }
+      // The server accepted these details, so we can reuse them for reconnects.
+      markLeadCaptured()
 
       const client = new RetellWebClient()
       clientRef.current = client
@@ -85,6 +94,15 @@ export function VoiceDemoModal() {
       setErrorMsg('Could not connect. Please try again.')
     }
   }
+
+  // Expose startCall so a card can reconnect without reopening the form. Kept
+  // in a ref so the registered callback stays stable across renders.
+  const startCallRef = useRef(startCall)
+  useEffect(() => { startCallRef.current = startCall })
+  useEffect(() => {
+    registerStartCall((v?: string) => { void startCallRef.current(v, { notify: false }) })
+    return () => registerStartCall(null)
+  }, [registerStartCall])
 
   const handleSubmit = (e: FormEvent) => { e.preventDefault(); void startCall() }
   const handleRetry = () => { setPhase('form'); setErrorMsg(null); onCallStateChange('idle') }

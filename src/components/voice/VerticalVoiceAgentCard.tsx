@@ -17,8 +17,13 @@ function formatTime(seconds: number) {
 }
 
 export default function VerticalVoiceAgentCard({ agent }: { agent: VerticalAgent }) {
-  const { callState, openWidget, endCall } = useVoiceWidget();
+  const { callState, leadCaptured, openWidget, endCall, startCallDirect } = useVoiceWidget();
   const [elapsed, setElapsed] = useState(0);
+
+  // Once the visitor has given their details this session, reconnect straight
+  // away instead of sending them back through the form.
+  const startTalking = () =>
+    leadCaptured ? startCallDirect(agent.key) : openWidget({ vertical: agent.key });
 
   const onCall = callState === 'active';
   const connecting = callState === 'loading';
@@ -183,7 +188,7 @@ export default function VerticalVoiceAgentCard({ agent }: { agent: VerticalAgent
             </a>
             <button
               type="button"
-              onClick={() => openWidget({ vertical: agent.key })}
+              onClick={startTalking}
               className="theme-secondary-button w-full rounded-2xl py-3.5 text-sm font-semibold"
             >
               Talk to {agent.name} again
@@ -192,7 +197,7 @@ export default function VerticalVoiceAgentCard({ agent }: { agent: VerticalAgent
         ) : (
           <button
             type="button"
-            onClick={() => openWidget({ vertical: agent.key })}
+            onClick={startTalking}
             disabled={connecting}
             className="theme-primary-button group mt-7 flex w-full items-center justify-center gap-3 rounded-2xl py-4 text-[15px] font-bold disabled:opacity-60"
           >
