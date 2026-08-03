@@ -815,6 +815,14 @@ export const cities: City[] = [
   { slug: 'independence-mo', name: 'Independence', state: 'Missouri', stateAbbr: 'MO' },
 ];
 
+// Cities used for static generation only. A staging build renders a small
+// sample instead of the full cross-product: 15 city routes x 305 cities is
+// over 13,000 pages, which will not build on a small box. Unlisted cities
+// still render on demand, so staging loses no functionality.
+export const staticParamCities: City[] =
+  process.env.NEXT_PUBLIC_SITE_ENV === 'staging' ? cities.slice(0, 6) : cities;
+
+
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 export function getCityBySlug(slug: string): City | undefined {

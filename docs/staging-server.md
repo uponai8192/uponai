@@ -17,40 +17,60 @@ separate checkout, a separate container, and a separate port.
 
 ## 0. Pre-flight, do this first
 
-The site statically exports over 13,000 pages. That build is the riskiest part
-of this whole exercise on a box that is already loaded. Check headroom before
-you start:
+Measured on the server:
 
-```bash
-df -h /
-free -h
+```
+/dev/root   96G   76G used   21G avail   79%
+Mem: 7.6Gi total   3.9Gi used   3.7Gi available
+Swap: 0B
 ```
 
-At last look the server was at 78.4% of 95.82GB disk and 72% memory. Budget
-roughly 5-10GB for a second `node_modules` plus `.next`, and expect the build
-to want several GB of RAM.
+Two things follow from that. **There is no swap**, so any memory spike is an
+immediate OOM kill with no grace, and 3.7GB available is not enough for a full
+production build of this site.
 
-If free memory is under about 4GB, add swap before building or the build will
-be OOM-killed part way through the export:
+### Staging builds a fraction of the pages
+
+Production generates 13,465 pages, almost all of which are city permutations:
+15 city routes across 305 cities. Staging does not need them. Setting
+`NEXT_PUBLIC_SITE_ENV=staging` trims the static list to 6 cities:
+
+| | Pages |
+|---|---|
+| Production | 13,465 |
+| Staging | about 309 |
+
+This is driven by `staticParamCities` in `src/lib/data.ts`, which every city
+route's `generateStaticParams` reads. Cities outside that sample still render
+on demand, because no route sets `dynamicParams = false` — so staging keeps
+full functionality, it just does not pre-render 13,000 pages. Production is
+untouched: without the env var the full 305-city list is used.
+
+### Add swap anyway
+
+Cheap insurance, and it keeps the box healthy for everything else it runs:
 
 ```bash
-sudo fallocate -l 8G /swapfile
+sudo fallocate -l 4G /swapfile
 sudo chmod 600 /swapfile
 sudo mkswap /swapfile
 sudo swapon /swapfile
+free -h
 ```
 
 To make it survive a reboot, append `/swapfile none swap sw 0 0` to `/etc/fstab`.
 
-If disk is the tighter constraint, reclaim some first:
+### Disk
+
+21GB free is enough for a second `node_modules` plus a trimmed `.next`, but it
+is not roomy. If you want headroom first:
 
 ```bash
 docker system prune -a --volumes
 ```
 
 Read what that will delete before confirming: it removes unused images and
-volumes, and anything not currently attached to a running container is fair
-game.
+volumes, and anything not attached to a running container is fair game.
 
 ---
 
@@ -93,9 +113,10 @@ PORT=3000                             # inside the container; the host maps 3002
 
 **`NEXT_PUBLIC_SITE_ENV` must be set at build time, not run time.** Anything
 prefixed `NEXT_PUBLIC_` is inlined into the bundle when `next build` runs, and
-`robots.txt` is generated during that same build. Putting it only under
-`environment:` in compose sets it at run time, which is too late: the build
-will already have emitted `Allow: /` and staging would be indexable.
+both `robots.txt` and the city page list are decided during that same build.
+Putting it only under `environment:` in compose sets it at run time, which is
+too late: the build will already have emitted `Allow: /` and queued all 13,465
+pages, which is exactly the build this box cannot finish.
 
 The simplest way to guarantee it lands is to write it into the staging
 checkout before building, since Next reads this file during `next build`:
@@ -201,6 +222,10 @@ If `robots.txt` comes back `Allow: /`, the build did not see
 `NEXT_PUBLIC_SITE_ENV`. Fix it per step 3 and rebuild; a run-time restart will
 not change it. Do not skip this check, it is the difference between a private
 preview and a second copy of the site competing with production in search.
+
+The build log is the other tell. Staging should report roughly 300 pages
+generated. If it starts counting toward 13,465, the env var did not reach the
+build and it will likely be OOM-killed before finishing.
 
 Then in a browser, signed in through basic auth, check:
 
