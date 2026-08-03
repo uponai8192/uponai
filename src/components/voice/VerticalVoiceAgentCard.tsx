@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import AgentAvatar from '@/components/voice/AgentAvatar';
 import { useVoiceWidget } from '@/components/widget/VoiceWidgetProvider';
 import { uponaiBookingUrl } from '@/lib/booking';
 import type { VerticalAgent } from '@/lib/vertical-agents';
@@ -103,20 +104,13 @@ export default function VerticalVoiceAgentCard({ agent }: { agent: VerticalAgent
             className="animate-agent-halo absolute inset-0 rounded-full border border-[var(--brand)]"
             style={{ animationDelay: onCall ? '0.7s' : '1.4s' }}
           />
-          {/* Arbitrary hex rather than `text-white`: a legacy light-theme rule in
-              globals.css remaps `.text-white` to the dark heading colour. */}
-          <span
-            className="relative grid h-24 w-24 place-items-center rounded-full text-[34px] font-extrabold text-[#ffffff] shadow-[0_16px_36px_rgba(1,87,163,0.32)]"
-            style={{ background: 'linear-gradient(150deg, var(--brand), var(--brand-2))' }}
-          >
-            <span className="font-[family-name:var(--font-display)] leading-none">
-              {agent.name.charAt(0)}
-            </span>
-            <span
-              aria-hidden
-              className="absolute bottom-1.5 right-1.5 h-4 w-4 rounded-full border-[3px] border-[var(--surface-solid)] bg-[var(--brand-cool)]"
-            />
+          <span className="relative grid h-24 w-24 place-items-center overflow-hidden rounded-full shadow-[0_16px_36px_rgba(1,87,163,0.32)]">
+            <AgentAvatar agentKey={agent.key} name={agent.name} size={96} priority />
           </span>
+          <span
+            aria-hidden
+            className="absolute bottom-1.5 right-1.5 h-4 w-4 rounded-full border-[3px] border-[var(--surface-solid)] bg-[var(--brand-cool)]"
+          />
         </div>
 
         <div aria-hidden className="mx-auto mt-5 flex h-8 w-44 items-end justify-center gap-[3px]">
