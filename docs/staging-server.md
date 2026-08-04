@@ -223,6 +223,19 @@ In `playground.upon-ai.com/nginx/proxy`:
 The access list is what actually keeps staging private. `robots.txt` only asks
 crawlers politely; basic auth stops everything else.
 
+**Leave the Access tab empty.** An NPM access list has two tabs and they do
+different jobs:
+
+- **Authorization** holds usernames and passwords, and produces a `401`
+- **Access** holds IP rules. Put anything here and NPM emits
+  `allow <listed>; deny all;`, so everyone else gets a flat `403` before auth
+  is ever considered, including you and the server itself
+
+A `403` from openresty means an IP rule is rejecting you; a `401` means basic
+auth is working as intended. For a remote team, IP rules are the wrong tool
+anyway: laptops, phones and tethered connections all move. One shared username
+and password, Satisfy Any unchecked, Access tab empty.
+
 ---
 
 ## 6. Verify
