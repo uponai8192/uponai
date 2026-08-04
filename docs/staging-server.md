@@ -38,7 +38,7 @@ Production generates 13,465 pages, almost all of which are city permutations:
 | | Pages |
 |---|---|
 | Production | 13,465 |
-| Staging | about 309 |
+| Staging | about 609 |
 
 This is driven by `staticParamCities` in `src/lib/data.ts`, which every city
 route's `generateStaticParams` reads. Cities outside that sample still render
@@ -97,19 +97,38 @@ git checkout feat/site-redesign
 
 ---
 
-## 3. Environment
+## 3. Build files and environment
 
-Copy production's environment as the starting point, then override the parts
-that must differ. Production keeps its values in `docker-compose.yml` rather
-than `.env` files, so pull from there.
-
-Values to change for staging:
+`Dockerfile`, `.dockerignore` and `docker-compose.yml` are **not in the repo**.
+They live only on the server, so a fresh clone cannot build until you copy them
+across. This is the first thing that will fail otherwise.
 
 ```bash
-NEXT_PUBLIC_SITE_ENV=staging          # blocks crawlers via robots.ts
-NOTIFY_EMAILS=you@uponai.com          # keep test leads away from the sales inbox
-PORT=3000                             # inside the container; the host maps 3002
+cd ~/uponai_website_staging
+cp ~/uponai_website/Dockerfile ~/uponai_website/.dockerignore .
+cp ~/uponai_website/docker-compose.yml ./docker-compose.staging.yml
 ```
+
+Production keeps two env files, and they do different jobs:
+
+- `.env.production.local` is what compose loads via `env_file`, so it is the
+  **runtime** environment. The final image copies only `package*.json`,
+  `.next`, `public` and `node_modules`, so no env file ships inside it.
+- `.env.local` is also copied into the builder by `COPY . .` and read during
+  `next build`, but `.env.production.local` wins for any shared key.
+
+Copy both, then set the staging overrides in `.env.production.local`, since
+that is the file used at both build and run time:
+
+```bash
+cp ~/uponai_website/.env.local ~/uponai_website/.env.production.local .
+sed -i 's/^NOTIFY_EMAILS=.*/NOTIFY_EMAILS=you@uponai.com/' .env.production.local
+printf '\nNEXT_PUBLIC_SITE_ENV=staging\n' >> .env.production.local
+grep -n 'NOTIFY_EMAILS\|NEXT_PUBLIC_SITE_ENV' .env.production.local
+```
+
+Use `sed` rather than appending for `NOTIFY_EMAILS`: the key already exists, and
+a duplicate makes which value wins depend on parser order.
 
 **`NEXT_PUBLIC_SITE_ENV` must be set at build time, not run time.** Anything
 prefixed `NEXT_PUBLIC_` is inlined into the bundle when `next build` runs, and
@@ -150,26 +169,21 @@ UPONAI_AGENT_ID_HEALTHCARE=agent_...
 
 ## 4. Container
 
-Staging mirrors the production stack, changing only the published port, the
-container name, and the staging env. Copy production's compose file as the base
-so the two stay in sync:
-
-```bash
-cp ~/uponai_website/docker-compose.yml ./docker-compose.staging.yml
-```
-
-Then edit it so it does not collide with production:
+Edit `docker-compose.staging.yml` so it differs from production in exactly two
+places, the container name and the published port. Everything else, including
+`env_file`, must match or staging will come up missing runtime secrets and the
+voice API and SMTP will fail in ways that look like code bugs:
 
 ```yaml
 services:
-  web:
-    container_name: uponai-web-staging
+  uponai-website:
+    build: .
+    container_name: uponai-website-staging
+    restart: unless-stopped
     ports:
       - "3002:3000"
-    environment:
-      NEXT_PUBLIC_SITE_ENV: staging
-      NOTIFY_EMAILS: you@uponai.com
-    restart: unless-stopped
+    env_file:
+      - .env.production.local
 ```
 
 Bring it up:
@@ -223,7 +237,7 @@ If `robots.txt` comes back `Allow: /`, the build did not see
 not change it. Do not skip this check, it is the difference between a private
 preview and a second copy of the site competing with production in search.
 
-The build log is the other tell. Staging should report roughly 300 pages
+The build log is the other tell. Staging should report roughly 600 pages
 generated. If it starts counting toward 13,465, the env var did not reach the
 build and it will likely be OOM-killed before finishing.
 
