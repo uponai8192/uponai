@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { cities, getCityBySlug, formatCityState } from '@/lib/data';
+import { cities, getCityBySlug, formatCityState, staticParamCities } from '@/lib/data';
 import CTASection from '@/components/sections/CTASection';
 
 export async function generateStaticParams() {
-  return cities.map((city) => ({ city: city.slug }));
+  return staticParamCities.map((city) => ({ city: city.slug }));
 }
 
 type Props = { params: Promise<{ city: string }> };
@@ -34,7 +34,7 @@ const USE_CASES = [
       </svg>
     ),
     title: 'Appointment Scheduling',
-    description: 'The AI books, reschedules, and confirms appointments directly into your calendar — zero hold time.',
+    description: 'The AI books, reschedules, and confirms appointments directly into your calendar - zero hold time.',
   },
   {
     icon: (
@@ -52,7 +52,7 @@ const USE_CASES = [
       </svg>
     ),
     title: 'FAQ Handling',
-    description: 'Answer hours, pricing, directions, and common questions instantly — freeing your team for complex calls.',
+    description: 'Answer hours, pricing, directions, and common questions instantly - freeing your team for complex calls.',
   },
   {
     icon: (
@@ -61,7 +61,7 @@ const USE_CASES = [
       </svg>
     ),
     title: 'Smart Call Routing',
-    description: 'Understand caller intent and route to the right department — no touchtone menus, no frustration.',
+    description: 'Understand caller intent and route to the right department - no touchtone menus, no frustration.',
   },
   {
     icon: (
@@ -96,8 +96,8 @@ const INDUSTRIES = [
 
 const STEPS = [
   { num: '01', title: 'Choose Your Voice & Persona', desc: 'Pick from dozens of natural-sounding voices or clone your own.' },
-  { num: '02', title: 'Train on Your Business', desc: 'Upload your FAQs, scripts, and call flows — the AI learns your brand.' },
-  { num: '03', title: 'Connect to Your Phone System', desc: 'We plug directly into your existing UponAI number — zero downtime.' },
+  { num: '02', title: 'Train on Your Business', desc: 'Upload your FAQs, scripts, and call flows - the AI learns your brand.' },
+  { num: '03', title: 'Connect to Your Phone System', desc: 'We plug directly into your existing UponAI number - zero downtime.' },
   { num: '04', title: 'Go Live & Monitor', desc: 'Launch in days, not months. Review transcripts and tune anytime.' },
 ];
 
@@ -143,7 +143,7 @@ export default async function AIVoiceAgentCityPage({ params }: Props) {
             Businesses
           </h1>
           <p className="text-slate-300 text-xl mb-8 leading-relaxed max-w-3xl">
-            Answer every call — 24 hours a day, 7 days a week — with a human-sounding AI that qualifies leads,
+            Answer every call - 24 hours a day, 7 days a week - with a human-sounding AI that qualifies leads,
             books appointments, and handles FAQs for your {city.name} business. No hold queues. No missed opportunities.
           </p>
 
@@ -181,7 +181,7 @@ export default async function AIVoiceAgentCityPage({ params }: Props) {
               What Our AI Voice Agents Do for {city.name} Businesses
             </h2>
             <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-              Purpose-built automation that handles real phone conversations — not just simple touch-tone menus.
+              Purpose-built automation that handles real phone conversations - not just simple touch-tone menus.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -206,7 +206,7 @@ export default async function AIVoiceAgentCityPage({ params }: Props) {
               Go Live in {cs} in Just Days
             </h2>
             <p className="text-slate-400 text-lg">
-              We handle the entire setup — no engineering team required.
+              We handle the entire setup - no engineering team required.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -261,7 +261,7 @@ export default async function AIVoiceAgentCityPage({ params }: Props) {
                 </p>
                 <p className="text-slate-400 leading-relaxed">
                   Businesses in {cs} get the same enterprise-grade AI technology used by Fortune 500
-                  companies — at a price that makes sense for growing teams.
+                  companies - at a price that makes sense for growing teams.
                 </p>
               </div>
               <div className="space-y-4">
@@ -269,9 +269,9 @@ export default async function AIVoiceAgentCityPage({ params }: Props) {
                   'No separate AI platform to manage',
                   'Calls hand off to live agents seamlessly',
                   'One provider, one invoice, one support team',
-                  'US-based support — real humans in {city}\'s time zone',
+                  'US-based support - real humans in {city}\'s time zone',
                   'SOC 2 & HIPAA-ready infrastructure',
-                  'Cancel anytime — no long-term contracts',
+                  'Cancel anytime - no long-term contracts',
                 ].map((point) => (
                   <div key={point} className="flex items-start gap-3">
                     <svg className="w-5 h-5 text-violet-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

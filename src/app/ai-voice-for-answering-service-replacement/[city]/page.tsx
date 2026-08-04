@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { cities, formatCityState, getCityBySlug } from '@/lib/data';
+import { formatCityState, getCityBySlug, staticParamCities } from '@/lib/data';
 import { requireVoiceAIIndustryPage } from '@/lib/voice-ai-industries';
 import { VoiceAIIndustryCityPage } from '@/components/pages/VoiceAIIndustryPages';
 
@@ -11,7 +11,7 @@ type Props = {
 };
 
 export function generateStaticParams() {
-  return cities.map((city) => ({ city: city.slug }));
+  return staticParamCities.map((city) => ({ city: city.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

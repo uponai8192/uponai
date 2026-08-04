@@ -30,7 +30,7 @@ export default function ContactPageContent() {
       <section className="py-20 px-4">
         <div className="max-w-6xl mx-auto">
         <div className="text-center mb-14">
-          <div className="theme-pill-green inline-flex items-center gap-2 rounded-full px-4 py-1.5 mb-6">
+          <div className="theme-pill-primary inline-flex items-center gap-2 rounded-full px-4 py-1.5 mb-6">
             <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
             <span className="text-sm font-medium">We reply within 1 business day</span>
           </div>
@@ -38,7 +38,7 @@ export default function ContactPageContent() {
           <p className="theme-soft text-xl max-w-2xl mx-auto">
             Questions about AI voice, AI chat, automation, or communications strategy? We&apos;re here to help.
           </p>
-          <div className="theme-pill-cyan mt-6 inline-flex items-center gap-3 rounded-xl px-5 py-3">
+          <div className="theme-pill-accent mt-6 inline-flex items-center gap-3 rounded-xl px-5 py-3">
             <svg className="w-5 h-5 text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 11h.01M12 11h.01M15 11h.01M4 19h16a2 2 0 002-2V7a2 2 0 00-2-2H4a2 2 0 00-2 2v10a2 2 0 002 2z" />
             </svg>
@@ -123,7 +123,7 @@ export default function ContactPageContent() {
               },
             ].map((item) => (
               <div key={item.label} className="theme-card flex items-start gap-4 rounded-xl p-5">
-                <div className="w-10 h-10 rounded-lg flex items-center justify-center text-[var(--brand-cyan-text)] bg-[var(--brand-cyan-bg)] border border-[var(--brand-cyan-border)] flex-shrink-0">
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center text-[var(--brand-accent-text)] bg-[var(--brand-accent-bg)] border border-[var(--brand-accent-border)] flex-shrink-0">
                   {item.icon}
                 </div>
                 <div className="min-w-0">

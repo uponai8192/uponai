@@ -107,7 +107,7 @@ export default async function ServicePage({ params }: Props) {
               <div className="relative overflow-hidden rounded-2xl border border-slate-700/50 shadow-2xl shadow-black/50">
                 <Image
                   src={photo}
-                  alt={`${service.name} — UponAI`}
+                  alt={`${service.name} - UponAI`}
                   width={700}
                   height={480}
                   className="h-auto w-full object-cover"

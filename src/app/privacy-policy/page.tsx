@@ -26,7 +26,7 @@ export default function PrivacyPolicyPage() {
 
       <div className="max-w-4xl mx-auto px-4 py-12 text-sm leading-relaxed space-y-8 theme-body">
         <div className="theme-panel rounded-xl p-5">
-          <p className="text-[var(--brand-cyan-text)] font-semibold mb-1">Your Privacy Matters</p>
+          <p className="text-[var(--brand-accent-text)] font-semibold mb-1">Your Privacy Matters</p>
           <p>
             UponAI is committed to protecting the information you share with us. This page explains what we collect,
             how we use it, and the choices you have when you visit our site, request a demo, download a resource, or
@@ -98,6 +98,12 @@ export default function PrivacyPolicyPage() {
             We use cookies and related technologies to understand site usage, improve performance, remember
             preferences, and measure the effectiveness of our communications. You can control cookies through your
             browser settings, though some site functionality may be affected if cookies are disabled.
+          </p>
+          <p className="mt-4">
+            With your consent, we also use non-essential cookies that enable analytics and lead-attribution
+            providers. These third-party services help us measure site engagement and identify business interest
+            in our products. You can accept or decline these non-essential cookies at any time using the cookie
+            preferences control on our site, and declining will not affect your ability to use the website.
           </p>
         </section>
 

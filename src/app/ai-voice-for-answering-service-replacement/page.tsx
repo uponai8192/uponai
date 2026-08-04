@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
 import { uponaiBookingUrl } from '@/lib/booking';
 import {
@@ -9,6 +8,8 @@ import {
   buildServiceSchema,
 } from '@/lib/seo';
 import { brandPhotos } from '@/lib/brand-photos';
+import VerticalVoiceAgentCard from '@/components/voice/VerticalVoiceAgentCard';
+import { getVerticalAgentForSlug } from '@/lib/vertical-agents';
 import { getFeaturedCities, requireVoiceAIIndustryPage } from '@/lib/voice-ai-industries';
 
 const page = requireVoiceAIIndustryPage('ai-voice-for-answering-service-replacement');
@@ -225,7 +226,7 @@ export default function AnsweringServiceReplacementPage() {
 
         <div className="relative mx-auto grid max-w-7xl gap-14 lg:grid-cols-[1.02fr_0.98fr] lg:items-center">
           <div>
-            <div className="theme-pill-cyan inline-flex items-center rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em]">
+            <div className="theme-pill-accent inline-flex items-center rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em]">
               Answering Service Replacement
             </div>
             <h1 className="theme-heading mt-6 max-w-4xl text-5xl font-bold leading-[0.95] md:text-7xl">
@@ -261,31 +262,21 @@ export default function AnsweringServiceReplacementPage() {
           </div>
 
           <div className="relative">
-            <div className="theme-panel overflow-hidden rounded-[2rem] p-3">
-              <div className="overflow-hidden rounded-[1.5rem] border border-[var(--border)]">
-                <Image
-                  src={brandPhotos.voiceMic}
-                  alt="UponAI AI voice answering service replacement"
-                  width={1200}
-                  height={820}
-                  className="h-full w-full object-cover"
-                  priority
-                  unoptimized
-                />
+            <VerticalVoiceAgentCard
+              agent={getVerticalAgentForSlug('ai-voice-for-answering-service-replacement', 'Answering service')}
+            />
+            <div className="mt-3 grid gap-3 md:grid-cols-2">
+              <div className="theme-card-soft rounded-[1.25rem] p-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-accent-text)]">
+                  Coverage
+                </p>
+                <p className="theme-heading mt-2 text-lg font-semibold">24/7 call handling</p>
               </div>
-              <div className="mt-3 grid gap-3 md:grid-cols-2">
-                <div className="theme-card-soft rounded-[1.25rem] p-4">
-                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-cyan-text)]">
-                    Coverage
-                  </p>
-                  <p className="theme-heading mt-2 text-lg font-semibold">24/7 call handling</p>
-                </div>
-                <div className="theme-card-soft rounded-[1.25rem] p-4">
-                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-green-text)]">
-                    Outcome
-                  </p>
-                  <p className="theme-heading mt-2 text-lg font-semibold">Fewer missed leads and cleaner routing</p>
-                </div>
+              <div className="theme-card-soft rounded-[1.25rem] p-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-primary-text)]">
+                  Outcome
+                </p>
+                <p className="theme-heading mt-2 text-lg font-semibold">Fewer missed leads and cleaner routing</p>
               </div>
             </div>
           </div>
@@ -295,7 +286,7 @@ export default function AnsweringServiceReplacementPage() {
       <section className="px-4 pb-8 pt-4 md:pb-12">
         <div className="mx-auto max-w-7xl">
           <div className="mb-10 max-w-3xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-green-text)]">The Problem</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-primary-text)]">The Problem</p>
             <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">
               Traditional answering services are holding businesses back.
             </h2>
@@ -318,7 +309,7 @@ export default function AnsweringServiceReplacementPage() {
       <section className="theme-section-alt px-4 py-20">
         <div className="mx-auto max-w-7xl">
           <div className="mb-10 max-w-3xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-cyan-text)]">The Solution</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-accent-text)]">The Solution</p>
             <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">Meet your AI voice answering agent.</h2>
             <p className="theme-soft mt-4 text-lg leading-8">
               UponAI creates AI voice agents that answer calls like a trained receptionist or answering service, but
@@ -341,7 +332,7 @@ export default function AnsweringServiceReplacementPage() {
       <section className="px-4 py-20">
         <div className="mx-auto max-w-7xl">
           <div className="mb-10 max-w-4xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-green-text)]">Better Than Legacy</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-primary-text)]">Better Than Legacy</p>
             <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">
               Why businesses are replacing answering services with AI voice.
             </h2>
@@ -361,7 +352,7 @@ export default function AnsweringServiceReplacementPage() {
                   <p className="theme-body mt-2 text-sm leading-7">{row.legacy}</p>
                 </div>
                 <div className="theme-card-soft rounded-[1.25rem] p-4">
-                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-green-text)]">
+                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-primary-text)]">
                     UponAI Voice Agent
                   </p>
                   <p className="theme-body mt-2 text-sm leading-7">{row.ai}</p>
@@ -375,7 +366,7 @@ export default function AnsweringServiceReplacementPage() {
       <section className="theme-section-alt px-4 py-20">
         <div className="mx-auto max-w-7xl">
           <div className="mb-10 max-w-3xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-cyan-text)]">Use Cases</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-accent-text)]">Use Cases</p>
             <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">
               Perfect for businesses that depend on phone calls.
             </h2>
@@ -394,7 +385,7 @@ export default function AnsweringServiceReplacementPage() {
       <section id="call-flow" className="px-4 py-20">
         <div className="mx-auto max-w-7xl">
           <div className="mb-10 max-w-3xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-green-text)]">Example Call Flow</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-primary-text)]">Example Call Flow</p>
             <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">
               How an AI answering agent handles a call.
             </h2>
@@ -420,7 +411,7 @@ export default function AnsweringServiceReplacementPage() {
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-5 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
             <div className="max-w-3xl">
-              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-cyan-text)]">Phone System Integration</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-accent-text)]">Phone System Integration</p>
               <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">Works with your existing phone system.</h2>
               <p className="theme-soft mt-4 text-lg leading-8">
                 UponAI is built for businesses and providers that already have phone systems in place. Your AI
@@ -434,7 +425,7 @@ export default function AnsweringServiceReplacementPage() {
             </div>
 
             <div className="theme-panel rounded-[2rem] p-5">
-              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-green-text)]">Supported Environments</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-primary-text)]">Supported Environments</p>
               <div className="mt-5 grid gap-3 sm:grid-cols-2">
                 {page.integrations?.examples.map((item) => (
                   <div key={item} className="theme-card rounded-[1.25rem] px-4 py-3 text-sm theme-body">
@@ -451,7 +442,7 @@ export default function AnsweringServiceReplacementPage() {
         <div className="mx-auto max-w-7xl">
           <div className="mb-12 grid gap-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-green-text)]">Controlled Conversations</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-primary-text)]">Controlled Conversations</p>
               <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">
                 Natural conversations with business rules built in.
               </h2>
@@ -475,7 +466,7 @@ export default function AnsweringServiceReplacementPage() {
       <section className="theme-section-alt px-4 py-20">
         <div className="mx-auto max-w-7xl">
           <div className="mb-10 max-w-3xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-cyan-text)]">Benefits</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-accent-text)]">Benefits</p>
             <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">
               Benefits of replacing your answering service with UponAI.
             </h2>
@@ -495,7 +486,7 @@ export default function AnsweringServiceReplacementPage() {
       <section className="px-4 py-20">
         <div className="mx-auto max-w-7xl">
           <div className="mb-10 max-w-3xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-green-text)]">For VoIP And UCaaS Providers</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-primary-text)]">For VoIP And UCaaS Providers</p>
             <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">
               Offer AI answering service replacement to your customers.
             </h2>
@@ -519,7 +510,7 @@ export default function AnsweringServiceReplacementPage() {
         <div className="mx-auto max-w-7xl">
           <div className="mb-10 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-3xl">
-              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-cyan-text)]">City Pages</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-accent-text)]">City Pages</p>
               <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">
                 Dedicated answering service replacement pages for priority markets.
               </h2>
@@ -547,7 +538,7 @@ export default function AnsweringServiceReplacementPage() {
       <section className="px-4 py-20">
         <div className="mx-auto max-w-5xl">
           <div className="text-center">
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-green-text)]">Frequently Asked Questions</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-primary-text)]">Frequently Asked Questions</p>
             <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">Common questions about replacing answering services.</h2>
           </div>
 
@@ -565,7 +556,7 @@ export default function AnsweringServiceReplacementPage() {
       <section className="theme-section-alt px-4 pb-10 pt-20">
         <div className="mx-auto max-w-5xl">
           <div className="theme-card rounded-[2rem] p-8 text-center md:p-10">
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-cyan-text)]">Do Not Let Calls Go To Voicemail</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-accent-text)]">Do Not Let Calls Go To Voicemail</p>
             <h2 className="theme-heading mt-4 text-3xl font-bold md:text-5xl">Stop letting calls slip into outdated workflows.</h2>
             <p className="theme-soft mx-auto mt-4 max-w-3xl text-lg leading-8">
               Every missed call can mean a missed customer. UponAI gives your business an AI voice agent that answers

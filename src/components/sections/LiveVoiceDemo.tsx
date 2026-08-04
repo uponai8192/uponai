@@ -4,7 +4,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { uponaiBookingUrl } from '@/lib/booking';
 import { useVoiceWidget } from '@/components/widget/VoiceWidgetProvider';
-import { VoiceDemoModalDynamic } from '@/components/widget/VoiceDemoModalDynamic';
 import GraceCompanion from './GraceCompanion';
 
 export type DemoState = 'idle' | 'calling' | 'ended';
@@ -14,16 +13,16 @@ const waveHeights = [38, 62, 80, 52, 90, 68, 44, 84, 58, 74, 48, 86, 60, 70, 46]
 function GraceAvatar({ pulsing = false }: { pulsing?: boolean }) {
   return (
     <div className="relative">
-      <div className="h-20 w-20 rounded-full bg-gradient-to-br from-[#22c55e] to-[#54d2ff] flex items-center justify-center shadow-[0_0_24px_rgba(34,197,94,0.3)]">
+      <div className="h-20 w-20 rounded-full bg-gradient-to-br from-[#1e78cc] to-[#63ade5] flex items-center justify-center shadow-[0_0_24px_rgba(30, 120, 204,0.3)]">
         <span className="text-2xl font-bold text-white select-none">G</span>
       </div>
       {pulsing ? (
         <div
-          className="absolute inset-0 rounded-full border-2 border-[#22c55e]/60"
+          className="absolute inset-0 rounded-full border-2 border-[#1e78cc]/60"
           style={{ animation: 'ping 1.5s cubic-bezier(0,0,0.2,1) infinite' }}
         />
       ) : (
-        <span className="absolute bottom-1 right-1 h-3.5 w-3.5 rounded-full border-2 border-[var(--surface)] bg-[#22c55e]" />
+        <span className="absolute bottom-1 right-1 h-3.5 w-3.5 rounded-full border-2 border-[var(--surface)] bg-[#1e78cc]" />
       )}
     </div>
   );
@@ -59,7 +58,7 @@ export default function LiveVoiceDemo({
     } else if (callState === 'ended') {
       setDemoState('ended');
     }
-    // 'idle' is intentionally ignored — reset only happens via "Talk again".
+    // 'idle' is intentionally ignored - reset only happens via "Talk again".
   }
 
   // Timer
@@ -104,8 +103,8 @@ export default function LiveVoiceDemo({
           100% { transform: scale(1.75); opacity: 0; }
         }
         @keyframes btn-glow {
-          0%, 100% { box-shadow: 0 0 28px rgba(34,197,94,0.35), 0 0 0 0 rgba(34,197,94,0.25); }
-          50%       { box-shadow: 0 0 40px rgba(34,197,94,0.55), 0 0 0 8px rgba(34,197,94,0.08); }
+          0%, 100% { box-shadow: 0 0 28px rgba(30, 120, 204,0.35), 0 0 0 0 rgba(30, 120, 204,0.25); }
+          50%       { box-shadow: 0 0 40px rgba(30, 120, 204,0.55), 0 0 0 8px rgba(30, 120, 204,0.08); }
         }
         @keyframes float-blob {
           0%, 100% { transform: translate(0, 0) scale(1); }
@@ -118,27 +117,27 @@ export default function LiveVoiceDemo({
         }
         @keyframes row-pulse {
           0%, 100% { opacity: 0.6; }
-          50%       { opacity: 1; border-color: rgba(34,197,94,0.4); }
+          50%       { opacity: 1; border-color: rgba(30, 120, 204,0.4); }
         }
       `}</style>
 
-      {/* Background glows — parallax on mouse */}
+      {/* Background glows - parallax on mouse */}
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute left-[8%] top-16" style={{ transform: `translate(${mouse.x * 160}px, ${mouse.y * 110}px)`, transition: 'transform 0.6s cubic-bezier(0.25,0.1,0.25,1)' }}>
-          <div className="h-72 w-72 rounded-full bg-[#22c55e]/10 blur-3xl" style={{ animation: 'float-blob 12s ease-in-out infinite' }} />
+          <div className="h-72 w-72 rounded-full bg-[#1e78cc]/10 blur-3xl" style={{ animation: 'float-blob 12s ease-in-out infinite' }} />
         </div>
         <div className="absolute right-[8%] bottom-16" style={{ transform: `translate(${mouse.x * -130}px, ${mouse.y * -90}px)`, transition: 'transform 0.7s cubic-bezier(0.25,0.1,0.25,1)' }}>
-          <div className="h-80 w-80 rounded-full bg-[#54d2ff]/10 blur-3xl" style={{ animation: 'float-blob 16s ease-in-out infinite 4s' }} />
+          <div className="h-80 w-80 rounded-full bg-[#63ade5]/10 blur-3xl" style={{ animation: 'float-blob 16s ease-in-out infinite 4s' }} />
         </div>
         <div className="absolute left-1/2 bottom-8 -translate-x-1/2" style={{ transform: `translate(calc(-50% + ${mouse.x * 80}px), ${mouse.y * 130}px)`, transition: 'transform 0.9s cubic-bezier(0.25,0.1,0.25,1)' }}>
-          <div className="h-60 w-60 rounded-full bg-[#22c55e]/6 blur-3xl" style={{ animation: 'float-blob 20s ease-in-out infinite 8s' }} />
+          <div className="h-60 w-60 rounded-full bg-[#1e78cc]/6 blur-3xl" style={{ animation: 'float-blob 20s ease-in-out infinite 8s' }} />
         </div>
       </div>
 
       {/* Header */}
       <div className="relative mx-auto max-w-3xl text-center">
-        <div className="theme-pill-green inline-flex items-center gap-2.5 rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.24em]">
-          <span className="h-2 w-2 rounded-full bg-[#22c55e] shadow-[0_0_10px_rgba(34,197,94,0.8)]" style={{ animation: 'pulse 2s infinite' }} />
+        <div className="theme-pill-primary inline-flex items-center gap-2.5 rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.24em]">
+          <span className="h-2 w-2 rounded-full bg-[#1e78cc] shadow-[0_0_10px_rgba(30, 120, 204,0.8)]" style={{ animation: 'pulse 2s infinite' }} />
           {eyebrow}
         </div>
         <h2 className="theme-heading mt-6 text-4xl font-bold leading-tight md:text-5xl">
@@ -147,15 +146,15 @@ export default function LiveVoiceDemo({
         <p className="theme-soft mt-4 text-lg">{subheading}</p>
       </div>
 
-      {/* Demo panel — two columns: Grace card + companion */}
+      {/* Demo panel - two columns: Grace card + companion */}
       <div className="relative mx-auto mt-12 grid max-w-4xl items-stretch gap-6 lg:grid-cols-2">
 
-        {/* Left column — Grace state card */}
+        {/* Left column - Grace state card */}
         <div className="flex flex-col">
 
         {/* ── IDLE ── */}
         {demoState === 'idle' && (
-          <div className="theme-panel flex h-full flex-col justify-center rounded-[2rem] p-7 md:p-10 shadow-[0_0_0_1px_rgba(34,197,94,0.08),0_0_60px_rgba(34,197,94,0.06)]">
+          <div className="theme-panel flex h-full flex-col justify-center rounded-[2rem] p-7 md:p-10 shadow-[0_0_0_1px_rgba(30, 120, 204,0.08),0_0_60px_rgba(30, 120, 204,0.06)]">
             <div className="flex flex-col items-center gap-4 text-center">
               <GraceAvatar />
               <div>
@@ -172,11 +171,11 @@ export default function LiveVoiceDemo({
               </div>
               <div className="relative mt-3 inline-flex">
                 {/* Pulse rings */}
-                <span className="absolute inset-0 rounded-full bg-[#22c55e]/30" style={{ animation: 'btn-ring 2s ease-out infinite' }} aria-hidden="true" />
-                <span className="absolute inset-0 rounded-full bg-[#22c55e]/20" style={{ animation: 'btn-ring 2s ease-out infinite 0.6s' }} aria-hidden="true" />
+                <span className="absolute inset-0 rounded-full bg-[#1e78cc]/30" style={{ animation: 'btn-ring 2s ease-out infinite' }} aria-hidden="true" />
+                <span className="absolute inset-0 rounded-full bg-[#1e78cc]/20" style={{ animation: 'btn-ring 2s ease-out infinite 0.6s' }} aria-hidden="true" />
                 <button
                   onClick={() => openWidget()}
-                  className="relative flex items-center gap-3 rounded-full bg-[#22c55e] px-8 py-4 text-base font-bold text-white transition-all duration-200 hover:bg-[#16a34a] active:scale-95"
+                  className="relative flex items-center gap-3 rounded-full bg-[#1e78cc] px-8 py-4 text-base font-bold text-white transition-all duration-200 hover:bg-[#0157a3] active:scale-95"
                   style={{ animation: 'btn-glow 2.5s ease-in-out infinite' }}
                 >
                   <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -193,8 +192,8 @@ export default function LiveVoiceDemo({
         {demoState === 'calling' && (
           <div className="theme-panel flex h-full flex-col justify-center rounded-[2rem] p-7 md:p-10">
             <div className="mb-8 flex items-center justify-between">
-              <div className="theme-pill-green flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.18em]">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#22c55e]" style={{ animation: 'pulse 1s infinite' }} />
+              <div className="theme-pill-primary flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.18em]">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#1e78cc]" style={{ animation: 'pulse 1s infinite' }} />
                 Speaking…
               </div>
               <span className="theme-subtle font-mono text-sm">{formatTime(elapsed)}</span>
@@ -206,7 +205,7 @@ export default function LiveVoiceDemo({
                   {waveHeights.map((h, i) => (
                     <div
                       key={i}
-                      className={`flex-1 rounded-full ${i % 2 === 0 ? 'bg-[#22c55e]' : 'bg-[#54d2ff]'}`}
+                      className={`flex-1 rounded-full ${i % 2 === 0 ? 'bg-[#1e78cc]' : 'bg-[#63ade5]'}`}
                       style={{
                         height: `${h}%`,
                         transformOrigin: 'bottom',
@@ -239,8 +238,8 @@ export default function LiveVoiceDemo({
         {/* ── ENDED ── */}
         {demoState === 'ended' && (
           <div className="theme-panel flex h-full flex-col justify-center rounded-[2rem] p-7 text-center md:p-10">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full border border-[var(--brand-green-border)] bg-[var(--brand-green-bg)]">
-              <svg className="h-8 w-8 text-[#22c55e]" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24" aria-hidden="true">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full border border-[var(--brand-primary-border)] bg-[var(--brand-primary-bg)]">
+              <svg className="h-8 w-8 text-[#1e78cc]" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
               </svg>
             </div>
@@ -262,7 +261,7 @@ export default function LiveVoiceDemo({
               href={uponaiBookingUrl}
               target="_blank"
               rel="noreferrer"
-              className="mt-6 block w-full rounded-full bg-[#22c55e] py-4 text-center text-base font-bold text-white shadow-[0_0_24px_rgba(34,197,94,0.3)] transition-all hover:bg-[#16a34a] hover:shadow-[0_0_32px_rgba(34,197,94,0.45)]"
+              className="mt-6 block w-full rounded-full bg-[#1e78cc] py-4 text-center text-base font-bold text-white shadow-[0_0_24px_rgba(30, 120, 204,0.3)] transition-all hover:bg-[#0157a3] hover:shadow-[0_0_32px_rgba(30, 120, 204,0.45)]"
             >
               Book a Demo
             </a>
@@ -273,11 +272,9 @@ export default function LiveVoiceDemo({
         )}
         </div>
 
-        {/* Right column — companion */}
+        {/* Right column - companion */}
         <GraceCompanion demoState={demoState} />
       </div>
-
-      <VoiceDemoModalDynamic />
     </section>
   );
 }

@@ -9,7 +9,7 @@ type Props = {
 };
 
 // Opens the shared Talk-to-Grace demo modal from anywhere on the page.
-// The modal itself is rendered once by <LiveVoiceDemo> via the shared provider.
+// The modal itself is rendered once globally by <VoiceWidgetProvider>.
 export default function GraceTalkButton({ label = 'Talk to Grace', variant = 'primary', className = '' }: Props) {
   const { openWidget } = useVoiceWidget();
 
@@ -17,7 +17,7 @@ export default function GraceTalkButton({ label = 'Talk to Grace', variant = 'pr
     'inline-flex items-center justify-center gap-3 rounded-full px-8 py-4 text-base font-bold transition-all duration-200 active:scale-95';
   const styles =
     variant === 'primary'
-      ? 'bg-[#22c55e] text-white shadow-[0_0_28px_rgba(34,197,94,0.35)] hover:bg-[#16a34a] hover:shadow-[0_0_36px_rgba(34,197,94,0.5)]'
+      ? 'bg-[#1e78cc] text-white shadow-[0_0_28px_rgba(30, 120, 204,0.35)] hover:bg-[#0157a3] hover:shadow-[0_0_36px_rgba(30, 120, 204,0.5)]'
       : 'theme-secondary-button';
 
   return (

@@ -1,8 +1,11 @@
 'use client';
 
-import { consentEventName } from '@/lib/consent';
+import { consentEnabled, consentEventName } from '@/lib/consent';
 
 export default function CookieSettingsButton() {
+  // Dormant: hide the footer entry point while the consent system is disabled.
+  if (!consentEnabled) return null;
+
   return (
     <button
       type="button"

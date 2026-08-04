@@ -118,8 +118,8 @@ export default async function BlogPostPage({ params }: Props) {
 
       <section className="relative overflow-hidden px-4 pb-16 pt-12 md:pb-20 md:pt-20">
         <div className="absolute inset-0">
-          <div className="absolute left-[6%] top-8 h-56 w-56 rounded-full bg-[#22c55e]/16 blur-3xl" />
-          <div className="absolute right-[10%] top-20 h-72 w-72 rounded-full bg-[#54d2ff]/14 blur-3xl" />
+          <div className="absolute left-[6%] top-8 h-56 w-56 rounded-full bg-[#1e78cc]/16 blur-3xl" />
+          <div className="absolute right-[10%] top-20 h-72 w-72 rounded-full bg-[#63ade5]/14 blur-3xl" />
         </div>
 
         <div className="relative mx-auto max-w-5xl">
@@ -136,8 +136,8 @@ export default async function BlogPostPage({ params }: Props) {
           </nav>
 
           <div className="max-w-4xl">
-            <div className="theme-pill-green inline-flex items-center gap-3 rounded-full px-5 py-2 text-sm font-medium">
-              <span className="inline-flex h-2.5 w-2.5 rounded-full bg-[#22c55e] shadow-[0_0_16px_rgba(34,197,94,0.75)]" />
+            <div className="theme-pill-primary inline-flex items-center gap-3 rounded-full px-5 py-2 text-sm font-medium">
+              <span className="inline-flex h-2.5 w-2.5 rounded-full bg-[#1e78cc] shadow-[0_0_16px_rgba(30, 120, 204,0.75)]" />
               {post.category}
             </div>
             <h1 className="theme-heading mt-7 text-4xl font-bold leading-tight md:text-6xl">
@@ -196,7 +196,7 @@ export default async function BlogPostPage({ params }: Props) {
 
               {post.htmlBody ? (
                 <div
-                  className="theme-body mt-8 space-y-6 text-base leading-8 md:text-lg [&_a]:font-semibold [&_a]:text-[var(--brand-green-text)] [&_a]:underline [&_blockquote]:border-l-2 [&_blockquote]:border-[var(--border-strong)] [&_blockquote]:pl-4 [&_em]:italic [&_h1]:mt-10 [&_h1]:text-3xl [&_h1]:font-bold [&_h2]:mt-10 [&_h2]:text-2xl [&_h2]:font-bold [&_h3]:mt-8 [&_h3]:text-xl [&_h3]:font-semibold [&_img]:my-8 [&_img]:rounded-[1.25rem] [&_li]:ml-5 [&_li]:list-disc [&_ol]:space-y-3 [&_p]:mb-6 [&_strong]:font-semibold [&_ul]:space-y-3"
+                  className="theme-body mt-8 space-y-6 text-base leading-8 md:text-lg [&_a]:font-semibold [&_a]:text-[var(--brand-primary-text)] [&_a]:underline [&_blockquote]:border-l-2 [&_blockquote]:border-[var(--border-strong)] [&_blockquote]:pl-4 [&_em]:italic [&_h1]:mt-10 [&_h1]:text-3xl [&_h1]:font-bold [&_h2]:mt-10 [&_h2]:text-2xl [&_h2]:font-bold [&_h3]:mt-8 [&_h3]:text-xl [&_h3]:font-semibold [&_img]:my-8 [&_img]:rounded-[1.25rem] [&_li]:ml-5 [&_li]:list-disc [&_ol]:space-y-3 [&_p]:mb-6 [&_strong]:font-semibold [&_ul]:space-y-3"
                   dangerouslySetInnerHTML={{ __html: post.htmlBody }}
                 />
               ) : (
@@ -210,7 +210,7 @@ export default async function BlogPostPage({ params }: Props) {
               )}
 
               <div className="theme-section-alt mt-10 rounded-[1.5rem] p-6">
-                <p className="text-sm font-semibold uppercase tracking-[0.26em] text-[var(--brand-cyan-text)]">
+                <p className="text-sm font-semibold uppercase tracking-[0.26em] text-[var(--brand-accent-text)]">
                   What This Means
                 </p>
                 <p className="theme-body mt-4 text-base leading-8">
@@ -222,7 +222,7 @@ export default async function BlogPostPage({ params }: Props) {
 
               <div className="mt-10 grid gap-6 lg:grid-cols-2">
                 <div className="theme-card rounded-[1.5rem] p-6">
-                  <p className="text-sm font-semibold uppercase tracking-[0.26em] text-[var(--brand-green-text)]">
+                  <p className="text-sm font-semibold uppercase tracking-[0.26em] text-[var(--brand-primary-text)]">
                     Related Solutions
                   </p>
                   <div className="mt-4 space-y-3">
@@ -245,7 +245,7 @@ export default async function BlogPostPage({ params }: Props) {
                 </div>
 
                 <div className="theme-card rounded-[1.5rem] p-6">
-                  <p className="text-sm font-semibold uppercase tracking-[0.26em] text-[var(--brand-cyan-text)]">
+                  <p className="text-sm font-semibold uppercase tracking-[0.26em] text-[var(--brand-accent-text)]">
                     Explore Related Reading
                   </p>
                   <div className="mt-4 space-y-3">

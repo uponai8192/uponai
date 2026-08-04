@@ -42,3 +42,6 @@ yarn-error.log*
 next-env.d.ts
 .env*.local
 .superpowers/
+
+# Source agent avatar renders (2048px, ~53MB). Optimised copies live in public/agents.
+public/vertical-avatars/

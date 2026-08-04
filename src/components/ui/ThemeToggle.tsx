@@ -33,11 +33,11 @@ function syncTheme(theme: Theme) {
 }
 
 export default function ThemeToggle({ mobile = false }: { mobile?: boolean }) {
-  const [theme, setTheme] = useState<Theme>('dark');
+  const [theme, setTheme] = useState<Theme>('light');
 
   useEffect(() => {
     const updateTheme = () => {
-      const nextTheme = document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';
+      const nextTheme = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
       setTheme(nextTheme);
     };
 
@@ -72,8 +72,8 @@ export default function ThemeToggle({ mobile = false }: { mobile?: boolean }) {
             }`}
           />
           <span className="relative z-10 flex w-full items-center justify-between px-1 text-[10px]">
-            <span className={isLight ? 'text-[var(--brand-cyan-text)]' : 'text-[var(--text-subtle)]'}>{sunIcon}</span>
-            <span className={isLight ? 'text-[var(--text-subtle)]' : 'text-[var(--brand-green-text)]'}>{moonIcon}</span>
+            <span className={isLight ? 'text-[var(--brand-accent-text)]' : 'text-[var(--text-subtle)]'}>{sunIcon}</span>
+            <span className={isLight ? 'text-[var(--text-subtle)]' : 'text-[var(--brand-primary-text)]'}>{moonIcon}</span>
           </span>
         </span>
         <span>

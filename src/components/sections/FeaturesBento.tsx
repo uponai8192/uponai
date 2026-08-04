@@ -1,6 +1,6 @@
 'use client';
 
-// Rich bento-grid features display — replaces the boring checkmark list.
+// Rich bento-grid features display - replaces the boring checkmark list.
 // First card spans 2 columns and gets a featured blue gradient.
 // Icons and accent colors rotate to break visual monotony.
 
@@ -55,7 +55,7 @@ const ICONS = [
   </svg>,
 ];
 
-// Accent palettes — each card gets one of these rotating
+// Accent palettes - each card gets one of these rotating
 const ACCENTS = [
   { icon: 'text-blue-400',   iconBg: 'bg-blue-500/15',   border: 'border-blue-500/20',   glow: 'group-hover:border-blue-500/50',  gradient: 'from-blue-600/10 to-transparent' },
   { icon: 'text-violet-400', iconBg: 'bg-violet-500/15', border: 'border-violet-500/20', glow: 'group-hover:border-violet-500/50',gradient: 'from-violet-600/10 to-transparent' },

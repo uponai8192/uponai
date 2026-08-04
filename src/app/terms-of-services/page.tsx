@@ -219,7 +219,7 @@ export default function TermsOfServicePage() {
               <p className="theme-body text-xs font-semibold uppercase tracking-wider mb-3">Required A2P 10DLC Disclosures</p>
               <div className="theme-soft text-xs space-y-1.5">
                 <p>✉️ <strong className="theme-body">Program:</strong> UponAI customer communications, scheduling, updates, and promotions</p>
-                <p>📱 <strong className="theme-body">Message Frequency:</strong> Varies — up to several messages per month</p>
+                <p>📱 <strong className="theme-body">Message Frequency:</strong> Varies - up to several messages per month</p>
                 <p>💰 <strong className="theme-body">Rates:</strong> Standard message and data rates may apply</p>
                 <p>🛑 <strong className="theme-body">To Opt Out:</strong> Reply STOP to any message</p>
                 <p>❓ <strong className="theme-body">For Help:</strong> Reply HELP or call (888) 787-6624</p>

@@ -72,20 +72,20 @@ export default async function BlogsPage({ searchParams }: Props) {
 
       <section className="relative overflow-hidden px-4 pb-16 pt-12 md:pb-24 md:pt-20">
         <div className="absolute inset-0">
-          <div className="absolute left-[8%] top-8 h-56 w-56 rounded-full bg-[#22c55e]/16 blur-3xl" />
-          <div className="absolute right-[12%] top-24 h-72 w-72 rounded-full bg-[#54d2ff]/14 blur-3xl" />
+          <div className="absolute left-[8%] top-8 h-56 w-56 rounded-full bg-[#1e78cc]/16 blur-3xl" />
+          <div className="absolute right-[12%] top-24 h-72 w-72 rounded-full bg-[#63ade5]/14 blur-3xl" />
         </div>
 
         <div className="relative mx-auto max-w-7xl">
           <div className="max-w-4xl">
-            <div className="theme-pill-green inline-flex items-center gap-3 rounded-full px-5 py-2 text-sm font-medium">
-              <span className="inline-flex h-2.5 w-2.5 rounded-full bg-[#22c55e] shadow-[0_0_16px_rgba(34,197,94,0.75)]" />
+            <div className="theme-pill-primary inline-flex items-center gap-3 rounded-full px-5 py-2 text-sm font-medium">
+              <span className="inline-flex h-2.5 w-2.5 rounded-full bg-[#1e78cc] shadow-[0_0_16px_rgba(30, 120, 204,0.75)]" />
               Insights From UponAI
             </div>
 
             <h1 className="theme-heading mt-7 max-w-5xl text-5xl font-bold leading-[0.95] md:text-7xl">
               Powering
-              <span className="block text-[#22c55e]">Tomorrow&apos;s Conversations</span>
+              <span className="block text-[#1e78cc]">Tomorrow&apos;s Conversations</span>
             </h1>
 
             <p className="theme-body mt-7 max-w-3xl text-lg leading-8 md:text-xl">
@@ -100,7 +100,7 @@ export default async function BlogsPage({ searchParams }: Props) {
         <div className="mx-auto max-w-7xl">
           <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-green-text)]">Latest Posts</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-primary-text)]">Latest Posts</p>
               <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">Imported UponAI articles, rebuilt inside the main site.</h2>
             </div>
             <p className="theme-soft max-w-2xl text-base leading-7">
@@ -122,7 +122,7 @@ export default async function BlogsPage({ searchParams }: Props) {
           <div className="theme-card mb-10 rounded-[2rem] p-6">
             <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
               <div className="max-w-2xl">
-                <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-cyan-text)]">
+                <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-accent-text)]">
                   Explore By Topic
                 </p>
                 <h2 className="theme-heading mt-3 text-2xl font-bold md:text-4xl">
@@ -141,7 +141,7 @@ export default async function BlogsPage({ searchParams }: Props) {
                   href={`/blogs/topics/${topic.slug}`}
                   className="theme-section-alt rounded-[1.5rem] p-5 transition-transform duration-300 hover:-translate-y-1"
                 >
-                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-green-text)]">
+                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-primary-text)]">
                     Topic Hub
                   </p>
                   <h3 className="theme-heading mt-3 text-xl font-semibold">{topic.title}</h3>
@@ -172,7 +172,7 @@ export default async function BlogsPage({ searchParams }: Props) {
                 <div className="p-6">
                   <div className="flex flex-wrap items-center gap-3 text-xs uppercase tracking-[0.22em]">
                     <span className={`rounded-full px-3 py-1 font-semibold ${
-                      index % 2 === 0 ? 'theme-pill-green' : 'theme-pill-cyan'
+                      index % 2 === 0 ? 'theme-pill-primary' : 'theme-pill-accent'
                     }`}>
                       {post.category}
                     </span>

@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import nodemailer from 'nodemailer'
+import { resolveAgentId } from '@/lib/vertical-agents.server'
 
 const LEAD_EMAIL = 'melvin@uponai.com'
 
@@ -10,11 +11,12 @@ type LeadBody = {
   consentContact: boolean
   consentMarketing?: boolean
   notify?: boolean
+  vertical?: string
 }
 
 export async function POST(req: NextRequest) {
   const body = (await req.json()) as LeadBody
-  const { name, email, company, consentContact, consentMarketing = false, notify = true } = body
+  const { name, email, company, consentContact, consentMarketing = false, notify = true, vertical } = body
 
   if (!name?.trim() || !email?.trim() || !company?.trim() || !consentContact) {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
@@ -27,7 +29,7 @@ export async function POST(req: NextRequest) {
       Authorization: `Bearer ${process.env.UPONAI_API_KEY}`,
     },
     body: JSON.stringify({
-      agentId: process.env.UPONAI_AGENT_ID,
+      agentId: resolveAgentId(vertical),
       retell_llm_dynamic_variables: { name: name.trim(), company: company.trim() },
     }),
   })

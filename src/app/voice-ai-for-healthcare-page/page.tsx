@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { uponaiBookingUrl } from '@/lib/booking';
 import CTASection from '@/components/sections/CTASection';
 import { brandPhotos } from '@/lib/brand-photos';
+import VerticalVoiceAgentCard from '@/components/voice/VerticalVoiceAgentCard';
+import { getVerticalAgentForSlug } from '@/lib/vertical-agents';
 import {
   buildBreadcrumbSchema,
   buildFaqSchema,
@@ -147,7 +149,7 @@ export default function VoiceAIForHealthcarePage() {
 
         <div className="relative mx-auto grid max-w-7xl gap-14 lg:grid-cols-[1.02fr_0.98fr] lg:items-center">
           <div>
-            <div className="theme-pill-cyan inline-flex items-center rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em]">
+            <div className="theme-pill-accent inline-flex items-center rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em]">
               Healthcare
             </div>
             <h1 className="theme-heading mt-6 max-w-4xl text-5xl font-bold leading-[0.95] md:text-7xl">
@@ -161,14 +163,14 @@ export default function VoiceAIForHealthcarePage() {
 
             <div className="mt-8 grid gap-3 sm:grid-cols-2">
               <div className="theme-card rounded-[1.5rem] p-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-cyan-text)]">
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-accent-text)]">
                   Coverage
                 </p>
                 <p className="theme-heading mt-3 text-3xl font-bold">24/7</p>
                 <p className="theme-soft mt-2 text-sm leading-6">Appointment handling and routine patient questions, even when the front desk is unavailable.</p>
               </div>
               <div className="theme-card rounded-[1.5rem] p-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-green-text)]">
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-primary-text)]">
                   Workflow
                 </p>
                 <p className="theme-heading mt-3 text-3xl font-bold">Live</p>
@@ -192,31 +194,19 @@ export default function VoiceAIForHealthcarePage() {
           </div>
 
           <div className="relative">
-            <div className="theme-panel overflow-hidden rounded-[2rem] p-3">
-              <div className="overflow-hidden rounded-[1.5rem] border border-[var(--border)]">
-                <Image
-                  src={brandPhotos.voiceSearch}
-                  alt="UponAI healthcare voice workflow support"
-                  width={1200}
-                  height={800}
-                  className="h-full w-full object-cover"
-                  priority
-                  unoptimized
-                />
+            <VerticalVoiceAgentCard agent={getVerticalAgentForSlug('voice-ai-for-healthcare-page', 'Healthcare')} />
+            <div className="mt-3 grid gap-3 md:grid-cols-2">
+              <div className="theme-card-soft rounded-[1.25rem] p-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-primary-text)]">
+                  Patient Questions
+                </p>
+                <p className="theme-heading mt-2 text-lg font-semibold">Hours, insurance, providers, directions</p>
               </div>
-              <div className="mt-3 grid gap-3 md:grid-cols-2">
-                <div className="theme-card-soft rounded-[1.25rem] p-4">
-                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-green-text)]">
-                    Patient Questions
-                  </p>
-                  <p className="theme-heading mt-2 text-lg font-semibold">Hours, insurance, providers, directions</p>
-                </div>
-                <div className="theme-card-soft rounded-[1.25rem] p-4">
-                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-cyan-text)]">
-                    Staff Relief
-                  </p>
-                  <p className="theme-heading mt-2 text-lg font-semibold">Less voicemail, fewer hold-time bottlenecks</p>
-                </div>
+              <div className="theme-card-soft rounded-[1.25rem] p-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-accent-text)]">
+                  Staff Relief
+                </p>
+                <p className="theme-heading mt-2 text-lg font-semibold">Less voicemail, fewer hold-time bottlenecks</p>
               </div>
             </div>
           </div>
@@ -226,7 +216,7 @@ export default function VoiceAIForHealthcarePage() {
       <section className="px-4 pb-8 pt-4 md:pb-12">
         <div className="mx-auto max-w-7xl">
           <div className="mb-10 max-w-3xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-green-text)]">Where It Helps</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-primary-text)]">Where It Helps</p>
             <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">Built for the calls that usually overwhelm healthcare teams.</h2>
             <p className="theme-soft mt-4 text-lg leading-8">
               This page is intentionally focused on patient communication and front-desk workflow support. It does not
@@ -253,7 +243,7 @@ export default function VoiceAIForHealthcarePage() {
         <div className="mx-auto max-w-7xl">
           <div className="mb-10 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-3xl">
-              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-cyan-text)]">Integrations</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-accent-text)]">Integrations</p>
               <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">Explore 300+ healthcare integrations.</h2>
               <p className="theme-soft mt-4 text-lg leading-8">
                 Connect sensitive patient data in a HIPAA-compliant way and build healthcare automations that save staff
@@ -307,7 +297,7 @@ export default function VoiceAIForHealthcarePage() {
         <div className="mx-auto max-w-7xl">
           <div className="mb-12 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-3xl">
-              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-cyan-text)]">Capabilities</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-accent-text)]">Capabilities</p>
               <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">A healthcare voice AI page that matches the current UponAI positioning.</h2>
             </div>
             <p className="theme-soft max-w-2xl text-base leading-7">
@@ -343,7 +333,7 @@ export default function VoiceAIForHealthcarePage() {
           </div>
 
           <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-green-text)]">Why Teams Use It</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-primary-text)]">Why Teams Use It</p>
             <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">Faster answers for patients, less pressure on your staff.</h2>
             <div className="mt-8 space-y-4">
               <div className="theme-card rounded-[1.5rem] p-5">
@@ -372,7 +362,7 @@ export default function VoiceAIForHealthcarePage() {
       <section className="theme-section-alt px-4 py-20">
         <div className="mx-auto max-w-5xl">
           <div className="text-center">
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-cyan-text)]">FAQ</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-accent-text)]">FAQ</p>
             <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">Common questions about healthcare voice AI.</h2>
           </div>
 

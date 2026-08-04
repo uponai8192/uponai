@@ -14,7 +14,7 @@ export default function QuotePage() {
     <section className="py-20 px-4">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-14">
-          <div className="theme-pill-green inline-flex items-center gap-2 rounded-full px-4 py-1.5 mb-6">
+          <div className="theme-pill-primary inline-flex items-center gap-2 rounded-full px-4 py-1.5 mb-6">
             <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
             <span className="text-sm font-medium">AI voice, chat, routing, and handoff planning</span>
           </div>
@@ -56,7 +56,7 @@ export default function QuotePage() {
                 href="tel:+18887876624"
                 className="flex items-center gap-3 group theme-body hover:text-[var(--text-strong)] transition-colors"
               >
-                <div className="w-10 h-10 rounded-lg flex items-center justify-center text-[var(--brand-cyan-text)] bg-[var(--brand-cyan-bg)] border border-[var(--brand-cyan-border)] group-hover:bg-[var(--surface-soft)] transition-colors flex-shrink-0">
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center text-[var(--brand-accent-text)] bg-[var(--brand-accent-bg)] border border-[var(--brand-accent-border)] group-hover:bg-[var(--surface-soft)] transition-colors flex-shrink-0">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                   </svg>
@@ -70,7 +70,7 @@ export default function QuotePage() {
                 href="mailto:info@uponai.com"
                 className="flex items-center gap-3 group theme-body hover:text-[var(--text-strong)] transition-colors"
               >
-                <div className="w-10 h-10 rounded-lg flex items-center justify-center text-[var(--brand-cyan-text)] bg-[var(--brand-cyan-bg)] border border-[var(--brand-cyan-border)] group-hover:bg-[var(--surface-soft)] transition-colors flex-shrink-0">
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center text-[var(--brand-accent-text)] bg-[var(--brand-accent-bg)] border border-[var(--brand-accent-border)] group-hover:bg-[var(--surface-soft)] transition-colors flex-shrink-0">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>

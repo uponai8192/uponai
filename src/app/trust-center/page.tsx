@@ -207,7 +207,7 @@ export default function TrustCenterPage() {
 
         <div className="relative mx-auto grid max-w-7xl gap-14 lg:grid-cols-[1.02fr_0.98fr] lg:items-center">
           <div>
-            <div className="theme-pill-cyan inline-flex items-center rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em]">
+            <div className="theme-pill-accent inline-flex items-center rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em]">
               Trust Center
             </div>
             <h1 className="theme-heading mt-6 max-w-4xl text-5xl font-bold leading-[0.95] md:text-7xl">
@@ -245,7 +245,7 @@ export default function TrustCenterPage() {
             <div className="mt-8 grid gap-3 sm:grid-cols-3">
               {overviewCards.map((card) => (
                 <div key={card.title} className="theme-card rounded-[1.5rem] p-4">
-                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-cyan-text)]">
+                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-accent-text)]">
                     {card.eyebrow}
                   </p>
                   <p className="theme-heading mt-3 break-all text-2xl font-bold">{card.title}</p>
@@ -270,7 +270,7 @@ export default function TrustCenterPage() {
               </div>
               <div className="mt-3 grid gap-3 md:grid-cols-2">
                 <div className="theme-card-soft rounded-[1.25rem] p-4">
-                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-green-text)]">
+                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-primary-text)]">
                     On-Site Review
                   </p>
                   <p className="theme-heading mt-2 text-lg font-semibold">
@@ -278,7 +278,7 @@ export default function TrustCenterPage() {
                   </p>
                 </div>
                 <div className="theme-card-soft rounded-[1.25rem] p-4">
-                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-cyan-text)]">
+                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-accent-text)]">
                     Agreement Access
                   </p>
                   <p className="theme-heading mt-2 text-lg font-semibold">
@@ -296,7 +296,7 @@ export default function TrustCenterPage() {
           <div className="theme-card rounded-[2rem] p-6 md:p-8">
             <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
               <div className="max-w-3xl">
-                <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-green-text)]">
+                <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-primary-text)]">
                   Review Areas
                 </p>
                 <h2 className="theme-heading mt-3 text-3xl font-bold md:text-5xl">
@@ -310,7 +310,7 @@ export default function TrustCenterPage() {
               </div>
 
               <div className="lg:max-w-md">
-                <p className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-cyan-text)]">
+                <p className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-accent-text)]">
                   Jump To
                 </p>
                 <div className="grid gap-3 sm:grid-cols-2">
@@ -340,7 +340,7 @@ export default function TrustCenterPage() {
             >
               <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
                 <div>
-                  <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-cyan-text)]">
+                  <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-accent-text)]">
                     {domain.eyebrow}
                   </p>
                   <h2 className="theme-heading mt-3 text-3xl font-bold md:text-4xl">
@@ -352,7 +352,7 @@ export default function TrustCenterPage() {
                 <div className="grid gap-4 md:grid-cols-2">
                   {domain.bullets.map((item) => (
                     <div key={item} className="theme-card rounded-[1.5rem] p-5">
-                      <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-green-text)]">
+                      <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-primary-text)]">
                         Control Focus
                       </p>
                       <p className="theme-body mt-3 text-sm leading-7">{item}</p>
@@ -368,7 +368,7 @@ export default function TrustCenterPage() {
       <section className="px-4 py-8">
         <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.95fr_1.05fr]">
           <div className="theme-panel rounded-[2rem] p-7">
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-cyan-text)]">
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-accent-text)]">
               Legal & Procurement
             </p>
             <h2 className="theme-heading mt-3 text-3xl font-bold md:text-4xl">
@@ -393,7 +393,7 @@ export default function TrustCenterPage() {
           </div>
 
           <div className="theme-card rounded-[2rem] p-7">
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-green-text)]">
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-primary-text)]">
               Available Review Path
             </p>
             <h2 className="theme-heading mt-3 text-3xl font-bold md:text-4xl">
@@ -432,7 +432,7 @@ export default function TrustCenterPage() {
       <section className="px-4 py-14">
         <div className="mx-auto max-w-7xl">
           <div className="theme-card rounded-[2rem] p-7 md:p-8">
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-cyan-text)]">
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-accent-text)]">
               Evaluation Flow
             </p>
             <h2 className="theme-heading mt-3 text-3xl font-bold md:text-4xl">
@@ -441,7 +441,7 @@ export default function TrustCenterPage() {
             <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
               {evaluationSteps.map((step, index) => (
                 <div key={step} className="theme-panel rounded-[1.5rem] p-5">
-                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-green-text)]">
+                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-primary-text)]">
                     Step {index + 1}
                   </p>
                   <p className="theme-body mt-3 text-sm leading-7">{step}</p>

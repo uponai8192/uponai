@@ -114,7 +114,7 @@ function Dropdown({
               {groups.map((group) => (
                 <div key={group.heading ?? group.links.map((link) => link.label).join('-')}>
                   {group.heading ? (
-                    <p className="px-3 pb-2 text-[11px] font-semibold uppercase tracking-[0.28em] text-[var(--brand-green-text)]">
+                    <p className="px-3 pb-2 text-[11px] font-semibold uppercase tracking-[0.28em] text-[var(--brand-primary-text)]">
                       {group.heading}
                     </p>
                   ) : null}
@@ -159,7 +159,7 @@ export default function Nav() {
       <div className="theme-topbar hidden border-b md:block">
         <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
           <div className="flex items-center gap-3">
-            <span className="inline-flex h-2.5 w-2.5 rounded-full bg-[#54d2ff] shadow-[0_0_18px_rgba(84,210,255,0.85)]" />
+            <span className="inline-flex h-2.5 w-2.5 rounded-full bg-[#63ade5] shadow-[0_0_18px_rgba(99, 173, 229,0.85)]" />
             <p className="text-xs uppercase tracking-[0.32em] text-[var(--text-soft)]">
               AI Voice Workflow Platform
             </p>
@@ -168,13 +168,13 @@ export default function Nav() {
             <ThemeToggle />
             <a
               href="tel:8887876624"
-              className="theme-pill-green rounded-full px-4 py-2 text-sm font-semibold transition-colors hover:border-[#22c55e]/40 hover:text-[var(--text-strong)]"
+              className="theme-pill-primary rounded-full px-4 py-2 text-sm font-semibold transition-colors hover:border-[#1e78cc]/40 hover:text-[var(--text-strong)]"
             >
               (888) 787-6624
             </a>
             <a
               href="mailto:info@uponai.com"
-              className="theme-pill-cyan rounded-full px-4 py-2 text-sm font-semibold transition-colors hover:border-[#54d2ff]/40 hover:text-[var(--text-strong)]"
+              className="theme-pill-accent rounded-full px-4 py-2 text-sm font-semibold transition-colors hover:border-[#63ade5]/40 hover:text-[var(--text-strong)]"
             >
               info@uponai.com
             </a>
@@ -184,7 +184,8 @@ export default function Nav() {
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex min-h-[72px] items-center justify-between gap-4 md:min-h-[88px]">
-          <Link href="/" className="flex flex-shrink-0 items-center">
+          <Link href="/" className="inline-flex flex-shrink-0 items-center gap-2">
+            <span aria-hidden className="animate-brand-pulse inline-flex h-2.5 w-2.5 rounded-full bg-[var(--brand)] shadow-[0_0_10px_var(--brand)]" />
             <div className="relative h-12 w-36 overflow-hidden sm:h-14 sm:w-40 md:h-20 md:w-56">
               <Image
                 src="/logo.png"
@@ -257,13 +258,13 @@ export default function Nav() {
               <ThemeToggle mobile />
               <a
                 href="tel:8887876624"
-                className="theme-pill-green rounded-full px-3 py-1.5 text-xs font-semibold transition-colors hover:border-[#22c55e]/40 hover:text-[var(--text-strong)]"
+                className="theme-pill-primary rounded-full px-3 py-1.5 text-xs font-semibold transition-colors hover:border-[#1e78cc]/40 hover:text-[var(--text-strong)]"
               >
                 (888) 787-6624
               </a>
               <a
                 href="mailto:info@uponai.com"
-                className="theme-pill-cyan rounded-full px-3 py-1.5 text-xs font-semibold transition-colors hover:border-[#54d2ff]/40 hover:text-[var(--text-strong)]"
+                className="theme-pill-accent rounded-full px-3 py-1.5 text-xs font-semibold transition-colors hover:border-[#63ade5]/40 hover:text-[var(--text-strong)]"
               >
                 info@uponai.com
               </a>
@@ -284,7 +285,7 @@ export default function Nav() {
               { heading: 'Resources', links: resourcesLinks },
             ].map(({ heading, links }) => (
               <div key={heading} className="theme-card rounded-3xl p-4">
-                <p className="mb-2 text-xs uppercase tracking-[0.26em] text-[var(--brand-green-text)]">{heading}</p>
+                <p className="mb-2 text-xs uppercase tracking-[0.26em] text-[var(--brand-primary-text)]">{heading}</p>
                 {links.map((link) =>
                   link.external ? (
                     <a

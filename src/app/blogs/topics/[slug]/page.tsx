@@ -89,8 +89,8 @@ export default async function BlogTopicPage({ params, searchParams }: Props) {
 
       <section className="relative overflow-hidden px-4 pb-14 pt-12 md:pb-20 md:pt-20">
         <div className="absolute inset-0">
-          <div className="absolute left-[10%] top-10 h-56 w-56 rounded-full bg-[#22c55e]/16 blur-3xl" />
-          <div className="absolute right-[8%] top-14 h-72 w-72 rounded-full bg-[#54d2ff]/14 blur-3xl" />
+          <div className="absolute left-[10%] top-10 h-56 w-56 rounded-full bg-[#1e78cc]/16 blur-3xl" />
+          <div className="absolute right-[8%] top-14 h-72 w-72 rounded-full bg-[#63ade5]/14 blur-3xl" />
         </div>
 
         <div className="relative mx-auto max-w-6xl">
@@ -107,8 +107,8 @@ export default async function BlogTopicPage({ params, searchParams }: Props) {
           </nav>
 
           <div className="max-w-4xl">
-            <div className="theme-pill-cyan inline-flex items-center gap-3 rounded-full px-5 py-2 text-sm font-medium">
-              <span className="inline-flex h-2.5 w-2.5 rounded-full bg-[#54d2ff] shadow-[0_0_16px_rgba(84,210,255,0.75)]" />
+            <div className="theme-pill-accent inline-flex items-center gap-3 rounded-full px-5 py-2 text-sm font-medium">
+              <span className="inline-flex h-2.5 w-2.5 rounded-full bg-[#63ade5] shadow-[0_0_16px_rgba(99, 173, 229,0.75)]" />
               Topic Archive
             </div>
             <h1 className="theme-heading mt-7 text-4xl font-bold leading-tight md:text-6xl">
@@ -130,7 +130,7 @@ export default async function BlogTopicPage({ params, searchParams }: Props) {
                 href={`/blogs/topics/${entry.slug}`}
                 className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
                   entry.slug === topic.slug
-                    ? 'theme-pill-green'
+                    ? 'theme-pill-primary'
                     : 'theme-card-soft text-[var(--text-subtle)] hover:text-[var(--text-strong)]'
                 }`}
               >
@@ -166,7 +166,7 @@ export default async function BlogTopicPage({ params, searchParams }: Props) {
 
                 <div className="p-6">
                   <div className="flex flex-wrap items-center gap-3 text-xs uppercase tracking-[0.22em]">
-                    <span className="theme-pill-green rounded-full px-3 py-1 font-semibold">
+                    <span className="theme-pill-primary rounded-full px-3 py-1 font-semibold">
                       {post.category}
                     </span>
                     <span className="theme-subtle">{formatDate(post.publishedAt)}</span>
