@@ -2,25 +2,26 @@ import { createHmac, timingSafeEqual } from 'node:crypto';
 import { revalidateTag } from 'next/cache';
 import { NextResponse, type NextRequest } from 'next/server';
 import {
-  CMS_POC_HOME_TAG,
-  CMS_POC_POSTS_TAG,
-  cmsPocPostTag,
-} from '@/lib/cms-poc/source';
+  CMS_TAG_HOME,
+  CMS_TAG_POSTS,
+  CMS_TAG_TOPICS,
+  cmsPostTag,
+} from '@/lib/cms/sanity';
 
 // Publish webhook for CMS-driven content (docs/cms-migration-spike.md).
 // Sanity's GROQ webhook POSTs here on create/update/delete; the _type in the
 // payload decides which cache tags are invalidated. Two auth paths:
-//   1. x-cms-poc-secret header matching CMS_POC_REVALIDATE_SECRET
+//   1. x-cms-revalidate-secret header matching CMS_REVALIDATE_SECRET
 //      (defaults to "dev-secret" outside production) - manual/dev testing.
 //   2. sanity-webhook-signature header, verified as Sanity signs it:
 //      base64url(HMAC-SHA256(`${timestamp}.${rawBody}`, SANITY_REVALIDATE_SECRET)).
-// With neither secret configured every request is rejected, so exposing the
-// route unconfigured is safe.
+// In production with neither secret configured every request is rejected, so
+// exposing the route before the secrets land is safe.
 
 const SANITY_SIGNATURE_HEADER = 'sanity-webhook-signature';
 
 function sharedSecret() {
-  if (process.env.CMS_POC_REVALIDATE_SECRET) return process.env.CMS_POC_REVALIDATE_SECRET;
+  if (process.env.CMS_REVALIDATE_SECRET) return process.env.CMS_REVALIDATE_SECRET;
   return process.env.NODE_ENV === 'production' ? null : 'dev-secret';
 }
 
@@ -51,7 +52,7 @@ function verifySanitySignature(header: string, rawBody: string, secret: string) 
 export async function POST(request: NextRequest) {
   const rawBody = await request.text();
 
-  const secretHeader = request.headers.get('x-cms-poc-secret');
+  const secretHeader = request.headers.get('x-cms-revalidate-secret');
   const sanityHeader = request.headers.get(SANITY_SIGNATURE_HEADER);
   const shared = sharedSecret();
   const sanitySecret = process.env.SANITY_REVALIDATE_SECRET;
@@ -78,11 +79,16 @@ export async function POST(request: NextRequest) {
 
   const tags: string[] = [];
   if (type === 'homePage') {
-    tags.push(CMS_POC_HOME_TAG);
+    tags.push(CMS_TAG_HOME);
+  } else if (type === 'blogTopic') {
+    // Topic titles appear on the blog index and every post page, so the post
+    // tag goes too.
+    tags.push(CMS_TAG_TOPICS, CMS_TAG_POSTS);
   } else {
-    // post, blogTopic, or an untyped manual call all refresh the blog tags.
-    tags.push(CMS_POC_POSTS_TAG);
-    if (slug) tags.push(cmsPocPostTag(slug));
+    // A post, or an untyped manual call: refresh the list and, when the
+    // payload names one, that post's own tag.
+    tags.push(CMS_TAG_POSTS);
+    if (slug) tags.push(cmsPostTag(slug));
   }
   for (const tag of tags) revalidateTag(tag);
 

@@ -4,13 +4,8 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import CTASection from '@/components/sections/CTASection';
 import PaginationNav from '@/components/ui/PaginationNav';
-import {
-  getUponAIBlogPostsByTopic,
-  getUponAIBlogTopic,
-  normalizeBlogPageNumber,
-  paginateBlogPosts,
-  uponaiBlogTopics,
-} from '@/lib/blog-posts';
+import { normalizeBlogPageNumber, paginateBlogPosts } from '@/lib/blog-posts';
+import { getBlogPostsByTopic, getBlogTopic, getBlogTopics } from '@/lib/cms/blog';
 import { buildBreadcrumbSchema, buildCollectionPageSchema, buildPageMetadata } from '@/lib/seo';
 
 type Props = {
@@ -26,17 +21,18 @@ function formatDate(value: string) {
   }).format(new Date(value));
 }
 
-export function generateStaticParams() {
-  return uponaiBlogTopics.map((topic) => ({ slug: topic.slug }));
+export async function generateStaticParams() {
+  const topics = await getBlogTopics();
+  return topics.map((topic) => ({ slug: topic.slug }));
 }
 
 export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
   const { slug } = await params;
   const resolvedSearchParams = searchParams ? await searchParams : undefined;
-  const topic = getUponAIBlogTopic(slug);
+  const topic = await getBlogTopic(slug);
   if (!topic) return {};
   const requestedPage = normalizeBlogPageNumber(resolvedSearchParams?.page);
-  const currentPage = paginateBlogPosts(getUponAIBlogPostsByTopic(topic.slug), requestedPage).currentPage;
+  const currentPage = paginateBlogPosts(await getBlogPostsByTopic(topic.slug), requestedPage).currentPage;
   const title = currentPage > 1 ? `${topic.title} Blogs - Page ${currentPage}` : `${topic.title} Blogs`;
   const path =
     currentPage > 1 ? `/blogs/topics/${topic.slug}?page=${currentPage}` : `/blogs/topics/${topic.slug}`;
@@ -51,11 +47,12 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
 export default async function BlogTopicPage({ params, searchParams }: Props) {
   const { slug } = await params;
   const resolvedSearchParams = searchParams ? await searchParams : undefined;
-  const topic = getUponAIBlogTopic(slug);
+  const topic = await getBlogTopic(slug);
   if (!topic) notFound();
 
   const requestedPage = normalizeBlogPageNumber(resolvedSearchParams?.page);
-  const archive = paginateBlogPosts(getUponAIBlogPostsByTopic(topic.slug), requestedPage);
+  const [topicPosts, topics] = await Promise.all([getBlogPostsByTopic(topic.slug), getBlogTopics()]);
+  const archive = paginateBlogPosts(topicPosts, requestedPage);
   const archivePath =
     archive.currentPage > 1
       ? `/blogs/topics/${topic.slug}?page=${archive.currentPage}`
@@ -124,7 +121,7 @@ export default async function BlogTopicPage({ params, searchParams }: Props) {
       <section className="px-4 pb-20">
         <div className="mx-auto max-w-6xl">
           <div className="mb-8 flex flex-wrap gap-3">
-            {uponaiBlogTopics.map((entry) => (
+            {topics.map((entry) => (
               <Link
                 key={entry.slug}
                 href={`/blogs/topics/${entry.slug}`}

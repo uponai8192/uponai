@@ -9,7 +9,7 @@ import {
   SITE_NAME,
   SITE_URL,
 } from '@/lib/seo';
-import { getUponAIBlogPost, getUponAIBlogTopic, uponaiBlogPosts } from '@/lib/blog-posts';
+import { getBlogPost, getBlogPosts, getBlogTopics } from '@/lib/cms/blog';
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -39,13 +39,19 @@ function toPlainText(html: string) {
     .trim();
 }
 
-export function generateStaticParams() {
-  return uponaiBlogPosts.map((post) => ({ slug: post.slug }));
+// Only the newest posts are prerendered. Older posts and alias slugs still
+// resolve, they just render on first request and are then cached until a
+// publish webhook revalidates them (docs/cms-migration-spike.md).
+const PRERENDERED_POSTS = 20;
+
+export async function generateStaticParams() {
+  const posts = await getBlogPosts();
+  return posts.slice(0, PRERENDERED_POSTS).map((post) => ({ slug: post.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const post = getUponAIBlogPost(slug);
+  const post = await getBlogPost(slug);
   if (!post) return {};
 
   return {
@@ -62,11 +68,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
-  const post = getUponAIBlogPost(slug);
+  const post = await getBlogPost(slug);
   if (!post) notFound();
   if (slug !== post.slug) permanentRedirect(`/post/${post.slug}`);
+  const [allPosts, topics] = await Promise.all([getBlogPosts(), getBlogTopics()]);
   const articleBody = post.htmlBody ? toPlainText(post.htmlBody) : post.body.join('\n\n');
-  const relatedPosts = uponaiBlogPosts
+  const relatedPosts = allPosts
     .filter(
       (entry) =>
         entry.slug !== post.slug && entry.topicSlugs.some((topicSlug) => post.topicSlugs.includes(topicSlug))
@@ -153,7 +160,7 @@ export default async function BlogPostPage({ params }: Props) {
 
             <div className="mt-6 flex flex-wrap gap-2">
               {post.topicSlugs.map((topicSlug) => {
-                const topic = getUponAIBlogTopic(topicSlug);
+                const topic = topics.find((entry) => entry.slug === topicSlug);
                 if (!topic) return null;
 
                 return (

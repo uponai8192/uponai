@@ -336,12 +336,18 @@ other work. Calendar ranges include soak time between phases.
 | Phase | Work | Estimate |
 |---|---|---|
 | 0. Spike + PoC | this document, PoC route, revalidate handler | done |
-| 1. Blog to Sanity | project setup, schemas, import script + validation, route swap, webhook, sitemap | 3 to 4 days |
+| 1. Blog to Sanity | project setup, schemas, import script + validation, route swap, webhook, sitemap | done |
+| 4. Homepage | section copy lifted to props, homePage singleton, seed, cutover | done |
 | 2. Verticals + landing pages | biggest schema surface, template placeholder validation, build-shape change | 4 to 6 days |
 | 3. Industries + services | schema + override merge + swap | 2 to 3 days |
-| 4. Homepage + settings | section documents, menu singleton | 1 to 2 days |
+| 4b. Menus and settings | siteSettings singleton for nav, footer, office list | half a day |
 | 5. Editorial hardening | preview, roles, backups, editor guide | 2 days |
-| Total | | 12 to 17 dev days over 6 to 8 weeks |
+| Remaining | | 7 to 10 dev days |
+
+Phases 1 and 4 landed in one session because roughly 85% of the content
+was already structured, typed data, which was the bet this spike opened
+with. Phase 2 remains the large one and is where the 13,465-page build
+problem actually gets retired.
 
 Deployment-server work is minimal by design: no new containers, no new
 env vars until Phase 1 (`SANITY_PROJECT_ID`, `SANITY_DATASET`,
@@ -350,38 +356,84 @@ after 2 shrinks the build the server has to perform.
 
 ---
 
-## Appendix: the PoC in this branch
+## What is built on this branch
 
-Blog posts only, dev-only by default, zero new npm dependencies, no
-existing route touched.
+The spike's PoC has been superseded: Phases 1 and 4 are implemented
+against the real Sanity project `foyo2c78` (dataset `production`), and
+the throwaway `/cms-poc` routes and mock content store were removed once
+the real routes did the real thing. Still zero new npm dependencies:
+Sanity is reached over plain `fetch` with GROQ in the query string.
 
 | Piece | Path |
 |---|---|
-| Content source (mock file now, Sanity via env later) | `src/lib/cms-poc/source.ts` |
-| Mock content store (stands in for the Sanity dataset) | `cms-poc-content/posts.json` |
-| List route | `/cms-poc/blog` |
-| Detail route | `/cms-poc/blog/[slug]` |
-| Revalidate webhook handler | `POST /api/revalidate` (promoted out of the PoC path when the homepage cut over) |
+| Shared Sanity access, cache tag names | `src/lib/cms/sanity.ts` |
+| Homepage content, section-level fallback | `src/lib/cms/home.ts` |
+| Blog content in the existing site types | `src/lib/cms/blog.ts` |
+| In-repo homepage defaults | `src/lib/home-content.ts` |
+| Publish webhook | `POST /api/revalidate` |
+| One-off post import | `scripts/import-posts-to-sanity.mjs` |
+| Homepage seed | `scripts/seed-home-to-sanity.mjs` |
+| Cutover gate | `scripts/compare-posts-with-sanity.mjs` |
 
-The source module caches reads with `unstable_cache` under the tags
-`cms-poc-posts` and `cms-poc-post:<slug>`, exactly the tag scheme the
-real migration uses. The webhook handler accepts either a shared-secret
-header (mock/manual testing) or a Sanity GROQ webhook HMAC signature
-(verified with node:crypto, no dependency), so the same handler promotes
-to Phase 1 unchanged.
+Routes now reading from the CMS: `/` (homePage singleton), `/blogs`,
+`/blogs/topics/[slug]`, `/post/[slug]`, and `/sitemaps/core.xml`.
 
-Demo of the publish-to-revalidate loop, no Sanity account required:
+**Fallback is the safety property that makes this deployable.** Every
+CMS read falls back to the in-repo content when `SANITY_PROJECT_ID` and
+`SANITY_DATASET` are absent, or when the query returns nothing. Verified
+by running the site with those variables unset: 230 posts, the homepage,
+and 230 sitemap post entries all still render from `blog-posts.ts` and
+`home-content.ts`. A server can therefore build and deploy this branch
+before the CMS environment exists, and an API outage degrades to the
+last shipped copy rather than an empty page.
 
-1. `npm run dev`, open `/cms-poc/blog/hello-cms`.
-2. Edit `cms-poc-content/posts.json` (change the title). Reload: page
-   still shows the old title, because it is served from the tagged cache.
-   That is the "stale until publish" property.
-3. Simulate the publish webhook:
-   `curl -X POST "http://localhost:3000/api/revalidate" -H "x-cms-poc-secret: dev-secret" -H "content-type: application/json" -d "{\"_type\":\"post\",\"slug\":\"hello-cms\"}"`
-4. Reload: new title. Loop closed.
+### Cache tags and revalidation
 
-With `SANITY_PROJECT_ID` + `SANITY_DATASET` set, the source switches to
-querying the Sanity Content Lake HTTP API (plain `fetch` + GROQ, still
-no npm dependency) and the same webhook flow applies, driven by a real
-GROQ webhook instead of curl. Gating: the routes 404 in production
-unless `CMS_POC=1` is set, so merging this branch cannot leak the PoC.
+| Tag | Covers |
+|---|---|
+| `cms-home` | homepage copy |
+| `cms-posts` | post list, every post page, blog index, topic archives, sitemap |
+| `cms-topics` | topic definitions |
+| `cms-post:<slug>` | one post |
+
+The webhook maps the published document's `_type` onto those tags:
+`homePage` refreshes the homepage, `blogTopic` refreshes topics and
+posts (topic titles render inside post pages), anything else refreshes
+the post tags. Auth is either an `x-cms-revalidate-secret` header
+matching `CMS_REVALIDATE_SECRET` (manual and dev use, defaulting to
+`dev-secret` outside production) or a Sanity GROQ webhook HMAC signature
+verified against `SANITY_REVALIDATE_SECRET` with `node:crypto`. In
+production with neither configured, every request is rejected, so the
+route is safe to expose before secrets land.
+
+### Cutover gate
+
+`scripts/compare-posts-with-sanity.mjs` compares every post in the
+dataset against the library that renders the live site, field by field,
+plus topic coverage and slug/alias collisions. It exits non-zero on any
+difference. Last run before the blog cutover: 230 local posts, 230
+Sanity posts, 4 topics each side, 0 field differences, 450 routable
+slugs and aliases, no collisions.
+
+### Verified end to end
+
+- Editing homepage copy in the Studio and publishing updates `/` after
+  the webhook, with no rebuild.
+- Creating a **new** post in the CMS moves `/post/<slug>` from 404 to
+  200 after the webhook, and the post simultaneously appears on
+  `/blogs`, its topic archive, and `/sitemaps/core.xml`.
+- A legacy machine-generated alias slug still 308-redirects to its
+  canonical post URL, so no inbound link or indexed URL breaks.
+
+### Remaining production steps
+
+1. Add `SANITY_PROJECT_ID=foyo2c78`, `SANITY_DATASET=production`, and a
+   random `SANITY_REVALIDATE_SECRET` to `.env.production.local` on the
+   server. These are runtime values, not `NEXT_PUBLIC_`, so unlike
+   `NEXT_PUBLIC_SITE_ENV` they do not need to be present at build time.
+2. In manage.sanity.io, add a GROQ webhook to
+   `https://uponai.com/api/revalidate`, triggering on create, update and
+   delete, with projection `{_type, "slug": slug.current}` and the same
+   secret.
+3. Rebuild the container. Prerendered blog pages drop from 230 to 20;
+   the rest render on demand and are then cached until a publish.

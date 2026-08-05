@@ -1,5 +1,5 @@
 import { cities, industries, services } from '@/lib/data';
-import { uponaiBlogPosts, uponaiBlogTopics } from '@/lib/blog-posts';
+import { getBlogPosts, getBlogTopics } from '@/lib/cms/blog';
 import { uponaiPages } from '@/lib/uponai-pages';
 import { promotedVoiceAICityRoutes, voiceAIIndustryPages } from '@/lib/voice-ai-industries';
 
@@ -93,19 +93,29 @@ const standalonePages: SitemapEntry[] = [
   { url: '/services/ivr-system', lastModified: staticTimestamp, changeFrequency: 'monthly', priority: 0.8 },
 ];
 
-const blogPostEntries: SitemapEntry[] = uponaiBlogPosts.map((post) => ({
-  url: `/post/${post.slug}`,
-  lastModified: post.publishedAt,
-  changeFrequency: 'monthly',
-  priority: 0.7,
-}));
+// Blog entries come from the CMS, so they are resolved per request rather than
+// at module load. The core sitemap route awaits these and is revalidated by the
+// same publish webhook that refreshes the blog pages, which is what keeps a new
+// post indexable without a rebuild.
+async function getBlogSitemapEntries(): Promise<SitemapEntry[]> {
+  const [posts, topics] = await Promise.all([getBlogPosts(), getBlogTopics()]);
 
-const blogTopicEntries: SitemapEntry[] = uponaiBlogTopics.map((topic) => ({
-  url: `/blogs/topics/${topic.slug}`,
-  lastModified: staticTimestamp,
-  changeFrequency: 'weekly',
-  priority: 0.7,
-}));
+  const topicEntries: SitemapEntry[] = topics.map((topic) => ({
+    url: `/blogs/topics/${topic.slug}`,
+    lastModified: staticTimestamp,
+    changeFrequency: 'weekly',
+    priority: 0.7,
+  }));
+
+  const postEntries: SitemapEntry[] = posts.map((post) => ({
+    url: `/post/${post.slug}`,
+    lastModified: post.publishedAt,
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  }));
+
+  return [...topicEntries, ...postEntries];
+}
 
 const excludedLegacyCoreSlugs = new Set([
   '/recordings',
@@ -135,12 +145,9 @@ const landingPagesFromSlugRoutes: SitemapEntry[] = uponaiPages
     priority: 0.7,
   }));
 
-export const coreSitemapEntries: SitemapEntry[] = [
-  ...standalonePages,
-  ...blogTopicEntries,
-  ...blogPostEntries,
-  ...landingPagesFromSlugRoutes,
-];
+export async function getCoreSitemapEntries(): Promise<SitemapEntry[]> {
+  return [...standalonePages, ...(await getBlogSitemapEntries()), ...landingPagesFromSlugRoutes];
+}
 
 export const voiceAIRootEntries: SitemapEntry[] = voiceAIIndustryPages.map((page) => ({
   url: `/${page.slug}`,

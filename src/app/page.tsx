@@ -8,7 +8,7 @@ import AllFeatures from '@/components/home/AllFeatures';
 import HowItWorksSteps from '@/components/home/HowItWorksSteps';
 import CustomerStories from '@/components/home/CustomerStories';
 import FinalCTA from '@/components/home/FinalCTA';
-import { getCmsPocHomePage } from '@/lib/cms-poc/source';
+import { getHomePageContent } from '@/lib/cms/home';
 
 export const metadata: Metadata = {
   title: 'Enterprise AI Agents for Phone, Chat, and Web',
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 // the in-repo defaults in src/lib/home-content.ts, so the route can never
 // render empty.
 export default async function HomePage() {
-  const { data: content } = await getCmsPocHomePage();
+  const content = await getHomePageContent();
   return (
     <>
       <PlatformHero content={content.hero} />

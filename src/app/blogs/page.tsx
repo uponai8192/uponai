@@ -3,12 +3,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import CTASection from '@/components/sections/CTASection';
 import PaginationNav from '@/components/ui/PaginationNav';
-import {
-  normalizeBlogPageNumber,
-  paginateBlogPosts,
-  uponaiBlogPosts,
-  uponaiBlogTopics,
-} from '@/lib/blog-posts';
+import { normalizeBlogPageNumber, paginateBlogPosts } from '@/lib/blog-posts';
+import { getBlogPosts, getBlogTopics } from '@/lib/cms/blog';
 import { buildBreadcrumbSchema, buildCollectionPageSchema, buildPageMetadata } from '@/lib/seo';
 
 type Props = {
@@ -18,7 +14,7 @@ type Props = {
 export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
   const params = searchParams ? await searchParams : undefined;
   const requestedPage = normalizeBlogPageNumber(params?.page);
-  const currentPage = paginateBlogPosts(uponaiBlogPosts, requestedPage).currentPage;
+  const currentPage = paginateBlogPosts(await getBlogPosts(), requestedPage).currentPage;
   const title = currentPage > 1 ? `UponAI Blogs - Page ${currentPage}` : 'UponAI Blogs';
   const path = currentPage > 1 ? `/blogs?page=${currentPage}` : '/blogs';
 
@@ -41,7 +37,8 @@ function formatDate(value: string) {
 export default async function BlogsPage({ searchParams }: Props) {
   const params = searchParams ? await searchParams : undefined;
   const requestedPage = normalizeBlogPageNumber(params?.page);
-  const archive = paginateBlogPosts(uponaiBlogPosts, requestedPage);
+  const [posts, topics] = await Promise.all([getBlogPosts(), getBlogTopics()]);
+  const archive = paginateBlogPosts(posts, requestedPage);
   const archivePath = archive.currentPage > 1 ? `/blogs?page=${archive.currentPage}` : '/blogs';
 
   const breadcrumbSchema = buildBreadcrumbSchema([
@@ -135,7 +132,7 @@ export default async function BlogsPage({ searchParams }: Props) {
             </div>
 
             <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-              {uponaiBlogTopics.map((topic) => (
+              {topics.map((topic) => (
                 <Link
                   key={topic.slug}
                   href={`/blogs/topics/${topic.slug}`}
@@ -185,7 +182,7 @@ export default async function BlogsPage({ searchParams }: Props) {
 
                   <div className="mt-5 flex flex-wrap gap-2">
                     {post.topicSlugs.map((slug) => {
-                      const topic = uponaiBlogTopics.find((entry) => entry.slug === slug);
+                      const topic = topics.find((entry) => entry.slug === slug);
                       if (!topic) return null;
 
                       return (
