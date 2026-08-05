@@ -215,10 +215,11 @@ A Node script (`scripts/import-posts-to-sanity.mts`, run locally, never
 on the server) that:
 
 1. Reads `imported-blog-posts.json` plus the 9 manual posts.
-2. Normalises: decode the mojibake Windows-1252 artifacts present in the
-   JSON (curly quotes and ellipses currently render as `�` in some
-   fields), trim the machine-generated `new-blog-post-2790-...` slugs
-   into their alias arrays untouched (slugs must not change, see risks).
+2. Preserves slugs and aliases verbatim, including the machine-generated
+   `new-blog-post-2790-...` ones (slugs must not change, see risks).
+   Checked during import: the JSON has no encoding damage; the `�`
+   glyphs seen in some terminals are curly quotes the console cannot
+   display, so no normalisation pass is needed.
 3. Uploads each `imageUrl` binary to Sanity assets (with retry and a
    dry-run mode); on failure, falls back to storing the external URL in
    the fallback field so the import never blocks on a dead image.
