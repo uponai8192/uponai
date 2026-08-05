@@ -13,6 +13,9 @@ import { CMS_TAG_POSTS, CMS_TAG_TOPICS, sanityConfigured, sanityQuery } from '@/
 // blog-posts.ts is used, which keeps builds working before the CMS env lands
 // on a server and gives a fallback if the API is unreachable.
 
+// An uploaded hero image wins over the legacy imageUrl string, and both land
+// in the same imageUrl field, so the pages render either without knowing which
+// one they got.
 const POST_PROJECTION = `{
   "slug": slug.current,
   title,
@@ -20,7 +23,8 @@ const POST_PROJECTION = `{
   author,
   category,
   publishedAt,
-  imageUrl,
+  "imageUrl": coalesce(image.asset->url, imageUrl),
+  "imageAlt": image.alt,
   readTimeMinutes,
   body,
   topicSlugs,
@@ -41,6 +45,7 @@ function normalizePost(raw: RawPost): UponAIBlogPost {
     category: raw.category ?? '',
     publishedAt: raw.publishedAt ?? new Date(0).toISOString(),
     imageUrl: raw.imageUrl ?? '',
+    ...(raw.imageAlt ? { imageAlt: raw.imageAlt } : {}),
     readTimeMinutes: raw.readTimeMinutes ?? 0,
     body: raw.body ?? [],
     topicSlugs: raw.topicSlugs ?? [],

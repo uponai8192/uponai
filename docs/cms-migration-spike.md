@@ -294,13 +294,28 @@ creation, and dataset export snapshots for restore. True role
 separation is a Growth-plan feature if it becomes a problem.
 
 **Image handling.** `images.unoptimized: true` means Next serves image
-URLs verbatim, so Sanity CDN URLs work with zero pipeline changes; add
-`cdn.sanity.io` to `remotePatterns` at Phase 1. Legacy post images live
-on `assets.cdn.filesafe.space` (a GHL asset host we do not control);
-importing binaries into Sanity removes that silent dependency. Asset
-storage (100GB free) is orders of magnitude above need. We deliberately
-skip Sanity's image transformation URLs initially to keep parity with
+URLs verbatim, so Sanity CDN URLs work with zero pipeline changes;
+`cdn.sanity.io` is in `remotePatterns` as of the image-upload change.
+Asset storage (100GB free) is orders of magnitude above need. We
+deliberately skip Sanity's image transformation URLs to keep parity with
 today's unoptimized behaviour.
+
+Editors upload images directly: `post.image` and each homepage customer
+story's `avatar` are real Sanity image fields with hotspot cropping and
+an alt-text field. The blog projection uses
+`coalesce(image.asset->url, imageUrl)`, so an uploaded asset wins and
+both paths arrive in the same `imageUrl` field the pages already render.
+The legacy `imageUrl` string is kept in the collapsed legacy fieldset,
+because the 220 imported posts still point at
+`assets.cdn.filesafe.space`, a GHL asset host we do not control. Moving
+those binaries into Sanity remains worthwhile to remove that silent
+dependency, but it is now a background cleanup rather than a
+prerequisite: any post re-imaged in the Studio leaves the old host
+automatically.
+
+Not modelled yet: video. Sanity's `file` type accepts video and other
+non-image assets, so adding a video field is the same shape of change if
+a post ever needs one.
 
 **Cost and quota.** ~370 documents against a 10k cap, and tag-cached
 fetches keep API calls to roughly one per page regeneration, so free

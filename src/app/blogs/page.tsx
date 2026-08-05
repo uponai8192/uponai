@@ -158,7 +158,7 @@ export default async function BlogsPage({ searchParams }: Props) {
                 <div className="theme-section-alt aspect-[16/10] overflow-hidden border-b border-[var(--border)]">
                   <Image
                     src={post.imageUrl}
-                    alt={post.title}
+                    alt={post.imageAlt ?? post.title}
                     width={1200}
                     height={750}
                     className="h-full w-full object-cover transition-transform duration-300 hover:scale-[1.03]"

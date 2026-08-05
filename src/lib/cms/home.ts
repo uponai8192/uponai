@@ -7,7 +7,17 @@ import { CMS_TAG_HOME, sanityQuery } from '@/lib/cms/sanity';
 // filled document can never render an empty homepage.
 export const getHomePageContent = unstable_cache(
   async (): Promise<HomePageContent> => {
-    const doc = await sanityQuery<Partial<HomePageContent>>('*[_id == "homePage"][0]');
+    // Customer story avatars are uploaded assets, so they are resolved to CDN
+    // URLs here; everything else on the document is already plain copy.
+    const doc = await sanityQuery<Partial<HomePageContent>>(
+      `*[_id == "homePage"][0]{
+        ...,
+        customerStories{
+          ...,
+          stories[]{..., "avatarUrl": avatar.asset->url}
+        }
+      }`
+    );
     return {
       hero: doc?.hero ?? defaultHomePageContent.hero,
       socialProof: doc?.socialProof ?? defaultHomePageContent.socialProof,

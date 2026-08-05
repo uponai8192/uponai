@@ -19,6 +19,8 @@ export type UponAIBlogPost = {
   excerpt: string;
   htmlBody?: string;
   imageUrl: string;
+  /** Set when the hero image was uploaded to the CMS with alt text. */
+  imageAlt?: string;
   publishedAt: string;
   readTimeMinutes: number;
   relatedPages: UponAIBlogRelatedPage[];

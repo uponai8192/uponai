@@ -1,6 +1,8 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { defaultHomeCustomerStories, type HomeCustomerStoriesContent } from '@/lib/home-content';
 
+// Shown when a story has no uploaded photo.
 const avatarSymbols = ['◆', '●', '▲'];
 
 export default function CustomerStories({
@@ -27,12 +29,23 @@ export default function CustomerStories({
               </div>
               <p className="theme-body flex-1 text-[14.5px]">{story.quote}</p>
               <div className="mt-5 flex items-center gap-3 border-t border-[var(--border)] pt-[18px]">
-                <span
-                  className="grid h-10 w-10 flex-none place-items-center rounded-full text-[15px] text-[var(--text-body)]"
-                  style={{ background: '#D1D9E0' }}
-                >
-                  {avatarSymbols[i % avatarSymbols.length]}
-                </span>
+                {story.avatarUrl ? (
+                  <Image
+                    src={story.avatarUrl}
+                    alt={story.name}
+                    width={40}
+                    height={40}
+                    className="h-10 w-10 flex-none rounded-full object-cover"
+                    unoptimized
+                  />
+                ) : (
+                  <span
+                    className="grid h-10 w-10 flex-none place-items-center rounded-full text-[15px] text-[var(--text-body)]"
+                    style={{ background: '#D1D9E0' }}
+                  >
+                    {avatarSymbols[i % avatarSymbols.length]}
+                  </span>
+                )}
                 <span>
                   <b className="theme-heading block text-sm">{story.name}</b>
                   <small className="text-xs text-[var(--text-subtle)]">{story.role}</small>

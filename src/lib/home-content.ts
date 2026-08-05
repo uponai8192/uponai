@@ -69,7 +69,8 @@ export type HomeHowItWorksContent = {
 export type HomeCustomerStoriesContent = {
   eyebrow: string;
   heading: string;
-  stories: { quote: string; name: string; role: string }[];
+  /** avatarUrl is set when a photo has been uploaded in the CMS. */
+  stories: { quote: string; name: string; role: string; avatarUrl?: string }[];
   ctaLabel: string;
 };
 

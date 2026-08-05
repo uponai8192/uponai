@@ -184,7 +184,7 @@ export default async function BlogPostPage({ params }: Props) {
             <div className="theme-section-alt aspect-[16/9] overflow-hidden border-b border-[var(--border)]">
               <Image
                 src={post.imageUrl}
-                alt={post.title}
+                alt={post.imageAlt ?? post.title}
                 width={1600}
                 height={900}
                 className="h-full w-full object-cover"
