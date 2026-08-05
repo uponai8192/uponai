@@ -4,17 +4,18 @@ import { NextResponse, type NextRequest } from 'next/server';
 import {
   CMS_POC_HOME_TAG,
   CMS_POC_POSTS_TAG,
-  cmsPocEnabled,
   cmsPocPostTag,
 } from '@/lib/cms-poc/source';
 
-// Publish webhook for the CMS PoC (docs/cms-migration-spike.md). Two auth
-// paths so the same handler serves the mock demo today and a real Sanity
-// GROQ webhook later:
+// Publish webhook for CMS-driven content (docs/cms-migration-spike.md).
+// Sanity's GROQ webhook POSTs here on create/update/delete; the _type in the
+// payload decides which cache tags are invalidated. Two auth paths:
 //   1. x-cms-poc-secret header matching CMS_POC_REVALIDATE_SECRET
-//      (defaults to "dev-secret" outside production).
+//      (defaults to "dev-secret" outside production) - manual/dev testing.
 //   2. sanity-webhook-signature header, verified as Sanity signs it:
 //      base64url(HMAC-SHA256(`${timestamp}.${rawBody}`, SANITY_REVALIDATE_SECRET)).
+// With neither secret configured every request is rejected, so exposing the
+// route unconfigured is safe.
 
 const SANITY_SIGNATURE_HEADER = 'sanity-webhook-signature';
 
@@ -48,10 +49,6 @@ function verifySanitySignature(header: string, rawBody: string, secret: string) 
 }
 
 export async function POST(request: NextRequest) {
-  if (!cmsPocEnabled()) {
-    return NextResponse.json({ error: 'Not found' }, { status: 404 });
-  }
-
   const rawBody = await request.text();
 
   const secretHeader = request.headers.get('x-cms-poc-secret');

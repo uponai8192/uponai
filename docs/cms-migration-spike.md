@@ -361,7 +361,7 @@ existing route touched.
 | Mock content store (stands in for the Sanity dataset) | `cms-poc-content/posts.json` |
 | List route | `/cms-poc/blog` |
 | Detail route | `/cms-poc/blog/[slug]` |
-| Revalidate webhook handler | `POST /api/cms-poc/revalidate` |
+| Revalidate webhook handler | `POST /api/revalidate` (promoted out of the PoC path when the homepage cut over) |
 
 The source module caches reads with `unstable_cache` under the tags
 `cms-poc-posts` and `cms-poc-post:<slug>`, exactly the tag scheme the
@@ -377,7 +377,7 @@ Demo of the publish-to-revalidate loop, no Sanity account required:
    still shows the old title, because it is served from the tagged cache.
    That is the "stale until publish" property.
 3. Simulate the publish webhook:
-   `curl -X POST "http://localhost:3000/api/cms-poc/revalidate" -H "x-cms-poc-secret: dev-secret" -H "content-type: application/json" -d "{\"_type\":\"post\",\"slug\":\"hello-cms\"}"`
+   `curl -X POST "http://localhost:3000/api/revalidate" -H "x-cms-poc-secret: dev-secret" -H "content-type: application/json" -d "{\"_type\":\"post\",\"slug\":\"hello-cms\"}"`
 4. Reload: new title. Loop closed.
 
 With `SANITY_PROJECT_ID` + `SANITY_DATASET` set, the source switches to

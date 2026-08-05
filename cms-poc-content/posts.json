@@ -9,7 +9,7 @@
     "body": [
       "This page is rendered from the CMS proof-of-concept content source, not from the code-side blog library.",
       "Edit this file, reload the page, and notice that nothing changes: the data is served from the tagged Next cache, exactly as a published Sanity document would be.",
-      "Then POST to /api/cms-poc/revalidate with the shared secret. The tag is invalidated, the next request re-reads the source, and the edit appears. That is the entire publish-to-revalidate loop this spike set out to prove."
+      "Then POST to /api/revalidate with the shared secret. The tag is invalidated, the next request re-reads the source, and the edit appears. That is the entire publish-to-revalidate loop this spike set out to prove."
     ]
   },
   {
