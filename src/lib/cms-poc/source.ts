@@ -1,6 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { unstable_cache } from 'next/cache';
+import { defaultHomePageContent, type HomePageContent } from '@/lib/home-content';
 
 // Proof-of-concept content source for the CMS migration spike
 // (docs/cms-migration-spike.md). Reads a local mock JSON file by default so
@@ -26,6 +27,7 @@ export type CmsPocResult<T> = {
 };
 
 export const CMS_POC_POSTS_TAG = 'cms-poc-posts';
+export const CMS_POC_HOME_TAG = 'cms-poc-home';
 
 export function cmsPocPostTag(slug: string) {
   return `cms-poc-post:${slug}`;
@@ -89,6 +91,46 @@ async function loadPosts(): Promise<CmsPocResult<CmsPocPost[]>> {
 export const getCmsPocPosts = unstable_cache(loadPosts, ['cms-poc-posts'], {
   tags: [CMS_POC_POSTS_TAG],
 });
+
+async function fetchSanityDocument<T>(query: string): Promise<T | null> {
+  const config = sanityConfig();
+  if (!config) return null;
+  const url =
+    `https://${config.projectId}.api.sanity.io/${config.apiVersion}/data/query/${config.dataset}` +
+    `?query=${encodeURIComponent(query)}`;
+  const response = await fetch(url, { cache: 'no-store' });
+  if (!response.ok) {
+    throw new Error(`Sanity query failed: ${response.status} ${response.statusText}`);
+  }
+  const payload = (await response.json()) as { result: T | null };
+  return payload.result;
+}
+
+// Homepage copy. Falls back to the in-repo defaults section by section, so a
+// partially filled CMS document can never render an empty homepage.
+export const getCmsPocHomePage = unstable_cache(
+  async (): Promise<CmsPocResult<HomePageContent>> => {
+    const doc = await fetchSanityDocument<Partial<HomePageContent>>('*[_id == "homePage"][0]');
+    const data: HomePageContent = {
+      hero: doc?.hero ?? defaultHomePageContent.hero,
+      socialProof: doc?.socialProof ?? defaultHomePageContent.socialProof,
+      oldWay: doc?.oldWay ?? defaultHomePageContent.oldWay,
+      intro: doc?.intro ?? defaultHomePageContent.intro,
+      capabilities: doc?.capabilities ?? defaultHomePageContent.capabilities,
+      allFeatures: doc?.allFeatures ?? defaultHomePageContent.allFeatures,
+      howItWorks: doc?.howItWorks ?? defaultHomePageContent.howItWorks,
+      customerStories: doc?.customerStories ?? defaultHomePageContent.customerStories,
+      finalCta: doc?.finalCta ?? defaultHomePageContent.finalCta,
+    };
+    return {
+      data,
+      source: doc ? 'sanity' : 'mock-file',
+      loadedAt: new Date().toISOString(),
+    };
+  },
+  ['cms-poc-home'],
+  { tags: [CMS_POC_HOME_TAG] }
+);
 
 export async function getCmsPocPost(slug: string): Promise<CmsPocResult<CmsPocPost | null>> {
   const cached = unstable_cache(

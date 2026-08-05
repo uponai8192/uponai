@@ -1,24 +1,11 @@
-const oldNodes = [
-  { ic: '☎', label: 'Phone system', tag: 'siloed' },
-  { ic: '💬', label: 'Web chat vendor', tag: 'separate' },
-  { ic: '📱', label: 'WhatsApp', tag: 'unmanaged' },
-  { ic: '📊', label: 'Reporting', tag: 'manual' },
-];
+import { defaultHomeOldWay, type HomeOldWayContent } from '@/lib/home-content';
 
-const problems = [
-  {
-    n: '01',
-    title: 'Every channel is a separate build',
-    body: 'You rebuild the same logic three times, once for the phone line, once for web chat, once for messaging. Every change means shipping it everywhere, again.',
-  },
-  {
-    n: '02',
-    title: 'No visibility into what is actually happening',
-    body: 'Conversations end and the insight leaves with them. No transcripts, no trends, no way to see where customers drop off or which requests keep coming back.',
-  },
-];
-
-export default function OldWay() {
+export default function OldWay({ content = defaultHomeOldWay }: { content?: HomeOldWayContent }) {
+  const oldNodes = content.systems;
+  const problems = content.problems.map((problem, i) => ({
+    ...problem,
+    n: String(i + 1).padStart(2, '0'),
+  }));
   return (
     <section className="px-4 py-20 md:py-24">
       <div className="mx-auto max-w-7xl">
@@ -27,11 +14,9 @@ export default function OldWay() {
             className="mb-4 inline-block rounded-full px-3 py-1.5 text-[11px] uppercase tracking-[0.16em] text-[var(--text-body)] font-[family-name:var(--font-mono)]"
             style={{ background: '#D1D9E0' }}
           >
-            The old way
+            {content.badge}
           </span>
-          <h2 className="theme-heading text-3xl font-bold md:text-4xl">
-            Your channels do not talk. Neither does your data.
-          </h2>
+          <h2 className="theme-heading text-3xl font-bold md:text-4xl">{content.heading}</h2>
         </div>
 
         <div className="grid items-center gap-[52px] md:grid-cols-[0.95fr_1.05fr]">
@@ -49,7 +34,7 @@ export default function OldWay() {
                   className="grid h-[26px] w-[26px] place-items-center rounded-[7px] text-xs"
                   style={{ background: '#D1D9E0' }}
                 >
-                  {node.ic}
+                  {node.icon}
                 </span>
                 {node.label}
                 <span className="ml-auto text-[11px] text-[#9AA1A9] font-[family-name:var(--font-mono)]">

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { defaultHomeCapabilities, type HomeCapabilitiesContent } from '@/lib/home-content';
 
 type StepsVisual = {
   kind: 'steps';
@@ -21,88 +22,45 @@ type IntelligenceVisual = {
   footRow: { label: string; tag: string };
 };
 
-type Capability = {
-  num: string;
-  title: string;
-  lede: string;
-  benefit: string;
-  feats: string[];
-  reversed: boolean;
-  visual: StepsVisual | ChannelsVisual | IntelligenceVisual;
-};
+type CapabilityVisualData = StepsVisual | ChannelsVisual | IntelligenceVisual;
 
-const capabilities: Capability[] = [
+// Decorative panel next to each capability. Design, not copy: stays in code
+// and is matched to CMS-managed capability items by position.
+const capabilityVisuals: CapabilityVisualData[] = [
   {
-    num: 'Capability 01 · Build',
-    title: 'An all-in-one AI voice platform',
-    lede: 'Train, test, and deploy from a single place. A simple training interface and sandbox playgrounds let your team ship a working agent without waiting on engineering.',
-    benefit: 'your first version is live in 10 minutes, not a quarter-long integration project.',
-    feats: [
-      'Simple training interface',
-      'Multiple test playgrounds (sandbox)',
-      'Integrations with your existing stack',
+    kind: 'steps',
+    head: 'Build & test',
+    rows: [
+      { n: '01', label: 'Train on your knowledge base', tag: '2 min' },
+      { n: '02', label: 'Test in sandbox playground', tag: 'live' },
+      { n: '03', label: 'Connect your integrations', tag: 'no-code' },
+      { n: '04', label: 'Deploy to production', tag: '1 click' },
     ],
-    reversed: false,
-    visual: {
-      kind: 'steps',
-      head: 'Build & test',
-      rows: [
-        { n: '01', label: 'Train on your knowledge base', tag: '2 min' },
-        { n: '02', label: 'Test in sandbox playground', tag: 'live' },
-        { n: '03', label: 'Connect your integrations', tag: 'no-code' },
-        { n: '04', label: 'Deploy to production', tag: '1 click' },
-      ],
-    },
   },
   {
-    num: 'Capability 02 · Deploy',
-    title: 'Train once, deploy everywhere',
-    lede: 'The same AI agent handles phone calls, website chat, WhatsApp, and more, under your own branding, on your own domain and numbers, fully mobile.',
-    benefit: 'one agent to maintain instead of three, every improvement ships to every channel at once.',
-    feats: [
-      'No-code builder',
-      'Multi-channel: phone, chat, web, WhatsApp',
-      'Custom branding: logo, domain, phone number',
-      '100% mobile support',
+    kind: 'channels',
+    head: 'One agent · four surfaces',
+    cards: [
+      { ic: '☎', label: 'Phone' },
+      { ic: '💬', label: 'Web chat' },
+      { ic: '📱', label: 'WhatsApp' },
+      { ic: '🌐', label: 'Website' },
     ],
-    reversed: true,
-    visual: {
-      kind: 'channels',
-      head: 'One agent · four surfaces',
-      cards: [
-        { ic: '☎', label: 'Phone' },
-        { ic: '💬', label: 'Web chat' },
-        { ic: '📱', label: 'WhatsApp' },
-        { ic: '🌐', label: 'Website' },
-      ],
-      footRow: 'Single training source',
-    },
+    footRow: 'Single training source',
   },
   {
-    num: 'Capability 03 · Intelligence',
-    title: 'AI intelligence into your customer service',
-    lede: 'Every conversation is transcribed, analyzed, and turned into insight, so you get real-time intelligence about your operations instead of a black box.',
-    benefit: "you finally see what customers ask for, where they drop off, and which leads you would have missed.",
-    feats: [
-      'Transcribed call transcripts and insights',
-      'Multi-step complex workflows',
-      'Automatic lead generation',
+    kind: 'intelligence',
+    head: 'Operations intelligence',
+    bars: [
+      { label: 'Resolved by agent', width: '66%' },
+      { label: 'Escalated to human', width: '34%' },
     ],
-    reversed: false,
-    visual: {
-      kind: 'intelligence',
-      head: 'Operations intelligence',
-      bars: [
-        { label: 'Resolved by agent', width: '66%' },
-        { label: 'Escalated to human', width: '34%' },
-      ],
-      leadRow: { label: 'Leads auto-captured', tag: 'synced to CRM' },
-      footRow: { label: 'Transcripts synced to CRM', tag: 'real-time' },
-    },
+    leadRow: { label: 'Leads auto-captured', tag: 'synced to CRM' },
+    footRow: { label: 'Transcripts synced to CRM', tag: 'real-time' },
   },
 ];
 
-function CapabilityVisual({ visual }: { visual: Capability['visual'] }) {
+function CapabilityVisual({ visual }: { visual: CapabilityVisualData }) {
   const head = (
     <span className="mb-1 text-[10.5px] uppercase tracking-[0.16em] text-[var(--text-subtle)] font-[family-name:var(--font-mono)]">
       {visual.head}
@@ -193,29 +151,29 @@ function CapabilityVisual({ visual }: { visual: Capability['visual'] }) {
   );
 }
 
-export default function Capabilities() {
+export default function Capabilities({
+  content = defaultHomeCapabilities,
+}: {
+  content?: HomeCapabilitiesContent;
+}) {
   return (
     <section id="capabilities" className="px-4 py-20 md:py-24">
       <div className="mx-auto max-w-7xl">
         <div className="mx-auto mb-12 max-w-3xl text-center">
           <span className="inline-flex items-center gap-2.5 text-xs uppercase tracking-[0.2em] text-[var(--brand)] font-[family-name:var(--font-mono)]">
             <span className="h-[7px] w-[7px] rounded-full bg-[var(--brand)]" />
-            Capabilities
+            {content.eyebrow}
           </span>
-          <h2 className="theme-heading mt-4 text-3xl font-bold md:text-4xl">
-            Everything you need to run AI agents in production
-          </h2>
-          <p className="theme-body mt-3.5 text-[17px]">
-            Three capabilities that take you from first prototype to a measured, multi-channel workforce.
-          </p>
+          <h2 className="theme-heading mt-4 text-3xl font-bold md:text-4xl">{content.heading}</h2>
+          <p className="theme-body mt-3.5 text-[17px]">{content.sub}</p>
         </div>
 
         <div className="divide-y divide-[var(--border)]">
-          {capabilities.map((cap) => (
-            <div key={cap.num} className="grid items-center gap-14 py-14 md:grid-cols-2">
-              <div className={cap.reversed ? 'md:order-2' : ''}>
+          {content.items.map((cap, i) => (
+            <div key={cap.kicker} className="grid items-center gap-14 py-14 md:grid-cols-2">
+              <div className={i % 2 === 1 ? 'md:order-2' : ''}>
                 <span className="block text-xs uppercase tracking-[0.16em] text-[var(--brand)] font-[family-name:var(--font-mono)]">
-                  {cap.num}
+                  {cap.kicker}
                 </span>
                 <h3 className="theme-heading mt-3 text-2xl font-bold md:text-[34px]">{cap.title}</h3>
                 <p className="theme-body mt-3.5 text-[16.5px]">{cap.lede}</p>
@@ -228,7 +186,7 @@ export default function Capabilities() {
                   <b className="text-[var(--brand)]">The benefit:</b> {cap.benefit}
                 </div>
                 <ul className="mt-5 grid gap-2.5">
-                  {cap.feats.map((feat) => (
+                  {cap.features.map((feat) => (
                     <li key={feat} className="theme-body flex items-start gap-2.5 text-sm">
                       <span className="flex-none font-bold text-[var(--brand)]">✓</span>
                       {feat}
@@ -242,8 +200,8 @@ export default function Capabilities() {
                   Link to feature page →
                 </Link>
               </div>
-              <div className={cap.reversed ? 'md:order-1' : ''}>
-                <CapabilityVisual visual={cap.visual} />
+              <div className={i % 2 === 1 ? 'md:order-1' : ''}>
+                <CapabilityVisual visual={capabilityVisuals[i % capabilityVisuals.length]} />
               </div>
             </div>
           ))}

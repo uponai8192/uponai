@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { uponaiBookingUrl } from '@/lib/booking';
+import { defaultHomeHero, type HomeHeroContent } from '@/lib/home-content';
 
 const channelTabs = ['PHONE', 'WEB CHAT', 'WHATSAPP'];
 
@@ -25,7 +26,7 @@ function scrollToSolution() {
   document.getElementById('solution')?.scrollIntoView({ behavior: 'smooth' });
 }
 
-export default function PlatformHero() {
+export default function PlatformHero({ content = defaultHomeHero }: { content?: HomeHeroContent }) {
   const [activeTab, setActiveTab] = useState(0);
   const [captionIndex, setCaptionIndex] = useState(0);
 
@@ -64,18 +65,15 @@ export default function PlatformHero() {
         <div>
           <span className="flex items-center gap-2.5 text-xs uppercase tracking-[0.2em] text-[var(--brand)] font-[family-name:var(--font-mono)]">
             <span className="animate-brand-pulse inline-flex h-[7px] w-[7px] rounded-full bg-[var(--brand)]" />
-            The AI Agent Platform for Enterprise
+            {content.eyebrow}
           </span>
           <h1 className="theme-heading mt-5 text-5xl font-extrabold leading-[1.04] md:text-6xl">
-            Build AI agents once.
+            {content.headline}
             <span className="block bg-gradient-to-r from-[var(--brand)] to-[var(--brand-cool)] bg-clip-text text-transparent">
-              Deploy them everywhere.
+              {content.headlineAccent}
             </span>
           </h1>
-          <p className="theme-body mt-6 max-w-xl text-lg leading-8">
-            UponAI is the all-in-one platform for enterprise teams to train, test, and deploy AI agents across
-            phone, chat, and web, augmenting your workforce with visibility, speed, and scale.
-          </p>
+          <p className="theme-body mt-6 max-w-xl text-lg leading-8">{content.lede}</p>
           <div className="mt-8 flex flex-wrap gap-3">
             <a
               href={uponaiBookingUrl}
@@ -83,19 +81,19 @@ export default function PlatformHero() {
               rel="noreferrer"
               className="theme-primary-button rounded-xl px-6 py-3.5 text-[15px] font-semibold"
             >
-              Get a demo →
+              {content.primaryCtaLabel}
             </a>
             <button
               type="button"
               onClick={scrollToSolution}
               className="theme-secondary-button rounded-xl px-6 py-3.5 text-[15px] font-semibold"
             >
-              ▶ Watch 2-min overview
+              {content.secondaryCtaLabel}
             </button>
           </div>
           <p className="theme-subtle mt-5 text-[12.5px] font-[family-name:var(--font-mono)]">
-            <b className="font-medium text-[var(--brand)]">First agent live in 10 minutes</b>
-            {' · No-code builder · Works with your existing stack'}
+            <b className="font-medium text-[var(--brand)]">{content.footnoteStrong}</b>
+            {content.footnoteRest}
           </p>
         </div>
 

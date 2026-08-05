@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import { uponaiBookingUrl } from '@/lib/booking';
+import { defaultHomeFinalCta, type HomeFinalCtaContent } from '@/lib/home-content';
 
-export default function FinalCTA() {
+export default function FinalCTA({ content = defaultHomeFinalCta }: { content?: HomeFinalCtaContent }) {
   return (
     <section id="final" className="px-4 py-24 text-center">
       <div className="mx-auto max-w-7xl">
@@ -13,15 +14,12 @@ export default function FinalCTA() {
           />
           <span className="relative inline-flex items-center gap-2.5 text-xs uppercase tracking-[0.2em] text-[var(--brand)] font-[family-name:var(--font-mono)]">
             <span className="h-[7px] w-[7px] rounded-full bg-[var(--brand)]" />
-            Get started
+            {content.eyebrow}
           </span>
           <h2 className="theme-heading relative mx-auto mt-4 max-w-3xl text-3xl font-bold md:text-5xl">
-            Build and deploy AI agents across every channel, in minutes, not quarters.
+            {content.heading}
           </h2>
-          <p className="theme-body relative mx-auto mt-5 max-w-xl text-lg">
-            See how UponAI trains once, deploys everywhere, and gives you real-time visibility into every customer
-            conversation.
-          </p>
+          <p className="theme-body relative mx-auto mt-5 max-w-xl text-lg">{content.lede}</p>
           <div className="relative mt-8 flex flex-wrap justify-center gap-3">
             <a
               href={uponaiBookingUrl}
@@ -29,13 +27,13 @@ export default function FinalCTA() {
               rel="noreferrer"
               className="theme-primary-button rounded-xl px-6 py-3.5 text-[15px] font-semibold"
             >
-              Get a demo →
+              {content.primaryCtaLabel}
             </a>
             <Link
               href="/contact-us-page"
               className="theme-secondary-button rounded-xl px-6 py-3.5 text-[15px] font-semibold"
             >
-              Talk to sales
+              {content.secondaryCtaLabel}
             </Link>
           </div>
         </div>

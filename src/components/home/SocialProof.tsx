@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import AgentAvatar from '@/components/voice/AgentAvatar';
+import { defaultHomeSocialProof, type HomeSocialProofContent } from '@/lib/home-content';
 
 type Vertical = {
   label: string;
@@ -21,13 +22,17 @@ const verticals: Vertical[] = [
   { label: 'Government', href: '/industries/government', agentKey: 'government', agentName: 'Max' },
 ];
 
-export default function SocialProof() {
+export default function SocialProof({
+  content = defaultHomeSocialProof,
+}: {
+  content?: HomeSocialProofContent;
+}) {
   return (
     <section className="theme-section-alt border-y border-[var(--border)] px-4 py-12">
       <div className="mx-auto max-w-7xl">
         <p className="mb-8 text-center text-sm text-[var(--text-body)]">
-          Trusted by support and operations teams building their front line on{' '}
-          <b className="text-[var(--text-strong)]">UponAI</b>
+          {content.lead}{' '}
+          <b className="text-[var(--text-strong)]">{content.leadHighlight}</b>
         </p>
         <ul className="flex flex-wrap justify-center gap-x-10 gap-y-7">
           {verticals.map((vertical) => (

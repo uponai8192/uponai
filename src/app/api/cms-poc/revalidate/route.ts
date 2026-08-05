@@ -1,7 +1,12 @@
 import { createHmac, timingSafeEqual } from 'node:crypto';
 import { revalidateTag } from 'next/cache';
 import { NextResponse, type NextRequest } from 'next/server';
-import { CMS_POC_POSTS_TAG, cmsPocEnabled, cmsPocPostTag } from '@/lib/cms-poc/source';
+import {
+  CMS_POC_HOME_TAG,
+  CMS_POC_POSTS_TAG,
+  cmsPocEnabled,
+  cmsPocPostTag,
+} from '@/lib/cms-poc/source';
 
 // Publish webhook for the CMS PoC (docs/cms-migration-spike.md). Two auth
 // paths so the same handler serves the mock demo today and a real Sanity
@@ -65,15 +70,23 @@ export async function POST(request: NextRequest) {
   }
 
   let slug: string | undefined;
+  let type: string | undefined;
   try {
-    const body = rawBody ? (JSON.parse(rawBody) as { slug?: string }) : {};
+    const body = rawBody ? (JSON.parse(rawBody) as { slug?: string; _type?: string }) : {};
     slug = typeof body.slug === 'string' ? body.slug : undefined;
+    type = typeof body._type === 'string' ? body._type : undefined;
   } catch {
     return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
   }
 
-  const tags = [CMS_POC_POSTS_TAG];
-  if (slug) tags.push(cmsPocPostTag(slug));
+  const tags: string[] = [];
+  if (type === 'homePage') {
+    tags.push(CMS_POC_HOME_TAG);
+  } else {
+    // post, blogTopic, or an untyped manual call all refresh the blog tags.
+    tags.push(CMS_POC_POSTS_TAG);
+    if (slug) tags.push(cmsPocPostTag(slug));
+  }
   for (const tag of tags) revalidateTag(tag);
 
   return NextResponse.json({ revalidated: true, tags, now: new Date().toISOString() });

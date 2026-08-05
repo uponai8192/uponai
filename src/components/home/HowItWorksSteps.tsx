@@ -1,39 +1,22 @@
 import { uponaiBookingUrl } from '@/lib/booking';
+import { defaultHomeHowItWorks, type HomeHowItWorksContent } from '@/lib/home-content';
 
-const steps = [
-  {
-    n: '01',
-    title: 'Train',
-    body: 'Point the agent at your knowledge base, scripts, and FAQs using the training interface. No code, no scripting language.',
-    time: '~10 minutes',
-  },
-  {
-    n: '02',
-    title: 'Deploy',
-    body: 'Publish the same agent to phone, web chat, and WhatsApp under your own branding, numbers, and domain.',
-    time: '1 click',
-  },
-  {
-    n: '03',
-    title: 'Analyze',
-    body: 'Watch transcripts, insights, and captured leads flow in real time, then retrain to improve.',
-    time: 'Continuous',
-  },
-];
-
-export default function HowItWorksSteps() {
+export default function HowItWorksSteps({
+  content = defaultHomeHowItWorks,
+}: {
+  content?: HomeHowItWorksContent;
+}) {
+  const steps = content.steps.map((step, i) => ({ ...step, n: String(i + 1).padStart(2, '0') }));
   return (
     <section id="how" className="px-4 py-20 md:py-24">
       <div className="mx-auto max-w-7xl">
         <div className="mx-auto mb-12 max-w-2xl text-center">
           <span className="inline-flex items-center gap-2.5 text-xs uppercase tracking-[0.2em] text-[var(--brand)] font-[family-name:var(--font-mono)]">
             <span className="h-[7px] w-[7px] rounded-full bg-[var(--brand)]" />
-            How it works
+            {content.eyebrow}
           </span>
-          <h2 className="theme-heading mt-4 text-3xl font-bold md:text-4xl">How it works in 3 steps</h2>
-          <p className="theme-body mt-3.5 text-[17px]">
-            From knowledge base to a live, measured agent across every channel.
-          </p>
+          <h2 className="theme-heading mt-4 text-3xl font-bold md:text-4xl">{content.heading}</h2>
+          <p className="theme-body mt-3.5 text-[17px]">{content.sub}</p>
         </div>
 
         <div className="grid gap-5 md:grid-cols-3">
@@ -58,7 +41,7 @@ export default function HowItWorksSteps() {
             rel="noreferrer"
             className="theme-primary-button inline-flex rounded-xl px-6 py-3.5 text-[15px] font-semibold"
           >
-            Build your first agent →
+            {content.ctaLabel}
           </a>
         </div>
       </div>
