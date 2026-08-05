@@ -58,8 +58,12 @@ async function loadPostsFromSanity(): Promise<CmsPocPost[]> {
   const query = `*[_type == "post"]|order(publishedAt desc){
     "slug": slug.current, title, excerpt, author, category, publishedAt, body
   }`;
+  // Query the uncached api host, not apicdn: Next's tagged cache is the
+  // caching layer here, and the CDN's eventually-consistent query cache can
+  // still serve the pre-publish result when the revalidate webhook fires
+  // seconds after a mutation. One origin request per regeneration.
   const url =
-    `https://${config.projectId}.apicdn.sanity.io/${config.apiVersion}/data/query/${config.dataset}` +
+    `https://${config.projectId}.api.sanity.io/${config.apiVersion}/data/query/${config.dataset}` +
     `?query=${encodeURIComponent(query)}`;
 
   // unstable_cache above provides the caching and tagging layer, so this

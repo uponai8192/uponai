@@ -303,11 +303,17 @@ today's unoptimized behaviour.
 
 **Cost and quota.** ~370 documents against a 10k cap, and tag-cached
 fetches keep API calls to roughly one per page regeneration, so free
-plan limits are not a realistic constraint. The failure mode to watch is
-a bug that drops `force-cache` (every request hits Sanity: 250k uncached
-requests/month cap) - the shared fetch helper is the guard, and Sanity's
-usage dashboard alerts before overage since free plan hard-stops rather
-than bills.
+plan limits are not a realistic constraint. Queries go to the uncached
+`api.` host, not `apicdn.`: Next's tagged cache is the caching layer,
+and the CDN's eventually-consistent query cache can still serve the
+pre-publish result when the revalidate webhook fires seconds after a
+publish (observed live during the PoC: CDN stale 20+ seconds after a
+mutation while the origin was already fresh). One origin request per
+regeneration against the 250k/month uncached cap is trivial. The
+failure mode to watch is a bug that drops the caching wrapper (every
+request hits Sanity) - the shared fetch helper is the guard, and
+Sanity's usage dashboard alerts before overage since free plan
+hard-stops rather than bills.
 
 **Self-hosted cache semantics.** `revalidateTag` invalidates the cache
 of the single running container. Today production is one container, so
