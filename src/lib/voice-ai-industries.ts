@@ -18,7 +18,7 @@ type VoiceAIFAQ = {
   answer: string;
 };
 
-type VoiceAICityPageOverride = {
+export type VoiceAICityPageOverride = {
   heroTitle: string;
   heroDescription: string;
   marketHeadline: string;

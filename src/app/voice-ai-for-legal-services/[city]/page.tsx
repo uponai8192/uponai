@@ -1,17 +1,18 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { getCityBySlug, formatCityState, staticParamCities } from '@/lib/data';
-import { requireVoiceAIIndustryPage } from '@/lib/voice-ai-industries';
+import { getCityBySlug, formatCityState } from '@/lib/data';
+import { getVertical, getVerticalCityOverride, getVerticals } from '@/lib/cms/verticals';
+import { prerenderedCityParams } from '@/lib/prerender';
 import { VoiceAIIndustryCityPage } from '@/components/pages/VoiceAIIndustryPages';
 
-const page = requireVoiceAIIndustryPage('voice-ai-for-legal-services');
+const VERTICAL_SLUG = 'voice-ai-for-legal-services';
 
 type Props = {
   params: Promise<{ city: string }>;
 };
 
 export function generateStaticParams() {
-  return staticParamCities.map((city) => ({ city: city.slug }));
+  return prerenderedCityParams(VERTICAL_SLUG);
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -37,5 +38,13 @@ export default async function VoiceAIForLegalServicesCityPage({ params }: Props)
   const city = getCityBySlug(citySlug);
   if (!city) notFound();
 
-  return <VoiceAIIndustryCityPage page={page} city={city} />;
+  const [page, override, allPages] = await Promise.all([
+    getVertical(VERTICAL_SLUG),
+    getVerticalCityOverride(VERTICAL_SLUG, city.slug),
+    getVerticals(),
+  ]);
+
+  return (
+    <VoiceAIIndustryCityPage page={page} city={city} override={override} allPages={allPages} />
+  );
 }

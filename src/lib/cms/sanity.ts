@@ -9,6 +9,9 @@
 export const CMS_TAG_HOME = 'cms-home';
 export const CMS_TAG_POSTS = 'cms-posts';
 export const CMS_TAG_TOPICS = 'cms-topics';
+// One tag for industry pages and their city overrides: a vertical's copy feeds
+// its own page and all ~305 of its city pages, so they invalidate together.
+export const CMS_TAG_VERTICALS = 'cms-verticals';
 
 export function cmsPostTag(slug: string) {
   return `cms-post:${slug}`;

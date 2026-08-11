@@ -120,7 +120,7 @@ current site renders plain strings, which keeps rendering code unchanged.
 | `post` | 229 | imported-blog-posts.json + manual posts in blog-posts.ts | `body` as array of paragraph strings exactly as today; `htmlBody` kept as an escape-hatch text field for the 220 legacy posts; new posts author `body` only. `aliases` as string array powers the existing alias redirect. `relatedPages` as array of {label, path} |
 | `blogTopic` | 4 | uponaiBlogTopics | slug, title, description |
 | `vertical` | 11 | voiceAIIndustryPages | All fields of `VoiceAIIndustryPage`: hero, stats[], workflowMoments[], capabilityCards[], outcomes[], faqs[], localUseCaseTemplates[], cityLead, citySupport, cta, integrations. Template strings keep their `{city}` placeholders; editors see help text explaining them |
-| `verticalCityOverride` | ~30 | voiceAICityPageOverrides | Reference to `vertical` + city slug string + the override fields. City slug validated against the code-side city list at import time, not a CMS relation |
+| `verticalCityOverride` | 120 | voiceAICityPageOverrides | Reference to `vertical` + city slug string + the override fields. City slug validated against the code-side city list at import time, not a CMS relation |
 | `cityNarrativePool` | 2 singletons | market/region narrative template pools in voice-ai-industries.ts | The rotating template arrays used by `getCityMarketNarrative` / `getCityRegionNarrative` |
 | `landingPage` | 52 | uponaiPages | Full `UponAIPage` shape including aliasTo/externalRedirectTo |
 | `industry` | 22 | data.ts industries | Full `Industry` shape; icon and color stay constrained string fields |
@@ -366,11 +366,12 @@ other work. Calendar ranges include soak time between phases.
 | 0. Spike + PoC | this document, PoC route, revalidate handler | done |
 | 1. Blog to Sanity | project setup, schemas, import script + validation, route swap, webhook, sitemap | done |
 | 4. Homepage | section copy lifted to props, homePage singleton, seed, cutover | done |
-| 2. Verticals + landing pages | biggest schema surface, template placeholder validation, build-shape change | 4 to 6 days |
-| 3. Industries + services | schema + override merge + swap | 2 to 3 days |
+| 2. Verticals | 11 industry pages, 120 city overrides, placeholder validation, prerender trim | done |
+| 2b. Remaining prerender trim | same treatment for industry, service and location city routes | half a day |
+| 3. Industries + services + the 52 landing pages | schema + override merge + swap | 3 to 4 days |
 | 4b. Menus and settings | siteSettings singleton for nav, footer, office list | half a day |
 | 5. Editorial hardening | preview, roles, backups, editor guide | 2 days |
-| Remaining | | 7 to 10 dev days |
+| Remaining | | 6 to 7 dev days |
 
 Phases 1 and 4 landed in one session because roughly 85% of the content
 was already structured, typed data, which was the bet this spike opened
@@ -397,14 +398,18 @@ Sanity is reached over plain `fetch` with GROQ in the query string.
 | Shared Sanity access, cache tag names | `src/lib/cms/sanity.ts` |
 | Homepage content, section-level fallback | `src/lib/cms/home.ts` |
 | Blog content in the existing site types | `src/lib/cms/blog.ts` |
+| Industry pages and city overrides | `src/lib/cms/verticals.ts` |
+| Which city pages get prerendered | `src/lib/prerender.ts` |
 | In-repo homepage defaults | `src/lib/home-content.ts` |
 | Publish webhook | `POST /api/revalidate` |
 | One-off post import | `scripts/import-posts-to-sanity.mjs` |
+| One-off vertical import | `scripts/import-verticals-to-sanity.mjs` |
 | Homepage seed | `scripts/seed-home-to-sanity.mjs` |
-| Cutover gate | `scripts/compare-posts-with-sanity.mjs` |
+| Cutover gates | `scripts/compare-posts-with-sanity.mjs`, `scripts/compare-verticals-with-sanity.mjs` |
 
 Routes now reading from the CMS: `/` (homePage singleton), `/blogs`,
-`/blogs/topics/[slug]`, `/post/[slug]`, and `/sitemaps/core.xml`.
+`/blogs/topics/[slug]`, `/post/[slug]`, `/sitemaps/core.xml`, the 11
+industry pages and their 11 `[city]` routes.
 
 **Fallback is the safety property that makes this deployable.** Every
 CMS read falls back to the in-repo content when `SANITY_PROJECT_ID` and
@@ -423,18 +428,24 @@ last shipped copy rather than an empty page.
 | `cms-posts` | post list, every post page, blog index, topic archives, sitemap |
 | `cms-topics` | topic definitions |
 | `cms-post:<slug>` | one post |
+| `cms-verticals` | all 11 industry pages, their ~305 city pages each, and the city overrides |
 
 The webhook maps the published document's `_type` onto those tags:
-`homePage` refreshes the homepage, `blogTopic` refreshes topics and
-posts (topic titles render inside post pages), anything else refreshes
-the post tags. Auth is either an `x-cms-revalidate-secret` header
+`homePage` refreshes the homepage, `vertical` and `verticalCityOverride`
+refresh the industry pages, `blogTopic` refreshes topics and posts
+(topic titles render inside post pages), anything else refreshes the
+post tags.
+
+Verticals share one tag on purpose. A vertical's copy feeds its own page
+and every one of its city pages, so they have to invalidate together;
+splitting the tag per city would mean 305 revalidate calls for one edit. Auth is either an `x-cms-revalidate-secret` header
 matching `CMS_REVALIDATE_SECRET` (manual and dev use, defaulting to
 `dev-secret` outside production) or a Sanity GROQ webhook HMAC signature
 verified against `SANITY_REVALIDATE_SECRET` with `node:crypto`. In
 production with neither configured, every request is rejected, so the
 route is safe to expose before secrets land.
 
-### Cutover gate
+### Cutover gates
 
 `scripts/compare-posts-with-sanity.mjs` compares every post in the
 dataset against the library that renders the live site, field by field,
@@ -442,6 +453,35 @@ plus topic coverage and slug/alias collisions. It exits non-zero on any
 difference. Last run before the blog cutover: 230 local posts, 230
 Sanity posts, 4 topics each side, 0 field differences, 450 routable
 slugs and aliases, no collisions.
+
+`scripts/compare-verticals-with-sanity.mjs` does the same for industry
+pages, and additionally renders the templated city sentences for a
+sample of cities on both sides and compares the output, because that
+templated copy is what multiplies across hundreds of URLs. It also fails
+on any placeholder left unreplaced. Last run: 11 pages and 120 overrides
+on each side, 0 field differences, 1100 rendered city sentences
+identical.
+
+This gate has already earned its place: it caught a hand-typed revert
+during testing that restored a `citySupport` value from a truncated
+terminal excerpt rather than the real string, which would have silently
+changed copy on ~305 dental city pages.
+
+### Build size
+
+Vertical city routes prerendered 11 x 305 = 3,355 pages. They now
+prerender the curated promoted routes plus a floor of six featured
+cities per vertical, about 174 pages, a reduction of roughly 3,181.
+Unlisted cities still render on demand and cache until a publish, the
+same property staging has always relied on.
+
+This does not by itself fix the production build. The remaining weight
+is in route families that were never part of this phase: industry x city
+(22 x 305 = 6,710), service x city (9 x 305 = 2,745), plus
+`/services/ai-voice-agents/[city]` and `/location/[city]` at 305 each.
+Applying the same `prerenderedCityParams` treatment to those is
+mechanical and independent of the CMS work; doing so takes the build
+from about 10,280 pages to the 150 to 200 range the spike projected.
 
 ### Verified end to end
 

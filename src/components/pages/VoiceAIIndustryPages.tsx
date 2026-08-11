@@ -18,14 +18,23 @@ import {
   getFeaturedCities,
   getLegacyVoiceAIContent,
   getNearbyCities,
-  getVoiceAICityPageOverride,
   voiceAIIndustryPages,
+  type VoiceAICityPageOverride,
   type VoiceAIIndustryPage,
 } from '@/lib/voice-ai-industries';
 
-export function VoiceAIIndustryLandingPage({ page }: { page: VoiceAIIndustryPage }) {
+// page, allPages and override are supplied by the routes from the CMS layer,
+// which falls back to the in-repo definitions when Sanity is unconfigured.
+// The defaults here keep the components usable on their own.
+export function VoiceAIIndustryLandingPage({
+  page,
+  allPages = voiceAIIndustryPages,
+}: {
+  page: VoiceAIIndustryPage;
+  allPages?: VoiceAIIndustryPage[];
+}) {
   const featuredCities = getFeaturedCities();
-  const relatedIndustryPages = voiceAIIndustryPages.filter((item) => item.slug !== page.slug).slice(0, 6);
+  const relatedIndustryPages = allPages.filter((item) => item.slug !== page.slug).slice(0, 6);
   const relatedWorkflowLinks = [
     ...uponaiUseCasesMenu.filter((item) => item.href !== `/${page.slug}`),
     ...uponaiServicesMenu,
@@ -431,12 +440,16 @@ export function VoiceAIIndustryLandingPage({ page }: { page: VoiceAIIndustryPage
 export function VoiceAIIndustryCityPage({
   page,
   city,
+  override,
+  allPages = voiceAIIndustryPages,
 }: {
   page: VoiceAIIndustryPage;
   city: City;
+  /** Hand-written copy for this city, when one exists. */
+  override?: VoiceAICityPageOverride;
+  allPages?: VoiceAIIndustryPage[];
 }) {
   const location = formatCityState(city);
-  const override = getVoiceAICityPageOverride(page.slug, city.slug);
   const market = getCityMarketNarrative(city);
   const region = getCityRegionNarrative(city);
   const nearbyCities = getNearbyCities(city);
@@ -444,7 +457,7 @@ export function VoiceAIIndustryCityPage({
   const cityTitle = override?.heroTitle ?? `${page.label} voice AI in ${location}`;
   const cityDescription = override?.heroDescription ?? `${page.cityLead} ${location} ${page.citySupport}`;
   const cityImage = override?.image ?? page.image;
-  const siblingIndustryPages = voiceAIIndustryPages.filter((item) => item.slug !== page.slug).slice(0, 6);
+  const siblingIndustryPages = allPages.filter((item) => item.slug !== page.slug).slice(0, 6);
   const relatedWorkflowLinks = [
     ...uponaiUseCasesMenu.filter((item) => item.href !== `/${page.slug}`),
     ...uponaiServicesMenu,

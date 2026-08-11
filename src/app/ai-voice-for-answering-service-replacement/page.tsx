@@ -11,8 +11,12 @@ import { brandPhotos } from '@/lib/brand-photos';
 import VerticalVoiceAgentCard from '@/components/voice/VerticalVoiceAgentCard';
 import { getVerticalAgentForSlug } from '@/lib/vertical-agents';
 import { getFeaturedCities, requireVoiceAIIndustryPage } from '@/lib/voice-ai-industries';
+import { getVertical } from '@/lib/cms/verticals';
 
-const page = requireVoiceAIIndustryPage('ai-voice-for-answering-service-replacement');
+const VERTICAL_SLUG = 'ai-voice-for-answering-service-replacement';
+// Copy comes from the CMS at request time; the hero image stays code-side,
+// which is why the static metadata can still read it here.
+const localPage = requireVoiceAIIndustryPage(VERTICAL_SLUG);
 
 const problemPoints = [
   'High monthly fees',
@@ -184,10 +188,11 @@ export const metadata: Metadata = buildPageMetadata({
   path: '/ai-voice-for-answering-service-replacement',
   openGraphDescription:
     'Use UponAI to replace message-only answering services with AI call handling that qualifies leads, routes callers, books appointments, and integrates with your phone system.',
-  image: page.image,
+  image: localPage.image,
 });
 
-export default function AnsweringServiceReplacementPage() {
+export default async function AnsweringServiceReplacementPage() {
+  const page = await getVertical(VERTICAL_SLUG);
   const featuredCities = getFeaturedCities();
   const breadcrumbSchema = buildBreadcrumbSchema([
     { name: 'Home', path: '/' },

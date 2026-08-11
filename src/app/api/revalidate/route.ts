@@ -5,6 +5,7 @@ import {
   CMS_TAG_HOME,
   CMS_TAG_POSTS,
   CMS_TAG_TOPICS,
+  CMS_TAG_VERTICALS,
   cmsPostTag,
 } from '@/lib/cms/sanity';
 
@@ -80,6 +81,8 @@ export async function POST(request: NextRequest) {
   const tags: string[] = [];
   if (type === 'homePage') {
     tags.push(CMS_TAG_HOME);
+  } else if (type === 'vertical' || type === 'verticalCityOverride') {
+    tags.push(CMS_TAG_VERTICALS);
   } else if (type === 'blogTopic') {
     // Topic titles appear on the blog index and every post page, so the post
     // tag goes too.

@@ -1,9 +1,13 @@
 import type { Metadata } from 'next';
 import { requireVoiceAIIndustryPage } from '@/lib/voice-ai-industries';
+import { getVertical, getVerticals } from '@/lib/cms/verticals';
 import { VoiceAIIndustryLandingPage } from '@/components/pages/VoiceAIIndustryPages';
 import { buildPageMetadata } from '@/lib/seo';
 
-const page = requireVoiceAIIndustryPage('voice-ai-for-telecommunication');
+const VERTICAL_SLUG = 'voice-ai-for-telecommunication';
+// Copy comes from the CMS at request time; the hero image stays code-side,
+// which is why the static metadata can still read it here.
+const localPage = requireVoiceAIIndustryPage(VERTICAL_SLUG);
 
 export const metadata: Metadata = buildPageMetadata({
   title: 'Voice AI for Telecommunications',
@@ -12,9 +16,10 @@ export const metadata: Metadata = buildPageMetadata({
   path: '/voice-ai-for-telecommunication',
   openGraphDescription:
     'Reduce repetitive front-line call handling and route telecom support, sales, and provisioning calls more accurately with voice AI.',
-  image: page.image,
+  image: localPage.image,
 });
 
-export default function VoiceAIForTelecommunicationsPage() {
-  return <VoiceAIIndustryLandingPage page={page} />;
+export default async function VoiceAIForTelecommunicationsPage() {
+  const [page, allPages] = await Promise.all([getVertical(VERTICAL_SLUG), getVerticals()]);
+  return <VoiceAIIndustryLandingPage page={page} allPages={allPages} />;
 }
