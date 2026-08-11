@@ -110,6 +110,18 @@ export default async function BlogPostPage({ params }: Props) {
     mainEntityOfPage: `${SITE_URL}/post/${post.slug}`,
     articleSection: post.category,
     articleBody,
+    ...(post.videoUrl
+      ? {
+          video: {
+            '@type': 'VideoObject',
+            name: post.videoCaption ?? post.title,
+            description: post.excerpt,
+            thumbnailUrl: post.imageUrl ? [post.imageUrl] : undefined,
+            uploadDate: post.publishedAt,
+            contentUrl: post.videoUrl,
+          },
+        }
+      : {}),
   };
 
   return (
@@ -200,6 +212,25 @@ export default async function BlogPostPage({ params }: Props) {
                   communications workflow lessons that matter in live business environments.
                 </p>
               </div>
+
+              {post.videoUrl ? (
+                <figure className="mt-8">
+                  <video
+                    controls
+                    preload="metadata"
+                    poster={post.imageUrl || undefined}
+                    className="w-full rounded-[1.25rem]"
+                  >
+                    <source src={post.videoUrl} />
+                    Your browser does not support embedded video.
+                  </video>
+                  {post.videoCaption ? (
+                    <figcaption className="theme-soft mt-3 text-sm leading-6">
+                      {post.videoCaption}
+                    </figcaption>
+                  ) : null}
+                </figure>
+              ) : null}
 
               {post.htmlBody ? (
                 <div

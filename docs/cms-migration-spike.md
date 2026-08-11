@@ -313,9 +313,22 @@ dependency, but it is now a background cleanup rather than a
 prerequisite: any post re-imaged in the Studio leaves the old host
 automatically.
 
-Not modelled yet: video. Sanity's `file` type accepts video and other
-non-image assets, so adding a video field is the same shape of change if
-a post ever needs one.
+**Video.** Posts have an optional `video` file field (MP4 or WebM) that
+renders as an HTML5 player above the article text, using the hero image
+as its poster frame and emitting a `VideoObject` inside the existing
+Article JSON-LD.
+
+Two limits are worth knowing, because they decide when this stops being
+the right tool. Sanity has a separate Media Library video product that
+transcodes and serves adaptive streams; the plain `file` type used here
+does neither, it serves the uploaded MP4 directly, so playback is a
+progressive download with no bitrate switching. And that download counts
+against the plan's 100GB monthly bandwidth, which on the free plan
+blocks rather than bills when exhausted. Short marketing clips are fine.
+Anything long-form, or anything expected to get real view volume, should
+live on a video platform and be embedded instead. A Studio validation
+rule rejects uploads over 100MB to keep an accidental large file from
+consuming the quota.
 
 **Cost and quota.** ~370 documents against a 10k cap, and tag-cached
 fetches keep API calls to roughly one per page regeneration, so free
