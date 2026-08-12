@@ -26,7 +26,11 @@ export function VoiceDemoModal() {
   useEffect(() => () => { clientRef.current?.stopCall() }, [])
 
   // Reset to a fresh form each time the modal opens.
+  // Cannot be done by remounting on widgetOpen: closeWidget() fires on 'call_started' to
+  // hand the live call to the page, so an unmount would run the cleanup below and stop
+  // the active call. Mirroring the open flag here costs one extra render per open.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- remount-on-open would kill the live call, see above
     if (widgetOpen) { setPhase('form'); setErrorMsg(null) }
   }, [widgetOpen])
 

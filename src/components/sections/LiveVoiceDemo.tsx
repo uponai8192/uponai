@@ -35,9 +35,13 @@ export default function LiveVoiceDemo() {
   const [elapsed, setElapsed] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Sync widget call state → demo section state
+  // Sync widget call state → demo section state.
+  // The widget is an external system (Retell client in the provider), so this section
+  // mirrors its state rather than deriving it: 'Talk again' resets to idle locally and
+  // must survive callState staying 'ended'. Costs one extra render per call transition.
   useEffect(() => {
     if (callState === 'active') {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- mirroring external widget state, see above
       setDemoState('calling');
       setElapsed(0);
     } else if (callState === 'ended') {
