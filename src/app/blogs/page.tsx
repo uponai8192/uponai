@@ -158,7 +158,7 @@ export default async function BlogsPage({ searchParams }: Props) {
                 key={post.slug}
                 className="theme-panel overflow-hidden rounded-[2rem]"
               >
-                <div className="theme-section-alt aspect-[16/10] overflow-hidden border-b border-[var(--border)]">
+                <div className="theme-section-alt aspect-[16/9] overflow-hidden border-b border-[var(--border)]">
                   <Image
                     src={post.imageUrl}
                     alt={post.title}

@@ -62,7 +62,7 @@ export const uponaiBlogTopics: UponAIBlogTopic[] = [
 
 const manualUponAIBlogPosts: UponAIBlogPost[] = [
   {
-    author: 'UponAI',
+    author: 'Reecha Chaulagain',
     body: [
       'PressOne has been in business since 1978 and has operated in the cloud communications space since 2003. Known for its meetings product, Meeting Spaces, PressOne serves business customers with phone systems, messaging, and integration applications. Over two decades, they have evolved through every major industry shift, from the remote and video collaboration boom post-COVID to today’s wave of AI-driven automation.',
       'PressOne wanted to bring AI voice agents into its product line without handing revenue to third-party integrations or spending months building the underlying infrastructure. At the same time, one of PressOne’s customers, an 800-person organization with just 3 IT support staff, was regularly fielding 15 to 20 callers stuck on hold at once.',

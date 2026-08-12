@@ -153,7 +153,7 @@ export default async function BlogTopicPage({ params, searchParams }: Props) {
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {archive.items.map((post) => (
               <article key={post.slug} className="theme-panel overflow-hidden rounded-[2rem]">
-                <div className="theme-section-alt aspect-[16/10] overflow-hidden border-b border-[var(--border)]">
+                <div className="theme-section-alt aspect-[16/9] overflow-hidden border-b border-[var(--border)]">
                   <Image
                     src={post.imageUrl}
                     alt={post.title}
