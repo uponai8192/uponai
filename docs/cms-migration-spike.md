@@ -367,11 +367,11 @@ other work. Calendar ranges include soak time between phases.
 | 1. Blog to Sanity | project setup, schemas, import script + validation, route swap, webhook, sitemap | done |
 | 4. Homepage | section copy lifted to props, homePage singleton, seed, cutover | done |
 | 2. Verticals | 11 industry pages, 120 city overrides, placeholder validation, prerender trim | done |
-| 2b. Remaining prerender trim | same treatment for industry, service and location city routes | half a day |
+| 2b. Remaining prerender trim | same treatment for industry, service and location city routes | done |
 | 3. Industries + services + the 52 landing pages | schema + override merge + swap | 3 to 4 days |
 | 4b. Menus, settings and legal | siteSettings singleton, privacy and terms | done |
 | 5. Editorial hardening | preview, roles, backups, editor guide | 2 days |
-| Remaining | | 5 to 6 dev days |
+| Remaining | | 5 dev days |
 
 Phases 1 and 4 landed in one session because roughly 85% of the content
 was already structured, typed data, which was the bet this spike opened
@@ -476,19 +476,33 @@ changed copy on ~305 dental city pages.
 
 ### Build size
 
-Vertical city routes prerendered 11 x 305 = 3,355 pages. They now
-prerender the curated promoted routes plus a floor of six featured
-cities per vertical, about 174 pages, a reduction of roughly 3,181.
-Unlisted cities still render on demand and cache until a publish, the
-same property staging has always relied on.
+Every city route family now prerenders a curated head instead of the
+full 305-city cross product. Measured by calling the real helpers in
+`src/lib/prerender.ts`:
 
-This does not by itself fix the production build. The remaining weight
-is in route families that were never part of this phase: industry x city
-(22 x 305 = 6,710), service x city (9 x 305 = 2,745), plus
-`/services/ai-voice-agents/[city]` and `/location/[city]` at 305 each.
-Applying the same `prerenderedCityParams` treatment to those is
-mechanical and independent of the CMS work; doing so takes the build
-from about 10,280 pages to the 150 to 200 range the spike projected.
+| Route family | Before | After |
+|---|---|---|
+| vertical x city | 3,355 | 158 |
+| industry x city | 6,710 | 132 |
+| service x city | 2,745 | 54 |
+| `/services/ai-voice-agents/[city]` | 305 | 6 |
+| `/location/[city]` | 305 | 6 |
+| **Total city pages** | **13,420** | **356** |
+
+Verticals keep their curated `promotedVoiceAICityRoutes` plus a floor of
+six featured cities, so the URLs that earn traffic are never cold. The
+other families have no curated list, so they prerender the top six
+featured cities.
+
+Unlisted cities render on first request and are then cached until a
+publish invalidates them. This is safe because no route sets
+`dynamicParams = false`, which is the same property staging has relied
+on while serving six prerendered cities out of 305. Verified after the
+change: non-prerendered cities return 200 across all four families, a
+prerendered city still returns 200, and an unknown city still 404s.
+
+Sitemaps are unaffected. They were already curated independently of the
+prerender list, so what crawlers are told did not change.
 
 ### Verified end to end
 

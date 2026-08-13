@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { industries, cities, getIndustryBySlug, getCityBySlug, formatCityState, staticParamCities } from '@/lib/data';
+import { industries, cities, getIndustryBySlug, getCityBySlug, formatCityState } from '@/lib/data';
+import { prerenderedEntityCityParams } from '@/lib/prerender';
 import { offsetBrandPhotos, rotatingBrandPhotos } from '@/lib/brand-photos';
 import { getCityMarketNarrative, getCityRegionNarrative } from '@/lib/voice-ai-industries';
 import { getIndustryContent } from '@/lib/site-content';
@@ -11,12 +12,7 @@ import CTASection from '@/components/sections/CTASection';
 import FeaturesBento from '@/components/sections/FeaturesBento';
 
 export async function generateStaticParams() {
-  const params: { slug: string; city: string }[] = [];
-  for (const industry of industries) {
-    for (const city of staticParamCities) {
-      params.push({ slug: industry.slug, city: city.slug });
-    }
-  }
+  const params = prerenderedEntityCityParams(industries.map((industry) => industry.slug));
   return params;
 }
 

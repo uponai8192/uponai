@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { cities, getCityBySlug, formatCityState, staticParamCities } from '@/lib/data';
+import { cities, getCityBySlug, formatCityState } from '@/lib/data';
+import { prerenderedPlainCityParams } from '@/lib/prerender';
 import CTASection from '@/components/sections/CTASection';
 
 export async function generateStaticParams() {
-  return staticParamCities.map((city) => ({ city: city.slug }));
+  return prerenderedPlainCityParams();
 }
 
 type Props = { params: Promise<{ city: string }> };

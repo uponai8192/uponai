@@ -2,7 +2,8 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { services, cities, industries, getServiceBySlug, getCityBySlug, formatCityState, staticParamCities } from '@/lib/data';
+import { services, cities, industries, getServiceBySlug, getCityBySlug, formatCityState } from '@/lib/data';
+import { prerenderedEntityCityParams } from '@/lib/prerender';
 import { brandPhotos, servicePhotoMap } from '@/lib/brand-photos';
 import { getCityMarketNarrative, getCityRegionNarrative } from '@/lib/voice-ai-industries';
 import { getServiceContent } from '@/lib/site-content';
@@ -15,12 +16,7 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  const params: { slug: string; city: string }[] = [];
-  for (const service of services) {
-    for (const city of staticParamCities) {
-      params.push({ slug: service.slug, city: city.slug });
-    }
-  }
+  const params = prerenderedEntityCityParams(services.map((service) => service.slug));
   return params;
 }
 

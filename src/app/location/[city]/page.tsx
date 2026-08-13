@@ -2,7 +2,8 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { cities, services, industries, getCityBySlug, formatCityState, staticParamCities } from '@/lib/data';
+import { cities, services, industries, getCityBySlug, formatCityState } from '@/lib/data';
+import { prerenderedPlainCityParams } from '@/lib/prerender';
 import { offsetBrandPhotos, rotatingBrandPhotos } from '@/lib/brand-photos';
 import { getCityMarketNarrative, getCityRegionNarrative, voiceAIIndustryPages } from '@/lib/voice-ai-industries';
 import { buildBreadcrumbSchema, buildCollectionPageSchema, buildLocalBusinessSchema, buildPageMetadata } from '@/lib/seo';
@@ -14,7 +15,7 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  return staticParamCities.map((city) => ({ city: city.slug }));
+  return prerenderedPlainCityParams();
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
