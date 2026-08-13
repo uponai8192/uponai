@@ -1,15 +1,13 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { industries, services } from '@/lib/data';
-import {
-  uponaiFooterInfo,
-  uponaiOfficeLocations,
-  uponaiResourcesMenu,
-} from '@/lib/uponai-pages';
+import { getSiteSettings } from '@/lib/cms/settings';
 import CookieSettingsButton from '@/components/ui/CookieSettingsButton';
 import { getFeaturedCities } from '@/lib/voice-ai-industries';
 
-export default function Footer() {
+export default async function Footer() {
+  const { footerInfo: uponaiFooterInfo, officeLocations: uponaiOfficeLocations, resourcesMenu: uponaiResourcesMenu } =
+    await getSiteSettings();
   const year = new Date().getFullYear();
   const featuredServices = services.filter((service) =>
     ['ai-voice-agents', 'ai-chatbots', 'hosted-fax', 'mobile-voip-sms', 'web-video-conferencing'].includes(service.slug),

@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { buildPageMetadata } from '@/lib/seo';
+import { getLegalPage } from '@/lib/cms/legal';
+import LegalPageView from '@/components/content/LegalPageView';
 
 export const metadata: Metadata = buildPageMetadata({
   title: 'Privacy Policy',
@@ -9,7 +11,9 @@ export const metadata: Metadata = buildPageMetadata({
   path: '/privacy-policy',
 });
 
-export default function PrivacyPolicyPage() {
+// Hand-written original, still rendered when the CMS has no document for
+// this page. Delete once the CMS copy is confirmed correct in production.
+function PrivacyPolicyPageFallback() {
   return (
     <>
       <section className="py-16 px-4 border-b border-[var(--border)]">
@@ -166,4 +170,10 @@ export default function PrivacyPolicyPage() {
       </div>
     </>
   );
+}
+
+export default async function PrivacyPolicyPage() {
+  const page = await getLegalPage('privacy-policy');
+  if (page) return <LegalPageView page={page} />;
+  return <PrivacyPolicyPageFallback />;
 }

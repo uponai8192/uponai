@@ -3,11 +3,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import {
-  uponaiIndustriesMenu,
-  uponaiUseCasesMenu,
-} from '@/lib/uponai-pages';
 import { uponaiBookingUrl } from '@/lib/booking';
+import { defaultSiteSettings, type SiteSettings } from '@/lib/site-settings';
 import ThemeToggle from '@/components/ui/ThemeToggle';
 
 const chevron = (
@@ -44,8 +41,7 @@ const resourcesLinks: DropdownLink[] = [
   { label: 'FAQs', href: '/upon-ai-faqs' },
 ];
 
-const industryLinks: DropdownLink[] = uponaiIndustriesMenu.map((item) => ({ ...item }));
-const useCaseLinks: DropdownLink[] = uponaiUseCasesMenu.map((item) => ({ ...item }));
+
 
 function Dropdown({
   label,
@@ -151,7 +147,12 @@ function Dropdown({
   );
 }
 
-export default function Nav() {
+// This is a client component, so the CMS-backed menus are passed down from the
+// server layout rather than fetched here. The default keeps the nav rendering
+// if it is ever used without them.
+export default function Nav({ settings = defaultSiteSettings }: { settings?: SiteSettings }) {
+  const industryLinks: DropdownLink[] = settings.industriesMenu;
+  const useCaseLinks: DropdownLink[] = settings.useCasesMenu;
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (

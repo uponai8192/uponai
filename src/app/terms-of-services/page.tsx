@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { buildPageMetadata } from '@/lib/seo';
+import { getLegalPage } from '@/lib/cms/legal';
+import LegalPageView from '@/components/content/LegalPageView';
 
 export const metadata: Metadata = buildPageMetadata({
   title: 'Terms of Service',
@@ -27,7 +29,9 @@ function SubSection({ num, title, children }: { num: string; title: string; chil
   );
 }
 
-export default function TermsOfServicePage() {
+// Hand-written original, still rendered when the CMS has no document for
+// this page. Delete once the CMS copy is confirmed correct in production.
+function TermsOfServicePageFallback() {
   const sections = [
     { id: 'acceptance', label: '1. Acceptance' },
     { id: 'use-of-site', label: '2. Use of Site' },
@@ -279,4 +283,10 @@ export default function TermsOfServicePage() {
       </div>
     </>
   );
+}
+
+export default async function TermsOfServicePage() {
+  const page = await getLegalPage('terms-of-services');
+  if (page) return <LegalPageView page={page} />;
+  return <TermsOfServicePageFallback />;
 }

@@ -4,6 +4,7 @@ import Script from 'next/script';
 import './globals.css';
 import Nav from '@/components/ui/Nav';
 import Footer from '@/components/ui/Footer';
+import { getSiteSettings } from '@/lib/cms/settings';
 import CookieConsentManager from '@/components/ui/CookieConsentManager';
 import { VoiceWidgetProvider } from '@/components/widget/VoiceWidgetProvider'
 import { DEFAULT_OG_IMAGE, SITE_NAME, SITE_URL, organizationSchema, websiteSchema } from '@/lib/seo';
@@ -86,7 +87,9 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  // Nav is a client component, so the CMS-backed menus are resolved here.
+  const settings = await getSiteSettings();
   return (
     <html lang="en" data-theme="light" suppressHydrationWarning>
       <head>
@@ -111,7 +114,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className={`${bodyFont.variable} ${displayFont.variable} ${monoFont.variable} bg-[var(--background)] text-[var(--foreground)] antialiased transition-[background-color,color] duration-300`}>
         <VoiceWidgetProvider>
-          <Nav />
+          <Nav settings={settings} />
           <main className="pt-20 sm:pt-24 md:pt-32">{children}</main>
           <Footer />
           <CookieConsentManager />

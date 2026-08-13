@@ -3,6 +3,8 @@ import { revalidateTag } from 'next/cache';
 import { NextResponse, type NextRequest } from 'next/server';
 import {
   CMS_TAG_HOME,
+  CMS_TAG_LEGAL,
+  CMS_TAG_SETTINGS,
   CMS_TAG_POSTS,
   CMS_TAG_TOPICS,
   CMS_TAG_VERTICALS,
@@ -83,6 +85,10 @@ export async function POST(request: NextRequest) {
     tags.push(CMS_TAG_HOME);
   } else if (type === 'vertical' || type === 'verticalCityOverride') {
     tags.push(CMS_TAG_VERTICALS);
+  } else if (type === 'siteSettings') {
+    tags.push(CMS_TAG_SETTINGS);
+  } else if (type === 'legalPage') {
+    tags.push(CMS_TAG_LEGAL);
   } else if (type === 'blogTopic') {
     // Topic titles appear on the blog index and every post page, so the post
     // tag goes too.

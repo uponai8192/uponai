@@ -369,9 +369,9 @@ other work. Calendar ranges include soak time between phases.
 | 2. Verticals | 11 industry pages, 120 city overrides, placeholder validation, prerender trim | done |
 | 2b. Remaining prerender trim | same treatment for industry, service and location city routes | half a day |
 | 3. Industries + services + the 52 landing pages | schema + override merge + swap | 3 to 4 days |
-| 4b. Menus and settings | siteSettings singleton for nav, footer, office list | half a day |
+| 4b. Menus, settings and legal | siteSettings singleton, privacy and terms | done |
 | 5. Editorial hardening | preview, roles, backups, editor guide | 2 days |
-| Remaining | | 6 to 7 dev days |
+| Remaining | | 5 to 6 dev days |
 
 Phases 1 and 4 landed in one session because roughly 85% of the content
 was already structured, typed data, which was the bet this spike opened
@@ -399,17 +399,22 @@ Sanity is reached over plain `fetch` with GROQ in the query string.
 | Homepage content, section-level fallback | `src/lib/cms/home.ts` |
 | Blog content in the existing site types | `src/lib/cms/blog.ts` |
 | Industry pages and city overrides | `src/lib/cms/verticals.ts` |
+| Nav, footer and office list | `src/lib/cms/settings.ts` (types in `src/lib/site-settings.ts`) |
+| Privacy and terms | `src/lib/cms/legal.ts` |
+| Portable Text renderer | `src/components/content/PortableText.tsx` |
 | Which city pages get prerendered | `src/lib/prerender.ts` |
 | In-repo homepage defaults | `src/lib/home-content.ts` |
 | Publish webhook | `POST /api/revalidate` |
 | One-off post import | `scripts/import-posts-to-sanity.mjs` |
 | One-off vertical import | `scripts/import-verticals-to-sanity.mjs` |
 | Homepage seed | `scripts/seed-home-to-sanity.mjs` |
+| Settings and legal seed | `scripts/seed-settings-and-legal.mjs` |
 | Cutover gates | `scripts/compare-posts-with-sanity.mjs`, `scripts/compare-verticals-with-sanity.mjs` |
 
 Routes now reading from the CMS: `/` (homePage singleton), `/blogs`,
 `/blogs/topics/[slug]`, `/post/[slug]`, `/sitemaps/core.xml`, the 11
-industry pages and their 11 `[city]` routes.
+industry pages and their 11 `[city]` routes, `/privacy-policy`,
+`/terms-of-services`, and the nav and footer on every page.
 
 **Fallback is the safety property that makes this deployable.** Every
 CMS read falls back to the in-repo content when `SANITY_PROJECT_ID` and
@@ -429,6 +434,8 @@ last shipped copy rather than an empty page.
 | `cms-topics` | topic definitions |
 | `cms-post:<slug>` | one post |
 | `cms-verticals` | all 11 industry pages, their ~305 city pages each, and the city overrides |
+| `cms-settings` | nav and footer, so every page on the site |
+| `cms-legal` | privacy policy and terms of service |
 
 The webhook maps the published document's `_type` onto those tags:
 `homePage` refreshes the homepage, `vertical` and `verticalCityOverride`
@@ -505,3 +512,33 @@ from about 10,280 pages to the 150 to 200 range the spike projected.
    secret.
 3. Rebuild the container. Prerendered blog pages drop from 230 to 20;
    the rest render on demand and are then cached until a publish.
+
+### Site settings and legal pages
+
+`siteSettings` is a singleton holding the five nav and footer menus plus
+the office list. Because `Nav` is a client component it cannot fetch,
+so the root layout resolves the settings and passes them down as a prop;
+`Footer` is a server component and fetches directly. Every menu falls
+back to the in-repo list, and an empty array is treated as absent, so an
+editor clearing all rows cannot blank out a nav dropdown.
+
+The two legal pages take a different fallback approach from the rest of
+the migration. Their in-repo form is hand-written JSX rather than data,
+so instead of a field-level fallback the routes render the original
+component whenever the CMS has no document for that slug. The original
+JSX is still in each route file, marked for deletion once the CMS copy
+is confirmed correct in production.
+
+Legal bodies are Portable Text, the only place in this migration where
+rich text is warranted: the copy needs links, lists and emphasis.
+`src/components/content/PortableText.tsx` renders the narrow subset the
+schema allows rather than adding a dependency; if richer block types are
+ever needed, replace it with `@portabletext/react` rather than growing
+it.
+
+The seed script does not retype the legal copy. It fetches the existing
+rendered pages from a local dev server and converts their HTML into
+Portable Text, so the CMS starts as a faithful copy of what is live.
+Terms already had anchor ids and they are preserved; privacy had none,
+so ids are derived from the headings, which breaks no existing deep
+link because none existed.
