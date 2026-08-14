@@ -1,10 +1,8 @@
 import type { Metadata } from 'next';
 import PlatformHero from '@/components/home/PlatformHero';
 import SocialProof from '@/components/home/SocialProof';
-import OldWay from '@/components/home/OldWay';
 import IntroSolution from '@/components/home/IntroSolution';
 import Capabilities from '@/components/home/Capabilities';
-import AllFeatures from '@/components/home/AllFeatures';
 import HowItWorksSteps from '@/components/home/HowItWorksSteps';
 import CustomerStories from '@/components/home/CustomerStories';
 import FinalCTA from '@/components/home/FinalCTA';
@@ -28,12 +26,10 @@ export default async function HomePage() {
     <>
       <PlatformHero content={content.hero} />
       <SocialProof content={content.socialProof} />
-      <OldWay content={content.oldWay} />
+      <CustomerStories content={content.customerStories} />
       <IntroSolution content={content.intro} />
       <Capabilities content={content.capabilities} />
-      <AllFeatures content={content.allFeatures} />
       <HowItWorksSteps content={content.howItWorks} />
-      <CustomerStories content={content.customerStories} />
       <FinalCTA content={content.finalCta} />
     </>
   );

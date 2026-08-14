@@ -60,21 +60,16 @@ export default function PlatformHero({ content = defaultHomeHero }: { content?: 
         className="pointer-events-none absolute -right-24 -top-24 h-[640px] w-[640px] rounded-full"
         style={{ background: 'radial-gradient(circle, var(--wash-1), var(--wash-2) 48%, transparent 70%)' }}
       />
-      <div className="relative mx-auto grid max-w-7xl items-center gap-14 lg:grid-cols-[1.02fr_0.98fr]">
-        {/* Left column */}
-        <div>
-          <span className="flex items-center gap-2.5 text-xs uppercase tracking-[0.2em] text-[var(--brand)] font-[family-name:var(--font-mono)]">
-            <span className="animate-brand-pulse inline-flex h-[7px] w-[7px] rounded-full bg-[var(--brand)]" />
-            {content.eyebrow}
-          </span>
-          <h1 className="theme-heading mt-5 text-5xl font-extrabold leading-[1.04] md:text-6xl">
-            {content.headline}
-            <span className="block bg-gradient-to-r from-[var(--brand)] to-[var(--brand-cool)] bg-clip-text text-transparent">
+      <div className="relative mx-auto max-w-7xl">
+        {/* Centred tagline and calls to action */}
+        <div className="mx-auto max-w-4xl text-center">
+          <h1 className="theme-heading text-5xl font-extrabold leading-[1.04] md:text-6xl">
+            {content.headline}{' '}
+            <span className="bg-gradient-to-r from-[var(--brand)] to-[var(--brand-cool)] bg-clip-text text-transparent">
               {content.headlineAccent}
             </span>
           </h1>
-          <p className="theme-body mt-6 max-w-xl text-lg leading-8">{content.lede}</p>
-          <div className="mt-8 flex flex-wrap gap-3">
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
             <a
               href={uponaiBookingUrl}
               target="_blank"
@@ -97,10 +92,11 @@ export default function PlatformHero({ content = defaultHomeHero }: { content?: 
           </p>
         </div>
 
-        {/* Right column: Agent Console (decorative) */}
+        {/* Agent Console (decorative), sized to sit under the tagline block
+            rather than spanning the full container. */}
         <div
           aria-hidden
-          className="theme-panel rounded-[22px] p-5"
+          className="mx-auto mt-14 max-w-xl theme-panel rounded-[22px] p-5"
           style={{ background: 'linear-gradient(160deg, var(--surface-gradient-start), var(--surface-gradient-end))' }}
         >
           <div className="mb-3.5 flex items-center justify-between">

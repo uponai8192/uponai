@@ -21,10 +21,8 @@ export const getHomePageContent = unstable_cache(
     return {
       hero: doc?.hero ?? defaultHomePageContent.hero,
       socialProof: doc?.socialProof ?? defaultHomePageContent.socialProof,
-      oldWay: doc?.oldWay ?? defaultHomePageContent.oldWay,
       intro: doc?.intro ?? defaultHomePageContent.intro,
       capabilities: doc?.capabilities ?? defaultHomePageContent.capabilities,
-      allFeatures: doc?.allFeatures ?? defaultHomePageContent.allFeatures,
       howItWorks: doc?.howItWorks ?? defaultHomePageContent.howItWorks,
       customerStories: doc?.customerStories ?? defaultHomePageContent.customerStories,
       finalCta: doc?.finalCta ?? defaultHomePageContent.finalCta,

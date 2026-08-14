@@ -8,10 +8,10 @@
 // agent avatar row, and the capability visuals are design, not copy.
 
 export type HomeHeroContent = {
-  eyebrow: string;
+  /** First half of the tagline, rendered in the heading colour. */
   headline: string;
+  /** Second half, rendered in the brand gradient, inline with the first. */
   headlineAccent: string;
-  lede: string;
   primaryCtaLabel: string;
   secondaryCtaLabel: string;
   footnoteStrong: string;
@@ -21,13 +21,6 @@ export type HomeHeroContent = {
 export type HomeSocialProofContent = {
   lead: string;
   leadHighlight: string;
-};
-
-export type HomeOldWayContent = {
-  badge: string;
-  heading: string;
-  systems: { icon: string; label: string; tag: string }[];
-  problems: { title: string; body: string }[];
 };
 
 export type HomeIntroContent = {
@@ -48,14 +41,6 @@ export type HomeCapabilitiesContent = {
   heading: string;
   sub: string;
   items: { kicker: string; title: string; lede: string; benefit: string; features: string[] }[];
-};
-
-export type HomeAllFeaturesContent = {
-  eyebrow: string;
-  heading: string;
-  sub: string;
-  columns: { tag: string; title: string; items: string[] }[];
-  ctaLabel: string;
 };
 
 export type HomeHowItWorksContent = {
@@ -85,21 +70,16 @@ export type HomeFinalCtaContent = {
 export type HomePageContent = {
   hero: HomeHeroContent;
   socialProof: HomeSocialProofContent;
-  oldWay: HomeOldWayContent;
   intro: HomeIntroContent;
   capabilities: HomeCapabilitiesContent;
-  allFeatures: HomeAllFeaturesContent;
   howItWorks: HomeHowItWorksContent;
   customerStories: HomeCustomerStoriesContent;
   finalCta: HomeFinalCtaContent;
 };
 
 export const defaultHomeHero: HomeHeroContent = {
-  eyebrow: 'The AI Agent Platform for Enterprise',
-  headline: 'Build AI agents once.',
-  headlineAccent: 'Deploy them everywhere.',
-  lede:
-    'UponAI is the all-in-one platform for enterprise teams to train, test, and deploy AI agents across phone, chat, and web, augmenting your workforce with visibility, speed, and scale.',
+  headline: 'Build or Sell',
+  headlineAccent: 'AI Voice Agents.',
   primaryCtaLabel: 'Get a demo →',
   secondaryCtaLabel: '▶ Watch 2-min overview',
   footnoteStrong: 'First agent live in 10 minutes',
@@ -111,32 +91,11 @@ export const defaultHomeSocialProof: HomeSocialProofContent = {
   leadHighlight: 'UponAI',
 };
 
-export const defaultHomeOldWay: HomeOldWayContent = {
-  badge: 'The old way',
-  heading: 'Your channels do not talk. Neither does your data.',
-  systems: [
-    { icon: '☎', label: 'Phone system', tag: 'siloed' },
-    { icon: '💬', label: 'Web chat vendor', tag: 'separate' },
-    { icon: '📱', label: 'WhatsApp', tag: 'unmanaged' },
-    { icon: '📊', label: 'Reporting', tag: 'manual' },
-  ],
-  problems: [
-    {
-      title: 'Every channel is a separate build',
-      body: 'You rebuild the same logic three times, once for the phone line, once for web chat, once for messaging. Every change means shipping it everywhere, again.',
-    },
-    {
-      title: 'No visibility into what is actually happening',
-      body: 'Conversations end and the insight leaves with them. No transcripts, no trends, no way to see where customers drop off or which requests keep coming back.',
-    },
-  ],
-};
-
 export const defaultHomeIntro: HomeIntroContent = {
   eyebrow: 'Introducing the new way · AI Agent Platform',
-  headingStart: 'One platform.',
-  headingAccent: 'Every channel.',
-  headingEnd: 'Full visibility.',
+  headingStart: 'One Platform.',
+  headingAccent: 'Every Channel.',
+  headingEnd: 'Full Control',
   ledeStart: 'Build and deploy AI agents across ',
   ledeBold1: 'phone, chat, and web',
   ledeMiddle: ' to augment your workforce with ',
@@ -191,48 +150,6 @@ export const defaultHomeCapabilities: HomeCapabilitiesContent = {
   ],
 };
 
-export const defaultHomeAllFeatures: HomeAllFeaturesContent = {
-  eyebrow: 'All Features',
-  heading: 'The full platform, at a glance',
-  sub: 'Everything included across building, deploying, and measuring your AI agents.',
-  columns: [
-    {
-      tag: 'Build',
-      title: 'Train and test',
-      items: [
-        'Simple training interface',
-        'Multiple test playgrounds (sandbox)',
-        'Integrations',
-        'Version history and rollback',
-        'First version in 10 minutes',
-      ],
-    },
-    {
-      tag: 'Deploy',
-      title: 'Launch anywhere',
-      items: [
-        'No-code builder',
-        'Multi-channel: phone, chat, web, WhatsApp',
-        'Custom branding (logo, domain, number)',
-        '100% mobile support',
-        'Human handoff and routing rules',
-      ],
-    },
-    {
-      tag: 'Intelligence',
-      title: 'Measure and improve',
-      items: [
-        'Transcribed call transcripts',
-        'Real-time insights and reporting',
-        'Multi-step complex workflows',
-        'Auto lead generation',
-        'CRM sync',
-      ],
-    },
-  ],
-  ctaLabel: 'Explore all features →',
-};
-
 export const defaultHomeHowItWorks: HomeHowItWorksContent = {
   eyebrow: 'How it works',
   heading: 'How it works in 3 steps',
@@ -254,7 +171,7 @@ export const defaultHomeHowItWorks: HomeHowItWorksContent = {
       time: 'Continuous',
     },
   ],
-  ctaLabel: 'Build your first agent →',
+  ctaLabel: 'See how agents are built →',
 };
 
 export const defaultHomeCustomerStories: HomeCustomerStoriesContent = {
@@ -279,10 +196,8 @@ export const defaultHomeFinalCta: HomeFinalCtaContent = {
 export const defaultHomePageContent: HomePageContent = {
   hero: defaultHomeHero,
   socialProof: defaultHomeSocialProof,
-  oldWay: defaultHomeOldWay,
   intro: defaultHomeIntro,
   capabilities: defaultHomeCapabilities,
-  allFeatures: defaultHomeAllFeatures,
   howItWorks: defaultHomeHowItWorks,
   customerStories: defaultHomeCustomerStories,
   finalCta: defaultHomeFinalCta,

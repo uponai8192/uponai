@@ -11,7 +11,7 @@ export default function CustomerStories({
   content?: HomeCustomerStoriesContent;
 }) {
   return (
-    <section className="theme-section-alt border-y border-[var(--border)] px-4 py-20 md:py-24">
+    <section className="px-4 py-20 md:py-24">
       <div className="mx-auto max-w-7xl">
         <div className="mx-auto mb-12 max-w-2xl text-center">
           <span className="inline-flex items-center gap-2.5 text-xs uppercase tracking-[0.2em] text-[var(--brand)] font-[family-name:var(--font-mono)]">
