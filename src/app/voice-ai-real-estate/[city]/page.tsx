@@ -1,50 +1,14 @@
-import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
-import { getCityBySlug, formatCityState } from '@/lib/data';
-import { getVertical, getVerticalCityOverride, getVerticals } from '@/lib/cms/verticals';
-import { prerenderedCityParams } from '@/lib/prerender';
-import { VoiceAIIndustryCityPage } from '@/components/pages/VoiceAIIndustryPages';
+import { createVerticalCityRoute } from '@/lib/vertical-city-route';
 
-const VERTICAL_SLUG = 'voice-ai-real-estate';
+const route = createVerticalCityRoute({
+  slug: 'voice-ai-real-estate',
+  title: (location) => `Voice AI for Real Estate in ${location}`,
+  description: (location) =>
+    `Use voice AI in ${location} to respond faster to listing inquiries, support buyer and seller intake, and improve real estate lead routing.`,
+  socialDescription: (location) =>
+    `Real estate voice AI for ${location} teams that want faster speed-to-lead and cleaner qualification.`,
+});
 
-type Props = {
-  params: Promise<{ city: string }>;
-};
-
-export function generateStaticParams() {
-  return prerenderedCityParams(VERTICAL_SLUG);
-}
-
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { city: citySlug } = await params;
-  const city = getCityBySlug(citySlug);
-  if (!city) return {};
-
-  const location = formatCityState(city);
-
-  return {
-    title: `Voice AI for Real Estate in ${location}`,
-    description: `Use voice AI in ${location} to respond faster to listing inquiries, support buyer and seller intake, and improve real estate lead routing.`,
-    alternates: { canonical: `https://uponai.com/voice-ai-real-estate/${city.slug}` },
-    openGraph: {
-      title: `Voice AI for Real Estate in ${location}`,
-      description: `Real estate voice AI for ${location} teams that want faster speed-to-lead and cleaner qualification.`,
-    },
-  };
-}
-
-export default async function VoiceAIRealEstateCityPage({ params }: Props) {
-  const { city: citySlug } = await params;
-  const city = getCityBySlug(citySlug);
-  if (!city) notFound();
-
-  const [page, override, allPages] = await Promise.all([
-    getVertical(VERTICAL_SLUG),
-    getVerticalCityOverride(VERTICAL_SLUG, city.slug),
-    getVerticals(),
-  ]);
-
-  return (
-    <VoiceAIIndustryCityPage page={page} city={city} override={override} allPages={allPages} />
-  );
-}
+export const generateStaticParams = route.generateStaticParams;
+export const generateMetadata = route.generateMetadata;
+export default route.Page;
