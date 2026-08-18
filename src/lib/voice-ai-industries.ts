@@ -4422,7 +4422,7 @@ export const voiceAIIndustryPages: VoiceAIIndustryPage[] = [
   },
 ];
 
-export function getVoiceAIIndustryPage(slug: string): VoiceAIIndustryPage | undefined {
+function getVoiceAIIndustryPage(slug: string): VoiceAIIndustryPage | undefined {
   return voiceAIIndustryPages.find((page) => page.slug === slug);
 }
 

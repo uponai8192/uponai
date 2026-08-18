@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 
 export const SITE_URL = 'https://uponai.com';
 export const SITE_NAME = 'UponAI';
-export const SITE_PHONE = '+18887876624';
-export const SITE_EMAIL = 'info@uponai.com';
+const SITE_PHONE = '+18887876624';
+const SITE_EMAIL = 'info@uponai.com';
 export const DEFAULT_OG_IMAGE = '/brand-photos/ai-voice-mic.jpeg';
 
 type BreadcrumbItem = {
@@ -46,11 +46,11 @@ type LocalBusinessSchemaInput = {
   areaServed?: { city: string; state?: string };
 };
 
-export function normalizeMetaTitle(title: string) {
+function normalizeMetaTitle(title: string) {
   return title.replace(/\s+\|\s+UponAI$/u, '').trim();
 }
 
-export function absoluteUrl(path: string) {
+function absoluteUrl(path: string) {
   return path.startsWith('http') ? path : `${SITE_URL}${path.startsWith('/') ? path : `/${path}`}`;
 }
 

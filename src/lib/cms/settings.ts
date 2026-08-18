@@ -7,7 +7,6 @@ import { CMS_TAG_SETTINGS, sanityQuery } from '@/lib/cms/sanity';
 // singleton, falling back per field to the in-repo menus. These render on
 // every page, so an empty or missing field must never blank out the nav.
 
-export { defaultSiteSettings, type SiteSettings } from '@/lib/site-settings';
 
 // A menu that came back as an empty array is treated as absent: an editor
 // clearing every row should not silently remove a whole nav dropdown.

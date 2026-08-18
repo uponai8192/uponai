@@ -3,7 +3,7 @@ import { getBlogPosts, getBlogTopics } from '@/lib/cms/blog';
 import { uponaiPages } from '@/lib/uponai-pages';
 import { promotedVoiceAICityRoutes, voiceAIIndustryPages } from '@/lib/voice-ai-industries';
 
-export const SITEMAP_BASE_URL = 'https://uponai.com';
+const SITEMAP_BASE_URL = 'https://uponai.com';
 
 export type SitemapEntry = {
   url: string;

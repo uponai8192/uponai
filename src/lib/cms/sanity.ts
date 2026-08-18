@@ -26,7 +26,7 @@ type SanityConfig = {
   apiVersion: string;
 };
 
-export function sanityConfig(): SanityConfig | null {
+function sanityConfig(): SanityConfig | null {
   const projectId = process.env.SANITY_PROJECT_ID;
   const dataset = process.env.SANITY_DATASET;
   if (!projectId || !dataset) return null;

@@ -35,7 +35,7 @@ export function prerenderedCityParams(verticalSlug: string): { city: string }[] 
 // location routes. There is no curated promoted list for these the way there
 // is for verticals, so the top featured cities are prerendered and every other
 // city renders on first request.
-export function prerenderedCitySlugs(): string[] {
+function prerenderedCitySlugs(): string[] {
   if (process.env.NEXT_PUBLIC_SITE_ENV === 'staging') {
     return staticParamCities.map((city) => city.slug);
   }

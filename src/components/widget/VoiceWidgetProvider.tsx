@@ -3,7 +3,7 @@
 import { createContext, useContext, useState, useCallback, useRef, type ReactNode } from 'react'
 import { VoiceDemoModalDynamic } from '@/components/widget/VoiceDemoModalDynamic'
 
-export type CallState = 'idle' | 'loading' | 'active' | 'ended' | 'error'
+type CallState = 'idle' | 'loading' | 'active' | 'ended' | 'error'
 
 type OpenOptions = { company?: string; vertical?: string }
 

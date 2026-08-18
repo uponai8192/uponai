@@ -119,7 +119,7 @@ const slugToVerticalKey: Record<string, string> = {
  * fallback copy stays generic on purpose: Grace is not trained per vertical,
  * so promising vertical-specific skills there would overstate what she does.
  */
-export function getVerticalAgent(key: string | undefined, fallbackLabel: string): VerticalAgent {
+function getVerticalAgent(key: string | undefined, fallbackLabel: string): VerticalAgent {
   const found = key ? byKey.get(key) : undefined;
   if (found) return found;
 

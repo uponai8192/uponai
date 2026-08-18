@@ -33,7 +33,7 @@ export type UponAIBlogPost = {
   topicSlugs: string[];
 };
 
-export const BLOG_POSTS_PER_PAGE = 12;
+const BLOG_POSTS_PER_PAGE = 12;
 
 // Local blog library built from the public UponAI blog plus imported legacy preview posts.
 // The token in this repo does not currently have blog-read scopes, so this snapshot keeps
@@ -297,18 +297,6 @@ export const uponaiBlogPosts: UponAIBlogPost[] = [
   ...manualUponAIBlogPosts,
   ...(importedBlogPosts as UponAIBlogPost[]),
 ].sort((left, right) => new Date(right.publishedAt).getTime() - new Date(left.publishedAt).getTime());
-
-export function getUponAIBlogPost(slug: string) {
-  return uponaiBlogPosts.find((post) => post.slug === slug || post.aliases?.includes(slug));
-}
-
-export function getUponAIBlogTopic(slug: string) {
-  return uponaiBlogTopics.find((topic) => topic.slug === slug);
-}
-
-export function getUponAIBlogPostsByTopic(slug: string) {
-  return uponaiBlogPosts.filter((post) => post.topicSlugs.includes(slug));
-}
 
 export function normalizeBlogPageNumber(value?: string | string[]) {
   const rawValue = Array.isArray(value) ? value[0] : value;
