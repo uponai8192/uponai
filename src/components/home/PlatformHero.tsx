@@ -30,13 +30,11 @@ export default function PlatformHero({ content = defaultHomeHero }: { content?: 
   const [activeTab, setActiveTab] = useState(0);
   const [captionIndex, setCaptionIndex] = useState(0);
 
-  // Deterministic bar heights/delays so server and client markup match (no hydration mismatch).
+  // Deterministic delays so server and client markup match (no hydration
+  // mismatch). The stagger is what makes the row read as a wave; every bar
+  // covers the same scale range, so only the offset varies.
   const bars = useMemo(
-    () =>
-      Array.from({ length: WAVE_BAR_COUNT }, (_, i) => ({
-        height: 18 + ((i * 37) % 70),
-        delay: ((i * 53) % 110) / 100,
-      })),
+    () => Array.from({ length: WAVE_BAR_COUNT }, (_, i) => ({ delay: ((i * 53) % 110) / 100 })),
     [],
   );
 
@@ -131,7 +129,6 @@ export default function PlatformHero({ content = defaultHomeHero }: { content?: 
                   key={i}
                   className="animate-wave-bar flex-1 rounded-[3px] opacity-90"
                   style={{
-                    height: `${bar.height}%`,
                     animationDelay: `${bar.delay}s`,
                     background: 'linear-gradient(180deg, var(--brand), #8FBBE4)',
                   }}

@@ -233,17 +233,24 @@ h1, h2, h3, h4 {
   .animate-brand-pulse { animation: none; }
 }
 
+/* Scales rather than resizing. Animating height relayouts the flex row on
+   every frame, and with 38 bars in the hero that was half the page's total
+   layout cost, burning CPU the whole time the homepage sat open. transform
+   is composited, so this costs no layout and no paint. */
 @keyframes wave-bar {
-  0%, 100% { height: 14%; }
-  50% { height: 100%; }
+  0%, 100% { transform: scaleY(0.14); }
+  50% { transform: scaleY(1); }
 }
 
+/* Callers set the growth direction with Tailwind's origin-* utilities: the
+   hero row grows from the middle, the agent card rises from the baseline. */
 .animate-wave-bar {
+  height: 100%;
   animation: wave-bar 1.1s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-wave-bar { animation: none; height: 40% !important; }
+  .animate-wave-bar { animation: none; transform: scaleY(0.4); }
 }
 
 @keyframes marquee-scroll {

@@ -45,13 +45,10 @@ export default function VerticalVoiceAgentCard({ agent }: { agent: VerticalAgent
     return () => clearInterval(id);
   }, [callState]);
 
-  // Deterministic so server and client markup match.
+  // Deterministic so server and client markup match. Every bar covers the same
+  // scale range, so only the stagger varies.
   const bars = useMemo(
-    () =>
-      Array.from({ length: 15 }, (_, i) => ({
-        height: 26 + ((i * 47) % 62),
-        delay: ((i * 31) % 105) / 100,
-      })),
+    () => Array.from({ length: 15 }, (_, i) => ({ delay: ((i * 31) % 105) / 100 })),
     [],
   );
 
@@ -117,11 +114,10 @@ export default function VerticalVoiceAgentCard({ agent }: { agent: VerticalAgent
           {bars.map((bar, i) => (
             <span
               key={i}
-              className={`w-[3px] flex-none rounded-full bg-gradient-to-b from-[var(--brand-cool)] to-[var(--brand)] ${
+              className={`w-[3px] flex-none origin-bottom rounded-full bg-gradient-to-b from-[var(--brand-cool)] to-[var(--brand)] ${
                 onCall ? 'animate-wave-bar opacity-100' : 'animate-wave-bar opacity-80'
               }`}
               style={{
-                height: `${bar.height}%`,
                 animationDelay: `${bar.delay}s`,
                 animationDuration: onCall ? '0.7s' : undefined,
               }}
