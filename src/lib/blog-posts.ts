@@ -147,7 +147,7 @@ const manualUponAIBlogPosts: UponAIBlogPost[] = [
     relatedPages: [
       { label: 'AI Voice For Telecommunications', path: '/voice-ai-for-telecommunication' },
       { label: 'AI Voice Agents', path: '/services/ai-voice-agents' },
-      { label: 'Book a Demo', path: 'https://uponai.ai/uponai-booking-page' },
+      { label: 'Book a Demo', path: 'https://uponai.ai/book-a-democall' },
     ],
     slug: 'pressone-case-study-eliminated-hold-times-scaled-support-without-adding-headcount',
     title: 'How PressOne Eliminated Hold Times and Scaled Support Without Adding Headcount',
@@ -172,7 +172,7 @@ const manualUponAIBlogPosts: UponAIBlogPost[] = [
     relatedPages: [
       { label: 'AI Voice For Telecommunications', path: '/voice-ai-for-telecommunication' },
       { label: 'AI Voice Agents', path: '/services/ai-voice-agents' },
-      { label: 'Book a Demo', path: 'https://uponai.ai/uponai-booking-page' },
+      { label: 'Book a Demo', path: 'https://uponai.ai/book-a-democall' },
     ],
     slug: 'bill-mcclain-uponai-platform-roadmap-for-telecom-partners',
     title: 'Bill McClain on where UponAI is now and where the platform is headed',
@@ -196,7 +196,7 @@ const manualUponAIBlogPosts: UponAIBlogPost[] = [
     readTimeMinutes: 0.7,
     relatedPages: [
       { label: 'AI Voice For Telecommunications', path: '/voice-ai-for-telecommunication' },
-      { label: 'Book a Demo', path: 'https://uponai.ai/uponai-booking-page' },
+      { label: 'Book a Demo', path: 'https://uponai.ai/book-a-democall' },
     ],
     slug: 'new-blog-post-2790-9107-1733-5871-8734-7108-7407-1404-8356-4011-1478-5079-1027-3530-2260-7595-9925-8540-2943-1832-4961-2022-5333-2308-4929-9134-3756-9568-5781-9081-8240-1812-6926-8960-8950-4686-7032-9142-8747-7035-3778-3763',
     title: 'More telecom partners are choosing UponAI',
@@ -267,7 +267,7 @@ const manualUponAIBlogPosts: UponAIBlogPost[] = [
     readTimeMinutes: 0.3,
     relatedPages: [
       { label: 'AI Voice For Telecommunications', path: '/voice-ai-for-telecommunication' },
-      { label: 'Book a Demo', path: 'https://uponai.ai/uponai-booking-page' },
+      { label: 'Book a Demo', path: 'https://uponai.ai/book-a-democall' },
     ],
     slug: 'new-blog-post-2790-9107-1733-5871-8734-7108-7407-1404-8356-4011-1478-5079-1027-3530-2260-7595-9925-8540-2943-1832-4961-2022-5333-2308-4929-9134-3756-9568-5781-9081-8240-1812-6926-8960-8950-4686-7032-9142-8747',
     title: 'UponAI momentum is accelerating across telecom partners',
