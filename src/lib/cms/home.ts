@@ -21,6 +21,11 @@ export const getHomePageContent = unstable_cache(
     return {
       hero: doc?.hero ?? defaultHomePageContent.hero,
       socialProof: doc?.socialProof ?? defaultHomePageContent.socialProof,
+      // Falls back whole rather than per field: the card icons are matched by
+      // position in code, so a partially filled list would mislabel them.
+      solutions: doc?.solutions?.items?.length
+        ? doc.solutions
+        : defaultHomePageContent.solutions,
       intro: doc?.intro ?? defaultHomePageContent.intro,
       capabilities: doc?.capabilities ?? defaultHomePageContent.capabilities,
       howItWorks: doc?.howItWorks ?? defaultHomePageContent.howItWorks,

@@ -23,6 +23,17 @@ export type HomeSocialProofContent = {
   leadHighlight: string;
 };
 
+export type HomeSolutionsContent = {
+  eyebrow: string;
+  heading: string;
+  lede: string;
+  /** Small label above every card title. Shared, since all cards use the same word. */
+  itemKicker: string;
+  /** Link label on every card. Shared for the same reason. */
+  ctaLabel: string;
+  items: { title: string; body: string; href: string }[];
+};
+
 export type HomeIntroContent = {
   eyebrow: string;
   headingStart: string;
@@ -70,6 +81,7 @@ export type HomeFinalCtaContent = {
 export type HomePageContent = {
   hero: HomeHeroContent;
   socialProof: HomeSocialProofContent;
+  solutions: HomeSolutionsContent;
   intro: HomeIntroContent;
   capabilities: HomeCapabilitiesContent;
   howItWorks: HomeHowItWorksContent;
@@ -89,6 +101,36 @@ export const defaultHomeHero: HomeHeroContent = {
 export const defaultHomeSocialProof: HomeSocialProofContent = {
   lead: 'Trusted by support and operations teams building their front line on',
   leadHighlight: 'UponAI',
+};
+
+export const defaultHomeSolutions: HomeSolutionsContent = {
+  eyebrow: 'What UponAI builds',
+  heading: 'AI voice products shaped around how calls actually move.',
+  lede: 'Not a phone company with AI layered on top. Every product is positioned around conversational logic and how those workflows connect to real business operations.',
+  itemKicker: 'Solution',
+  ctaLabel: 'Explore →',
+  items: [
+    {
+      title: 'AI voice systems',
+      body: 'Branded voice experiences that greet callers, qualify intent, answer common questions, and route live conversations cleanly.',
+      href: '/services/ivr-system',
+    },
+    {
+      title: 'AI chatbots',
+      body: 'Capture website demand instantly with conversational flows that mirror your call logic and move visitors toward the right next step.',
+      href: '/services/ai-chatbots',
+    },
+    {
+      title: 'UCaaS integrations',
+      body: 'Connect AI call experiences with telecom infrastructure, routing rules, transfer logic, and reporting without operational sprawl.',
+      href: '/voice-ai-for-telecommunication',
+    },
+    {
+      title: 'Call overflow automation',
+      body: 'Keep inbound opportunities moving during surges, after-hours periods, and missed-call windows instead of sending prospects to dead ends.',
+      href: '/ai-voice-for-answering-service-replacement',
+    },
+  ],
 };
 
 export const defaultHomeIntro: HomeIntroContent = {
@@ -196,6 +238,7 @@ export const defaultHomeFinalCta: HomeFinalCtaContent = {
 export const defaultHomePageContent: HomePageContent = {
   hero: defaultHomeHero,
   socialProof: defaultHomeSocialProof,
+  solutions: defaultHomeSolutions,
   intro: defaultHomeIntro,
   capabilities: defaultHomeCapabilities,
   howItWorks: defaultHomeHowItWorks,

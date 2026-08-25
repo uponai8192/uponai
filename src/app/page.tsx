@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import PlatformHero from '@/components/home/PlatformHero';
 import SocialProof from '@/components/home/SocialProof';
+import Solutions from '@/components/home/Solutions';
 import IntroSolution from '@/components/home/IntroSolution';
 import Capabilities from '@/components/home/Capabilities';
 import HowItWorksSteps from '@/components/home/HowItWorksSteps';
@@ -26,6 +27,7 @@ export default async function HomePage() {
     <>
       <PlatformHero content={content.hero} />
       <SocialProof content={content.socialProof} />
+      <Solutions content={content.solutions} />
       <CustomerStories content={content.customerStories} />
       <IntroSolution content={content.intro} />
       <Capabilities content={content.capabilities} />

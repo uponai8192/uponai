@@ -27,8 +27,11 @@ export default function SocialProof({
 }: {
   content?: HomeSocialProofContent;
 }) {
+  // Untinted: the Solutions section directly below is tinted, and two tinted
+  // bands in a row read as one long section. The border-y still separates this
+  // trust bar from the hero above it.
   return (
-    <section className="theme-section-alt border-y border-[var(--border)] px-4 py-12">
+    <section className="border-y border-[var(--border)] px-4 py-12">
       <div className="mx-auto max-w-7xl">
         <p className="mb-8 text-center text-sm text-[var(--text-body)]">
           {content.lead}{' '}
