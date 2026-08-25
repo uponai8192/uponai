@@ -6,6 +6,7 @@ import IntroSolution from '@/components/home/IntroSolution';
 import Capabilities from '@/components/home/Capabilities';
 import HowItWorksSteps from '@/components/home/HowItWorksSteps';
 import CustomerStories from '@/components/home/CustomerStories';
+import Faq from '@/components/home/Faq';
 import FinalCTA from '@/components/home/FinalCTA';
 import { getHomePageContent } from '@/lib/cms/home';
 
@@ -32,6 +33,7 @@ export default async function HomePage() {
       <IntroSolution content={content.intro} />
       <Capabilities content={content.capabilities} />
       <HowItWorksSteps content={content.howItWorks} />
+      <Faq content={content.faq} />
       <FinalCTA content={content.finalCta} />
     </>
   );

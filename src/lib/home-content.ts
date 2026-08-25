@@ -70,6 +70,12 @@ export type HomeCustomerStoriesContent = {
   ctaLabel: string;
 };
 
+export type HomeFaqContent = {
+  eyebrow: string;
+  heading: string;
+  items: { question: string; answer: string }[];
+};
+
 export type HomeFinalCtaContent = {
   eyebrow: string;
   heading: string;
@@ -86,6 +92,7 @@ export type HomePageContent = {
   capabilities: HomeCapabilitiesContent;
   howItWorks: HomeHowItWorksContent;
   customerStories: HomeCustomerStoriesContent;
+  faq: HomeFaqContent;
   finalCta: HomeFinalCtaContent;
 };
 
@@ -227,6 +234,43 @@ export const defaultHomeCustomerStories: HomeCustomerStoriesContent = {
   ctaLabel: 'Read case studies →',
 };
 
+export const defaultHomeFaq: HomeFaqContent = {
+  eyebrow: 'Answers',
+  heading: 'Frequently asked questions.',
+  items: [
+    {
+      question: 'What is UponAI?',
+      answer:
+        'UponAI is an AI voice company that builds phone and chat workflows: greeting, qualifying, routing, and escalating conversations so your team only steps in when a person is the better answer.',
+    },
+    {
+      question: 'Is this just a chatbot?',
+      answer:
+        'No. UponAI runs voice and chat as one system with real routing logic, appointment and intake flows, overflow handling, and clean human handoff, not a scripted bot bolted onto a website.',
+    },
+    {
+      question: 'Which industries do you support?',
+      answer:
+        'Healthcare, insurance, home services, real estate, dental, veterinary, restaurants, telecommunications, and legal, each shipped as a productized voice path rather than a generic template.',
+    },
+    {
+      question: 'Can it integrate with our phone system and CRM?',
+      answer:
+        'Yes. UCaaS integrations connect AI call experiences to your telecom infrastructure, routing rules, and reporting, with CRM-ready lead capture so records stay clean.',
+    },
+    {
+      question: 'What happens after hours or during call surges?',
+      answer:
+        'Call overflow automation keeps inbound opportunities moving during surges, after-hours periods, and missed-call windows instead of sending prospects to dead ends.',
+    },
+    {
+      question: 'How do I see it in action?',
+      answer:
+        'Book a demo and talk to Grace, an AI voice agent built on UponAI. She answers questions, books appointments, and transfers to a live team when it matters.',
+    },
+  ],
+};
+
 export const defaultHomeFinalCta: HomeFinalCtaContent = {
   eyebrow: 'Get started',
   heading: 'Build and deploy AI agents across every channel, in minutes, not quarters.',
@@ -243,5 +287,6 @@ export const defaultHomePageContent: HomePageContent = {
   capabilities: defaultHomeCapabilities,
   howItWorks: defaultHomeHowItWorks,
   customerStories: defaultHomeCustomerStories,
+  faq: defaultHomeFaq,
   finalCta: defaultHomeFinalCta,
 };

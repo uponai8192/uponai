@@ -30,6 +30,7 @@ export const getHomePageContent = unstable_cache(
       capabilities: doc?.capabilities ?? defaultHomePageContent.capabilities,
       howItWorks: doc?.howItWorks ?? defaultHomePageContent.howItWorks,
       customerStories: doc?.customerStories ?? defaultHomePageContent.customerStories,
+      faq: doc?.faq?.items?.length ? doc.faq : defaultHomePageContent.faq,
       finalCta: doc?.finalCta ?? defaultHomePageContent.finalCta,
     };
   },

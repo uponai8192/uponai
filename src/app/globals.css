@@ -253,6 +253,22 @@ h1, h2, h3, h4 {
   .animate-wave-bar { animation: none; transform: scaleY(0.4); }
 }
 
+/* FAQ disclosure toggle: the plus turns into a cross when an answer opens.
+   Written out rather than using Tailwind's group-open variant, which does not
+   emit a rule for this combination in the version pinned here. */
+.faq-toggle {
+  transition: transform 200ms ease, background-color 200ms ease;
+}
+
+details[open] > summary .faq-toggle {
+  transform: rotate(45deg);
+  background: var(--brand-primary-bg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .faq-toggle { transition: none; }
+}
+
 @keyframes marquee-scroll {
   to { transform: translateX(-50%); }
 }
