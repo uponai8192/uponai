@@ -1,7 +1,22 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import nodemailer from 'nodemailer'
 
-const LEAD_EMAIL = 'melvin@uponai.com'
+// Recipients come from NOTIFY_EMAILS (comma separated, same var the contact form
+// uses) so changing them is an env edit plus a container recreate, not a rebuild.
+const FALLBACK_LEAD_EMAIL = 'melvin@uponai.com'
+
+function getLeadRecipients() {
+  const configured = process.env.NOTIFY_EMAILS
+    ?.replaceAll('\\n', '')
+    .replaceAll('\n', '')
+    .replaceAll('\r', '')
+    .trim()
+    .split(',')
+    .map((email) => email.trim())
+    .filter(Boolean)
+
+  return configured && configured.length > 0 ? configured : [FALLBACK_LEAD_EMAIL]
+}
 
 type LeadBody = {
   name: string
@@ -49,7 +64,7 @@ export async function POST(req: NextRequest) {
     })
     transport.sendMail({
       from: `UponAI Widget <${process.env.SMTP_USER}>`,
-      to: LEAD_EMAIL,
+      to: getLeadRecipients(),
       subject: `New voice demo lead: ${name} (${company})`,
       html: leadEmail({ name, email, company, consentContact, consentMarketing }),
     }).catch((err: unknown) => console.error('[create-web-call] email error', err))
