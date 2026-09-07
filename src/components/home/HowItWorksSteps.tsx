@@ -10,7 +10,7 @@ export default function HowItWorksSteps({
   return (
     <section id="how" className="theme-section-alt border-y border-[var(--border)] px-4 py-20 md:py-24">
       <div className="mx-auto max-w-7xl">
-        <div className="mx-auto mb-12 max-w-2xl text-center">
+        <div className="sd-cine mx-auto mb-12 max-w-2xl text-center">
           <span className="inline-flex items-center gap-2.5 text-xs uppercase tracking-[0.2em] text-[var(--brand)] font-[family-name:var(--font-mono)]">
             <span className="h-[7px] w-[7px] rounded-full bg-[var(--brand)]" />
             {content.eyebrow}
@@ -19,7 +19,7 @@ export default function HowItWorksSteps({
           <p className="theme-body mt-3.5 text-[17px]">{content.sub}</p>
         </div>
 
-        <div className="grid gap-5 md:grid-cols-3">
+        <div className="sd-stagger grid gap-5 md:grid-cols-3">
           {steps.map((step) => (
             <div key={step.n} className="text-center">
               <div className="mx-auto mb-5 grid h-[68px] w-[68px] place-items-center rounded-full border-2 border-[var(--brand)] bg-[var(--surface-solid)] text-lg font-semibold text-[var(--brand)] shadow-[0_0_0_8px_rgba(1,87,163,0.07)] font-[family-name:var(--font-mono)]">
@@ -34,7 +34,7 @@ export default function HowItWorksSteps({
           ))}
         </div>
 
-        <div className="mt-9 text-center">
+        <div className="sd-rise mt-9 text-center">
           <Link
             href="/services/ai-voice-agents"
             className="theme-primary-button inline-flex rounded-xl px-6 py-3.5 text-[15px] font-semibold"

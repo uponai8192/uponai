@@ -159,7 +159,7 @@ export default function Capabilities({
   return (
     <section id="capabilities" className="px-4 py-20 md:py-24">
       <div className="mx-auto max-w-7xl">
-        <div className="mx-auto mb-12 max-w-3xl text-center">
+        <div className="sd-cine mx-auto mb-12 max-w-3xl text-center">
           <span className="inline-flex items-center gap-2.5 text-xs uppercase tracking-[0.2em] text-[var(--brand)] font-[family-name:var(--font-mono)]">
             <span className="h-[7px] w-[7px] rounded-full bg-[var(--brand)]" />
             {content.eyebrow}
@@ -171,7 +171,9 @@ export default function Capabilities({
         <div className="divide-y divide-[var(--border)]">
           {content.items.map((cap, i) => (
             <div key={cap.kicker} className="grid items-center gap-14 py-14 md:grid-cols-2">
-              <div className={i % 2 === 1 ? 'md:order-2' : ''}>
+              {/* Text and visual slide in from their own sides, so alternating
+                  rows sweep in from alternating directions. */}
+              <div className={i % 2 === 1 ? 'sd-right md:order-2' : 'sd-left'}>
                 <span className="block text-xs uppercase tracking-[0.16em] text-[var(--brand)] font-[family-name:var(--font-mono)]">
                   {cap.kicker}
                 </span>
@@ -200,7 +202,7 @@ export default function Capabilities({
                   Link to feature page →
                 </Link>
               </div>
-              <div className={i % 2 === 1 ? 'md:order-1' : ''}>
+              <div className={i % 2 === 1 ? 'sd-left md:order-1' : 'sd-right'}>
                 <CapabilityVisual visual={capabilityVisuals[i % capabilityVisuals.length]} />
               </div>
             </div>

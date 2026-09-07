@@ -13,7 +13,7 @@ export default function CustomerStories({
   return (
     <section className="px-4 py-20 md:py-24">
       <div className="mx-auto max-w-7xl">
-        <div className="mx-auto mb-12 max-w-2xl text-center">
+        <div className="sd-cine mx-auto mb-12 max-w-2xl text-center">
           <span className="inline-flex items-center gap-2.5 text-xs uppercase tracking-[0.2em] text-[var(--brand)] font-[family-name:var(--font-mono)]">
             <span className="h-[7px] w-[7px] rounded-full bg-[var(--brand)]" />
             {content.eyebrow}
@@ -21,7 +21,7 @@ export default function CustomerStories({
           <h2 className="theme-heading mt-4 text-3xl font-bold md:text-4xl">{content.heading}</h2>
         </div>
 
-        <div className="grid gap-5 md:grid-cols-3">
+        <div className="sd-stagger grid gap-5 md:grid-cols-3">
           {content.stories.map((story, i) => (
             <div key={i} className="theme-card flex flex-col rounded-[18px] p-6">
               <div className="mb-2.5 text-[44px] leading-[0.6] text-[var(--brand)] opacity-25 font-[family-name:var(--font-display)]">
@@ -55,7 +55,7 @@ export default function CustomerStories({
           ))}
         </div>
 
-        <div className="mt-9 text-center">
+        <div className="sd-rise mt-9 text-center">
           <Link
             href="/contact-us-page"
             className="theme-secondary-button inline-flex rounded-xl px-6 py-3.5 text-[15px] font-semibold"

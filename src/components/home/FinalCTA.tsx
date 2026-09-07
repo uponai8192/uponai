@@ -6,7 +6,7 @@ export default function FinalCTA({ content = defaultHomeFinalCta }: { content?: 
   return (
     <section id="final" className="px-4 py-24 text-center">
       <div className="mx-auto max-w-7xl">
-        <div className="theme-card-gradient relative overflow-hidden rounded-[26px] px-6 py-16 md:px-10">
+        <div className="sd-pop theme-card-gradient relative overflow-hidden rounded-[26px] px-6 py-16 md:px-10">
           <div
             aria-hidden
             className="pointer-events-none absolute -bottom-[40%] -left-[6%] h-[420px] w-[420px]"

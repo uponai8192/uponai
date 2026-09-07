@@ -22,19 +22,40 @@ export const metadata: Metadata = {
 // When Sanity is unreachable or unconfigured, every section falls back to
 // the in-repo defaults in src/lib/home-content.ts, so the route can never
 // render empty.
+// Each scroll-panel fills the viewport and its content drifts in and out
+// tied to scroll position, via CSS scroll-driven animations (globals.css).
+// Scrolling stays free, nothing snaps or hijacks the wheel. The trust bar
+// shares the first panel with the hero, since 200px of logos alone cannot
+// hold a screen.
 export default async function HomePage() {
   const content = await getHomePageContent();
   return (
     <>
-      <PlatformHero content={content.hero} />
-      <SocialProof content={content.socialProof} />
-      <Solutions content={content.solutions} />
-      <CustomerStories content={content.customerStories} />
-      <IntroSolution content={content.intro} />
-      <Capabilities content={content.capabilities} />
-      <HowItWorksSteps content={content.howItWorks} />
-      <Faq content={content.faq} />
-      <FinalCTA content={content.finalCta} />
+      <div className="scroll-panel">
+        <PlatformHero content={content.hero} />
+        <SocialProof content={content.socialProof} />
+      </div>
+      <div className="scroll-panel">
+        <Solutions content={content.solutions} />
+      </div>
+      <div className="scroll-panel">
+        <CustomerStories content={content.customerStories} />
+      </div>
+      <div className="scroll-panel">
+        <IntroSolution content={content.intro} />
+      </div>
+      <div className="scroll-panel">
+        <Capabilities content={content.capabilities} />
+      </div>
+      <div className="scroll-panel">
+        <HowItWorksSteps content={content.howItWorks} />
+      </div>
+      <div className="scroll-panel">
+        <Faq content={content.faq} />
+      </div>
+      <div className="scroll-panel">
+        <FinalCTA content={content.finalCta} />
+      </div>
     </>
   );
 }

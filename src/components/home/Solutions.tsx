@@ -26,7 +26,7 @@ export default function Solutions({
   return (
     <section id="solutions" className="theme-section-alt border-y border-[var(--border)] px-4 py-20 md:py-24">
       <div className="mx-auto max-w-7xl">
-        <div className="mb-12 max-w-2xl">
+        <div className="sd-cine mb-12 max-w-2xl">
           <span className="inline-flex items-center gap-2.5 text-xs uppercase tracking-[0.2em] text-[var(--brand)] font-[family-name:var(--font-mono)]">
             <span className="h-[7px] w-[7px] rounded-full bg-[var(--brand)]" />
             {content.eyebrow}
@@ -37,7 +37,7 @@ export default function Solutions({
           <p className="theme-body mt-3.5 text-[17px]">{content.lede}</p>
         </div>
 
-        <div className="grid gap-5 md:grid-cols-2">
+        <div className="sd-stagger grid gap-5 md:grid-cols-2">
           {content.items.map((item, i) => (
             <Link
               key={item.title}

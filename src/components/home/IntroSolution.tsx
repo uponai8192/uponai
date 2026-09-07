@@ -8,21 +8,21 @@ export default function IntroSolution({ content = defaultHomeIntro }: { content?
           <span className="h-[7px] w-[7px] rounded-full bg-[var(--brand)]" />
           {content.eyebrow}
         </span>
-        <h2 className="theme-heading mx-auto mt-5 max-w-3xl text-4xl font-bold md:text-5xl">
+        <h2 className="sd-cine theme-heading mx-auto mt-5 max-w-3xl text-4xl font-bold md:text-5xl">
           {content.headingStart}{' '}
           <span className="bg-gradient-to-r from-[var(--brand)] to-[var(--brand-cool)] bg-clip-text text-transparent">
             {content.headingAccent}
           </span>{' '}
           {content.headingEnd}
         </h2>
-        <p className="theme-body mx-auto mt-6 max-w-2xl text-lg">
+        <p className="sd-rise theme-body mx-auto mt-6 max-w-2xl text-lg">
           {content.ledeStart}
           <b className="text-[var(--text-strong)]">{content.ledeBold1}</b>
           {content.ledeMiddle}
           <b className="text-[var(--text-strong)]">{content.ledeBold2}</b>
           {content.ledeEnd}
         </p>
-        <div className="mx-auto mt-10 grid max-w-3xl gap-3.5 md:grid-cols-3">
+        <div className="sd-stagger mx-auto mt-10 grid max-w-3xl gap-3.5 md:grid-cols-3">
           {content.stats.map((cell) => (
             <div key={cell.value} className="theme-card rounded-[14px] p-5">
               <b className="block text-[22px] text-[var(--brand)] font-[family-name:var(--font-mono)]">{cell.value}</b>

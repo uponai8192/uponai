@@ -88,6 +88,10 @@ body {
     var(--background);
   background-attachment: fixed;
   color: var(--foreground);
+  /* The slide-in choreography translates elements sideways while they are
+     still transparent; clip stops that from ever creating a horizontal
+     scrollbar. */
+  overflow-x: clip;
   transition:
     background-color 250ms ease,
     color 250ms ease;
@@ -251,6 +255,278 @@ h1, h2, h3, h4 {
 
 @media (prefers-reduced-motion: reduce) {
   .animate-wave-bar { animation: none; transform: scaleY(0.4); }
+}
+
+/* ── Homepage scroll-linked panels ────────────────────────────────────────
+   Each panel fills the viewport below the floating nav and centres shorter
+   sections. Content drifts in while the panel enters the viewport and drifts
+   out as it leaves, driven directly by scroll position (reversible, no JS,
+   composited). Browsers without scroll-driven animation support simply show
+   the sections static. Scrolling itself is never hijacked. */
+.scroll-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: calc(100svh - 4.75rem);
+  scroll-snap-align: start;
+}
+
+/* Magnetic full-page snapping, scoped to the homepage by :has. Panels taller
+   than the viewport scroll freely inside and snapping resumes at their edges.
+   The entrance choreography below is scrubbed by scroll position, so the snap
+   glide is exactly what plays each section's arrival. */
+html:has(.scroll-panel) {
+  scroll-snap-type: y mandatory;
+  scroll-padding-top: 4.75rem;
+}
+
+/* Without its own snap position the footer would be unreachable: the scroller
+   would always settle back onto the last panel. */
+html:has(.scroll-panel) footer {
+  scroll-snap-align: end;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html:has(.scroll-panel) {
+    scroll-snap-type: none;
+  }
+}
+
+/* Scroll choreography primitives. Every animation is scrubbed by the scroll
+   position through view() timelines: elements finish entering by the time
+   their panel is 60-65% into the viewport, and reversing the scroll reverses
+   the motion. Entry only for content, deliberately, so the lower half of
+   taller-than-viewport sections is never dimmed while being read; the one
+   exit animation is the hero panel departing, which is exactly one screen
+   tall. Transform and opacity only, so nothing here costs layout or paint. */
+
+@keyframes sd-rise {
+  from { opacity: 0; transform: translateY(56px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Headlines dolly in from depth and snap into focus. */
+@keyframes sd-cine {
+  from {
+    opacity: 0;
+    transform: translateY(48px) scale(1.16);
+    filter: blur(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+
+@keyframes sd-left {
+  from { opacity: 0; transform: translateX(-110px) rotate(-1.5deg); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes sd-right {
+  from { opacity: 0; transform: translateX(110px) rotate(1.5deg); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Cards lift off the page plane and tip upright. */
+@keyframes sd-pop {
+  from {
+    opacity: 0;
+    transform: perspective(900px) rotateX(16deg) translateY(64px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* The camera pushes through the hero as the visitor commits to the page. */
+@keyframes sd-depart {
+  to {
+    opacity: 0.08;
+    transform: scale(1.05);
+    filter: blur(7px);
+  }
+}
+
+/* Each panel's segment of the transcript spine draws in from the top... */
+@keyframes sd-thread {
+  from { transform: translateX(-50%) scaleY(0); }
+  to { transform: translateX(-50%) scaleY(1); }
+}
+
+/* ...and its node lights up once the thread reaches it. */
+@keyframes sd-node {
+  from { opacity: 0; transform: translateX(-50%) scale(0.2); }
+  to { opacity: 1; transform: translateX(-50%) scale(1); }
+}
+
+@keyframes sd-progress {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+/* The comet head riding the tip of the progress line. */
+@keyframes sd-comet {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(100vw - 10px)); }
+}
+
+/* Reads as a hairline of brand gradient filling left to right as the page is
+   read. Both pieces are invisible when scroll-driven animations are
+   unsupported, rather than sitting parked in the corner. */
+.scroll-progress {
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+}
+
+.scroll-comet {
+  opacity: 0;
+}
+
+/* The transcript spine: every panel after the hero carries a segment of
+   thread at its top centre plus a node where the thread meets the section.
+   The thread draws and the node ignites as the panel enters, so the page
+   reads as one continuous conversation being written. */
+.scroll-panel {
+  position: relative;
+}
+
+.scroll-panel + .scroll-panel::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 2px;
+  height: 4.5rem;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, transparent, var(--brand));
+  transform-origin: top center;
+  opacity: 0.7;
+}
+
+.scroll-panel + .scroll-panel::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 4.5rem;
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  transform: translateX(-50%);
+  background: var(--brand);
+  box-shadow: 0 0 14px var(--brand);
+}
+
+@supports (animation-timeline: view()) {
+  .sd-rise {
+    animation: sd-rise linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 60%;
+  }
+
+  .sd-cine {
+    animation: sd-cine linear both;
+    animation-timeline: view();
+    animation-range: entry 5% entry 65%;
+  }
+
+  .sd-left {
+    animation: sd-left linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 65%;
+  }
+
+  .sd-right {
+    animation: sd-right linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 65%;
+  }
+
+  .sd-pop {
+    animation: sd-pop linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 70%;
+  }
+
+  /* Children complete on progressively later scroll positions, so a row of
+     cards builds left to right and a list builds top to bottom as one
+     continuous gesture. */
+  .sd-stagger > * {
+    animation: sd-pop linear both;
+    animation-timeline: view();
+    animation-range: entry 5% entry 50%;
+  }
+  .sd-stagger > :nth-child(2) { animation-range: entry 13% entry 58%; }
+  .sd-stagger > :nth-child(3) { animation-range: entry 21% entry 66%; }
+  .sd-stagger > :nth-child(4) { animation-range: entry 29% entry 74%; }
+  .sd-stagger > :nth-child(5) { animation-range: entry 35% entry 80%; }
+  .sd-stagger > :nth-child(n + 6) { animation-range: entry 41% entry 86%; }
+
+  .scroll-panel + .scroll-panel::before {
+    animation: sd-thread linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 22%;
+  }
+
+  .scroll-panel + .scroll-panel::after {
+    animation: sd-node linear both;
+    animation-timeline: view();
+    animation-range: entry 18% entry 30%;
+  }
+
+  /* The camera pushes through the hero as the visitor scrolls into the page. */
+  .scroll-panel:first-of-type {
+    animation: sd-depart linear both;
+    animation-timeline: view();
+    animation-range: exit 0% exit 60%;
+  }
+
+  .scroll-progress {
+    animation: sd-progress linear both;
+    animation-timeline: scroll();
+  }
+
+  .scroll-comet {
+    opacity: 1;
+    animation: sd-comet linear both;
+    animation-timeline: scroll();
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sd-rise,
+  .sd-cine,
+  .sd-left,
+  .sd-right,
+  .sd-pop,
+  .sd-stagger > *,
+  .scroll-panel:first-of-type,
+  .scroll-panel + .scroll-panel::before,
+  .scroll-panel + .scroll-panel::after {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+
+  .scroll-panel + .scroll-panel::before,
+  .scroll-panel + .scroll-panel::after {
+    opacity: 0.7 !important;
+    transform: translateX(-50%) !important;
+  }
+
+  /* These stay at scaleX(0)/translateX(0), i.e. parked, rather than snapping
+     to a finished state. */
+  .scroll-progress,
+  .scroll-comet {
+    animation: none !important;
+  }
+
+  .scroll-comet {
+    opacity: 0 !important;
+  }
 }
 
 /* FAQ disclosure toggle: the plus turns into a cross when an answer opens.

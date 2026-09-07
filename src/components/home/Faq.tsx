@@ -7,7 +7,7 @@ export default function Faq({ content = defaultHomeFaq }: { content?: HomeFaqCon
   return (
     <section id="faq" className="px-4 py-20 md:py-24">
       <div className="mx-auto max-w-7xl">
-        <div className="mx-auto mb-11 max-w-2xl text-center">
+        <div className="sd-cine mx-auto mb-11 max-w-2xl text-center">
           <span className="inline-flex items-center gap-2.5 text-xs uppercase tracking-[0.2em] text-[var(--brand)] font-[family-name:var(--font-mono)]">
             <span className="h-[7px] w-[7px] rounded-full bg-[var(--brand)]" />
             {content.eyebrow}
@@ -15,7 +15,7 @@ export default function Faq({ content = defaultHomeFaq }: { content?: HomeFaqCon
           <h2 className="theme-heading mt-4 text-3xl font-bold md:text-4xl">{content.heading}</h2>
         </div>
 
-        <div className="mx-auto max-w-3xl">
+        <div className="sd-stagger mx-auto max-w-3xl">
           {content.items.map((item) => (
             <details key={item.question} className="border-b border-[var(--border)]">
               <summary className="flex cursor-pointer list-none items-center justify-between gap-5 py-5 [&::-webkit-details-marker]:hidden">
