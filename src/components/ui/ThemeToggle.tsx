@@ -32,7 +32,14 @@ function syncTheme(theme: Theme) {
   window.dispatchEvent(new CustomEvent(THEME_EVENT));
 }
 
-export default function ThemeToggle({ mobile = false }: { mobile?: boolean }) {
+export default function ThemeToggle({
+  mobile = false,
+  compact = false,
+}: {
+  mobile?: boolean;
+  /** Icon-only round button for tight spots like the floating nav capsule. */
+  compact?: boolean;
+}) {
   const [theme, setTheme] = useState<Theme>('light');
 
   useEffect(() => {
@@ -51,6 +58,22 @@ export default function ThemeToggle({ mobile = false }: { mobile?: boolean }) {
 
   const isLight = theme === 'light';
   const nextTheme = isLight ? 'dark' : 'light';
+
+  if (compact) {
+    return (
+      <button
+        type="button"
+        aria-label={`Switch to ${nextTheme} mode`}
+        onClick={() => {
+          setTheme(nextTheme);
+          syncTheme(nextTheme);
+        }}
+        className="inline-flex h-9 w-9 flex-none items-center justify-center rounded-full border border-[var(--border)] bg-[var(--surface-soft)] text-[var(--text-body)] transition-colors hover:border-[var(--border-strong)] hover:text-[var(--text-strong)]"
+      >
+        {isLight ? moonIcon : sunIcon}
+      </button>
+    );
+  }
 
   return (
     <button

@@ -12,10 +12,14 @@ import { DEFAULT_OG_IMAGE, SITE_NAME, SITE_URL, organizationSchema, websiteSchem
 const displayFont = Bricolage_Grotesque({ subsets: ['latin'], variable: '--font-display' });
 const bodyFont = Inter({ subsets: ['latin'], variable: '--font-body' });
 const monoFont = IBM_Plex_Mono({ subsets: ['latin'], weight: ['400', '500', '600'], variable: '--font-mono' });
+// A choice made with the toggle wins; otherwise the OS preference decides.
+// Light is only the last resort (no storage access and no matchMedia).
 const themeInitScript = `(() => {
   try {
     const stored = window.localStorage.getItem('uponai-theme');
-    const theme = stored === 'dark' ? 'dark' : 'light';
+    const theme = stored === 'dark' || stored === 'light'
+      ? stored
+      : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
     const root = document.documentElement;
     root.dataset.theme = theme;
     root.style.colorScheme = theme;
@@ -115,7 +119,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body className={`${bodyFont.variable} ${displayFont.variable} ${monoFont.variable} bg-[var(--background)] text-[var(--foreground)] antialiased transition-[background-color,color] duration-300`}>
         <VoiceWidgetProvider>
           <Nav settings={settings} />
-          <main className="pt-20 sm:pt-24 md:pt-32">{children}</main>
+          {/* Offsets the fixed header at its docked height: 64px bar on mobile,
+              utility strip plus 72px bar from md up. */}
+          <main className="pt-16 md:pt-28">{children}</main>
           <Footer />
           <CookieConsentManager />
         </VoiceWidgetProvider>
