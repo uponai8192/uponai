@@ -344,18 +344,6 @@ h1, h2, h3, h4 {
   }
 }
 
-/* Each panel's segment of the transcript spine draws in from the top... */
-@keyframes sd-thread {
-  from { transform: translateX(-50%) scaleY(0); }
-  to { transform: translateX(-50%) scaleY(1); }
-}
-
-/* ...and its node lights up once the thread reaches it. */
-@keyframes sd-node {
-  from { opacity: 0; transform: translateX(-50%) scale(0.2); }
-  to { opacity: 1; transform: translateX(-50%) scale(1); }
-}
-
 @keyframes sd-progress {
   from { transform: scaleX(0); }
   to { transform: scaleX(1); }
@@ -377,40 +365,6 @@ h1, h2, h3, h4 {
 
 .scroll-comet {
   opacity: 0;
-}
-
-/* The transcript spine: every panel after the hero carries a segment of
-   thread at its top centre plus a node where the thread meets the section.
-   The thread draws and the node ignites as the panel enters, so the page
-   reads as one continuous conversation being written. */
-.scroll-panel {
-  position: relative;
-}
-
-.scroll-panel + .scroll-panel::before {
-  content: '';
-  position: absolute;
-  left: 50%;
-  top: 0;
-  width: 2px;
-  height: 4.5rem;
-  transform: translateX(-50%);
-  background: linear-gradient(180deg, transparent, var(--brand));
-  transform-origin: top center;
-  opacity: 0.7;
-}
-
-.scroll-panel + .scroll-panel::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  top: 4.5rem;
-  width: 9px;
-  height: 9px;
-  border-radius: 999px;
-  transform: translateX(-50%);
-  background: var(--brand);
-  box-shadow: 0 0 14px var(--brand);
 }
 
 @supports (animation-timeline: view()) {
@@ -458,18 +412,6 @@ h1, h2, h3, h4 {
   .sd-stagger > :nth-child(5) { animation-range: entry 35% entry 80%; }
   .sd-stagger > :nth-child(n + 6) { animation-range: entry 41% entry 86%; }
 
-  .scroll-panel + .scroll-panel::before {
-    animation: sd-thread linear both;
-    animation-timeline: view();
-    animation-range: entry 0% entry 22%;
-  }
-
-  .scroll-panel + .scroll-panel::after {
-    animation: sd-node linear both;
-    animation-timeline: view();
-    animation-range: entry 18% entry 30%;
-  }
-
   /* The camera pushes through the hero as the visitor scrolls into the page. */
   .scroll-panel:first-of-type {
     animation: sd-depart linear both;
@@ -496,19 +438,11 @@ h1, h2, h3, h4 {
   .sd-right,
   .sd-pop,
   .sd-stagger > *,
-  .scroll-panel:first-of-type,
-  .scroll-panel + .scroll-panel::before,
-  .scroll-panel + .scroll-panel::after {
+  .scroll-panel:first-of-type {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
     filter: none !important;
-  }
-
-  .scroll-panel + .scroll-panel::before,
-  .scroll-panel + .scroll-panel::after {
-    opacity: 0.7 !important;
-    transform: translateX(-50%) !important;
   }
 
   /* These stay at scaleX(0)/translateX(0), i.e. parked, rather than snapping
