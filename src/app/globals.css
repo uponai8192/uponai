@@ -82,11 +82,7 @@ html {
 body {
   min-height: 100vh;
   font-family: var(--font-body), system-ui, sans-serif;
-  background:
-    radial-gradient(1200px 620px at 12% -8%, var(--wash-1), transparent 60%),
-    radial-gradient(1000px 560px at 92% -4%, var(--wash-2), transparent 58%),
-    var(--background);
-  background-attachment: fixed;
+  background: var(--background);
   color: var(--foreground);
   /* The slide-in choreography translates elements sideways while they are
      still transparent; clip stops that from ever creating a horizontal
@@ -95,6 +91,20 @@ body {
   transition:
     background-color 250ms ease,
     color 250ms ease;
+}
+
+/* The viewport-anchored decorative washes, drawn once on a fixed layer.
+   These used to be body backgrounds with background-attachment: fixed, which
+   makes some browsers repaint the gradients on every scroll frame. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(1200px 620px at 12% -8%, var(--wash-1), transparent 60%),
+    radial-gradient(1000px 560px at 92% -4%, var(--wash-2), transparent 58%);
 }
 
 h1, h2, h3, h4 {
@@ -263,33 +273,14 @@ h1, h2, h3, h4 {
    out as it leaves, driven directly by scroll position (reversible, no JS,
    composited). Browsers without scroll-driven animation support simply show
    the sections static. Scrolling itself is never hijacked. */
+/* No scroll snapping, on purpose. Mandatory snapping shipped once and fought
+   the mouse wheel on Windows, yanking every tick to a panel boundary; the
+   choreography carries the drama on a free scroller instead. */
 .scroll-panel {
   display: flex;
   flex-direction: column;
   justify-content: center;
   min-height: calc(100svh - 4.75rem);
-  scroll-snap-align: start;
-}
-
-/* Magnetic full-page snapping, scoped to the homepage by :has. Panels taller
-   than the viewport scroll freely inside and snapping resumes at their edges.
-   The entrance choreography below is scrubbed by scroll position, so the snap
-   glide is exactly what plays each section's arrival. */
-html:has(.scroll-panel) {
-  scroll-snap-type: y mandatory;
-  scroll-padding-top: 4.75rem;
-}
-
-/* Without its own snap position the footer would be unreachable: the scroller
-   would always settle back onto the last panel. */
-html:has(.scroll-panel) footer {
-  scroll-snap-align: end;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html:has(.scroll-panel) {
-    scroll-snap-type: none;
-  }
 }
 
 /* Scroll choreography primitives. Every animation is scrubbed by the scroll
@@ -305,12 +296,13 @@ html:has(.scroll-panel) footer {
   to { opacity: 1; transform: none; }
 }
 
-/* Headlines dolly in from depth and snap into focus. */
+/* Headlines dolly in from depth and snap into focus. The blur is kept small:
+   it only ever covers a heading block, and cheap beats dramatic here. */
 @keyframes sd-cine {
   from {
     opacity: 0;
-    transform: translateY(48px) scale(1.16);
-    filter: blur(10px);
+    transform: translateY(48px) scale(1.12);
+    filter: blur(5px);
   }
   to {
     opacity: 1;
@@ -341,12 +333,14 @@ html:has(.scroll-panel) footer {
   }
 }
 
-/* The camera pushes through the hero as the visitor commits to the page. */
+/* The camera pushes through the hero as the visitor commits to the page.
+   Opacity and scale only: a scrubbed blur over a full-viewport surface has
+   to re-rasterize the whole panel every frame and stutters the scroll on
+   weaker GPUs. */
 @keyframes sd-depart {
   to {
-    opacity: 0.08;
-    transform: scale(1.05);
-    filter: blur(7px);
+    opacity: 0.1;
+    transform: scale(1.04);
   }
 }
 
