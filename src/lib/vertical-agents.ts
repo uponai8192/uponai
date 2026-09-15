@@ -93,6 +93,16 @@ const verticalAgents: VerticalAgent[] = [
 
 const byKey = new Map(verticalAgents.map((agent) => [agent.key, agent]));
 
+/** Every dedicated vertical agent, in display order. */
+export function getVerticalAgents(): readonly VerticalAgent[] {
+  return verticalAgents;
+}
+
+/** Look up a dedicated vertical agent by key, without the Grace fallback. */
+export function findVerticalAgent(key: string | undefined): VerticalAgent | undefined {
+  return key ? byKey.get(key) : undefined;
+}
+
 /** Vertical keys the server will accept. Anything else uses the default agent. */
 export const verticalAgentKeys = verticalAgents.map((agent) => agent.key);
 

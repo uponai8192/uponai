@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import PlatformHero from '@/components/home/PlatformHero';
-import SocialProof from '@/components/home/SocialProof';
+import AgentSwitchboard from '@/components/home/AgentSwitchboard';
 import Solutions from '@/components/home/Solutions';
 import IntroSolution from '@/components/home/IntroSolution';
 import Capabilities from '@/components/home/Capabilities';
@@ -24,17 +24,17 @@ export const metadata: Metadata = {
 // render empty.
 // Each scroll-panel fills the viewport and its content drifts in and out
 // tied to scroll position, via CSS scroll-driven animations (globals.css).
-// Scrolling stays free, nothing snaps or hijacks the wheel. The trust bar
-// shares the first panel with the hero, since 200px of logos alone cannot
-// hold a screen.
+// Scrolling stays free, nothing snaps or hijacks the wheel. The agent
+// switchboard sits outside the panels: it is several screens tall and pins
+// its own stage while the visitor scrolls through the industries.
 export default async function HomePage() {
   const content = await getHomePageContent();
   return (
     <>
       <div className="scroll-panel">
         <PlatformHero content={content.hero} />
-        <SocialProof content={content.socialProof} />
       </div>
+      <AgentSwitchboard content={content.socialProof} />
       <div className="scroll-panel">
         <Solutions content={content.solutions} />
       </div>

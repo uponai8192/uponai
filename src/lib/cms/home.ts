@@ -18,6 +18,11 @@ export const getHomePageContent = unstable_cache(
         }
       }`
     );
+    // Stories missing their required copy are dropped rather than crashing the
+    // carousel render.
+    const cmsStories = (doc?.customerStories?.stories ?? []).filter(
+      (story) => story?.quote && story?.name
+    );
     return {
       hero: doc?.hero ?? defaultHomePageContent.hero,
       socialProof: doc?.socialProof ?? defaultHomePageContent.socialProof,
@@ -29,7 +34,13 @@ export const getHomePageContent = unstable_cache(
       intro: doc?.intro ?? defaultHomePageContent.intro,
       capabilities: doc?.capabilities ?? defaultHomePageContent.capabilities,
       howItWorks: doc?.howItWorks ?? defaultHomePageContent.howItWorks,
-      customerStories: doc?.customerStories ?? defaultHomePageContent.customerStories,
+      // The carousel is built around a headline figure per story. Documents
+      // seeded before that field existed only hold "coming soon" cards, so
+      // they fall back whole until at least one story carries a metric.
+      customerStories:
+        doc?.customerStories && cmsStories.some((story) => story.metric)
+          ? { ...doc.customerStories, stories: cmsStories }
+          : defaultHomePageContent.customerStories,
       faq: doc?.faq?.items?.length ? doc.faq : defaultHomePageContent.faq,
       finalCta: doc?.finalCta ?? defaultHomePageContent.finalCta,
     };

@@ -19,8 +19,10 @@ export type HomeHeroContent = {
 };
 
 export type HomeSocialProofContent = {
+  /** Heading of the agent switchboard section. */
   lead: string;
-  leadHighlight: string;
+  /** Optional ending, rendered in the brand gradient. */
+  leadHighlight?: string;
 };
 
 export type HomeSolutionsContent = {
@@ -62,11 +64,36 @@ export type HomeHowItWorksContent = {
   ctaLabel: string;
 };
 
+export type HomeStoryTranscriptLine = { speaker: 'caller' | 'agent'; text: string };
+
+export type HomeCustomerStory = {
+  quote: string;
+  name: string;
+  role: string;
+  /** Set when a photo has been uploaded in the CMS. */
+  avatarUrl?: string;
+  /** Headline result, e.g. "+29%". The carousel hides the figure when absent. */
+  metric?: string;
+  /** What the figure measures, e.g. "more appointments booked after hours". */
+  metricLabel?: string;
+  /** Anonymised descriptor shown instead of a logo, e.g. "Multi-location dental group". */
+  company?: string;
+  /** Vertical agent key; picks the portrait and tint. Falls back by position. */
+  agentKey?: string;
+  /** Illustrative exchange for the call replay panel. */
+  transcript?: HomeStoryTranscriptLine[];
+  /** Result of the call, shown as a tag under the replay. */
+  outcome?: string;
+  /** Call length shown in the replay header, e.g. "0:42". */
+  callLength?: string;
+  /** Case study link. Falls back to the contact page. */
+  href?: string;
+};
+
 export type HomeCustomerStoriesContent = {
   eyebrow: string;
   heading: string;
-  /** avatarUrl is set when a photo has been uploaded in the CMS. */
-  stories: { quote: string; name: string; role: string; avatarUrl?: string }[];
+  stories: HomeCustomerStory[];
   ctaLabel: string;
 };
 
@@ -105,9 +132,9 @@ export const defaultHomeHero: HomeHeroContent = {
   footnoteRest: ' · No-code builder · Works with your existing stack',
 };
 
+// Mirrors the live CMS heading of the agent switchboard.
 export const defaultHomeSocialProof: HomeSocialProofContent = {
-  lead: 'Trusted by support and operations teams building their front line on',
-  leadHighlight: 'UponAI',
+  lead: 'Trusted by 200+ companies selling it under their brand',
 };
 
 export const defaultHomeSolutions: HomeSolutionsContent = {
@@ -223,13 +250,92 @@ export const defaultHomeHowItWorks: HomeHowItWorksContent = {
   ctaLabel: 'See how agents are built →',
 };
 
+// Placeholder stories: every bracketed value is waiting on a real customer
+// result. The transcripts are illustrative calls for each vertical, not quotes.
 export const defaultHomeCustomerStories: HomeCustomerStoriesContent = {
   eyebrow: 'Customer stories',
-  heading: 'What our customers say about us',
+  heading: 'Every answered call shows up in the numbers.',
   stories: [
-    { quote: 'Customer story coming soon.', name: '[Customer name]', role: '[Title], [Company]' },
-    { quote: 'Customer story coming soon.', name: '[Customer name]', role: '[Title], [Company]' },
-    { quote: 'Customer story coming soon.', name: '[Customer name]', role: '[Title], [Company]' },
+    {
+      metric: '+00%',
+      metricLabel: '[more appointments booked after hours]',
+      quote: '[Customer quote: one or two sentences, in their words, on what changed once the agent took the calls.]',
+      name: '[Customer name]',
+      role: '[Title], [Company]',
+      company: '[Multi-location dental group]',
+      agentKey: 'healthcare',
+      callLength: '0:48',
+      transcript: [
+        { speaker: 'caller', text: 'I cracked a filling and it really hurts. Can anyone see me today?' },
+        { speaker: 'agent', text: 'I am sorry to hear that. I have a 4:15 this afternoon. Shall I hold it for you?' },
+        { speaker: 'caller', text: 'Yes please, that works.' },
+      ],
+      outcome: 'Appointment booked',
+    },
+    {
+      metric: '00×',
+      metricLabel: '[more qualified consultations]',
+      quote: '[Customer quote: one or two sentences, in their words, on what changed once the agent took the calls.]',
+      name: '[Customer name]',
+      role: '[Title], [Company]',
+      company: '[Personal injury law firm]',
+      agentKey: 'legal',
+      callLength: '1:12',
+      transcript: [
+        { speaker: 'caller', text: 'I was in a car accident last week and need to talk to someone.' },
+        { speaker: 'agent', text: 'I can help with that. Was anyone injured, and has an insurer contacted you yet?' },
+        { speaker: 'caller', text: 'My neck, and yes, they called yesterday.' },
+      ],
+      outcome: 'Intake done, attorney notified',
+    },
+    {
+      metric: '00%',
+      metricLabel: '[of reservation calls handled without staff]',
+      quote: '[Customer quote: one or two sentences, in their words, on what changed once the agent took the calls.]',
+      name: '[Customer name]',
+      role: '[Title], [Company]',
+      company: '[Boutique hotel group]',
+      agentKey: 'hospitality',
+      callLength: '0:36',
+      transcript: [
+        { speaker: 'caller', text: 'Do you have a sea view room for the 12th, two nights?' },
+        { speaker: 'agent', text: 'We do. A deluxe king with a balcony is free both nights. Want me to reserve it?' },
+        { speaker: 'caller', text: 'Perfect, book it.' },
+      ],
+      outcome: 'Reservation confirmed',
+    },
+    {
+      metric: '-00%',
+      metricLabel: '[fewer order status tickets]',
+      quote: '[Customer quote: one or two sentences, in their words, on what changed once the agent took the calls.]',
+      name: '[Customer name]',
+      role: '[Title], [Company]',
+      company: '[Online home goods retailer]',
+      agentKey: 'retail',
+      callLength: '0:29',
+      transcript: [
+        { speaker: 'caller', text: 'Where is my order? It was meant to arrive yesterday.' },
+        { speaker: 'agent', text: 'Let me check. It is out for delivery and should reach you by 6pm today.' },
+        { speaker: 'caller', text: 'Great, thanks.' },
+      ],
+      outcome: 'Resolved, no ticket raised',
+    },
+    {
+      metric: '$0.0M',
+      metricLabel: '[pipeline from calls that used to go to voicemail]',
+      quote: '[Customer quote: one or two sentences, in their words, on what changed once the agent took the calls.]',
+      name: '[Customer name]',
+      role: '[Title], [Company]',
+      company: '[Regional mortgage broker]',
+      agentKey: 'financial-services',
+      callLength: '1:04',
+      transcript: [
+        { speaker: 'caller', text: 'I would like to see if I can refinance my mortgage.' },
+        { speaker: 'agent', text: 'Happy to help. Roughly how much is left on the loan, and when did you take it out?' },
+        { speaker: 'caller', text: 'About 240k, back in 2021.' },
+      ],
+      outcome: 'Qualified lead sent to CRM',
+    },
   ],
   ctaLabel: 'Read case studies →',
 };
