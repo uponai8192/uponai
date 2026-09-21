@@ -29,12 +29,16 @@ function toPlainText(html: string) {
     .replace(/<\/(p|div|li|h1|h2|h3|h4|h5|h6|blockquote|section|article)>/gi, '\n\n')
     .replace(/<[^>]+>/g, ' ')
     .replace(/&nbsp;/g, ' ')
-    .replace(/&amp;/g, '&')
     .replace(/&quot;/g, '"')
     .replace(/&#39;|&apos;/g, "'")
     .replace(/&ldquo;|&rdquo;/g, '"')
     .replace(/&lsquo;|&rsquo;/g, "'")
     .replace(/&hellip;/g, '...')
+    .replace(/&middot;/g, '·')
+    .replace(/&rarr;/g, '→')
+    .replace(/&ndash;/g, '-')
+    // Last, so an escaped entity like &amp;rarr; stays literal.
+    .replace(/&amp;/g, '&')
     .replace(/\s+/g, ' ')
     .trim();
 }
