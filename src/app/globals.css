@@ -508,13 +508,22 @@ details[open] > summary .faq-toggle {
   animation-delay: calc(var(--i, 0) * 40ms);
 }
 
+/* Below md the accent wraps, so it is inline and cannot be transformed: the
+   animation there would be a bare fade, and that fade is what costs LCP
+   (measured 4.7s median against 3.8s with it off). It is not worth a second
+   of LCP for a fade, so phones get the accent painted immediately and keep
+   the staggered words around it. */
 .hero-accent {
   display: inline;
+  animation: none;
+  opacity: 1;
 }
 
 @media (min-width: 48rem) {
   .hero-accent {
     display: inline-block;
+    animation: hero-word-in 380ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+    animation-delay: calc(var(--i, 0) * 40ms);
   }
 }
 
