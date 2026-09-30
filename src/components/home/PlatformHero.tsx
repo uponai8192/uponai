@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, type CSSProperties } from 'react';
 import { uponaiBookingUrl } from '@/lib/booking';
 import { defaultHomeHero, type HomeHeroContent } from '@/lib/home-content';
 
@@ -33,6 +33,10 @@ export default function PlatformHero({ content = defaultHomeHero }: { content?: 
   // Deterministic delays so server and client markup match (no hydration
   // mismatch). The stagger is what makes the row read as a wave; every bar
   // covers the same scale range, so only the offset varies.
+  // Tolerates stray or doubled spaces from a CMS editor: empty words would
+  // otherwise render blank spans and push the accent's delay out.
+  const words = useMemo(() => content.headline.split(/\s+/).filter(Boolean), [content.headline]);
+
   const bars = useMemo(
     () => Array.from({ length: WAVE_BAR_COUNT }, (_, i) => ({ delay: ((i * 53) % 110) / 100 })),
     [],
@@ -61,13 +65,38 @@ export default function PlatformHero({ content = defaultHomeHero }: { content?: 
       <div className="relative mx-auto max-w-7xl">
         {/* Centred tagline and calls to action */}
         <div className="mx-auto max-w-4xl text-center">
+          {/* Entrance: the plain words rise in one by one, then the accent
+              lands as a unit, draws its waveform underline and keeps a slow
+              shine running (globals.css, "Hero headline"). The accent stays
+              one span so the gradient runs unbroken across it. */}
           <h1 className="theme-heading text-5xl font-extrabold leading-[1.04] md:text-6xl">
-            {content.headline}{' '}
-            <span className="bg-gradient-to-r from-[var(--brand)] to-[var(--brand-cool)] bg-clip-text text-transparent">
-              {content.headlineAccent}
+            {words.map((word, i) => (
+              <span key={i}>
+                <span className="hero-word" style={{ '--i': i } as CSSProperties}>
+                  {word}
+                </span>{' '}
+              </span>
+            ))}
+            <span
+              className="hero-word hero-accent relative"
+              style={{ '--i': words.length } as CSSProperties}
+            >
+              <span className="hero-shine">{content.headlineAccent}</span>
+              <svg
+                aria-hidden
+                viewBox="0 0 400 16"
+                preserveAspectRatio="none"
+                className="hero-wave pointer-events-none absolute -bottom-2 left-0 h-3 w-full md:-bottom-3"
+                fill="none"
+              >
+                <path
+                  pathLength={1}
+                  d="M2 8 C 22 8 22 3 32 3 S 42 13 52 13 S 62 2 72 2 S 82 14 92 14 S 102 4 112 4 S 122 11 132 11 S 142 6 152 6 S 162 9 172 9 C 190 9 210 8 230 8 C 250 8 252 5 262 5 S 272 12 282 12 S 292 3 302 3 S 312 13 322 13 S 332 5 342 5 S 352 10 362 10 S 380 8 398 8"
+                />
+              </svg>
             </span>
           </h1>
-          <div className="mt-8 flex flex-wrap justify-center gap-3">
+          <div className="hero-fade mt-8 flex flex-wrap justify-center gap-3" style={{ '--delay': '0.75s' } as CSSProperties}>
             <a
               href={uponaiBookingUrl}
               target="_blank"
@@ -84,7 +113,10 @@ export default function PlatformHero({ content = defaultHomeHero }: { content?: 
               {content.secondaryCtaLabel}
             </button>
           </div>
-          <p className="theme-subtle mt-5 text-[12.5px] font-[family-name:var(--font-mono)]">
+          <p
+            className="hero-fade theme-subtle mt-5 text-[12.5px] font-[family-name:var(--font-mono)]"
+            style={{ '--delay': '0.9s' } as CSSProperties}
+          >
             <b className="font-medium text-[var(--brand)]">{content.footnoteStrong}</b>
             {content.footnoteRest}
           </p>
