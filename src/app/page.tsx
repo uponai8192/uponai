@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import PlatformHero from '@/components/home/PlatformHero';
 import AgentSwitchboard from '@/components/home/AgentSwitchboard';
+import IntegrationsHub from '@/components/home/IntegrationsHub';
 import Solutions from '@/components/home/Solutions';
 import IntroSolution from '@/components/home/IntroSolution';
 import Capabilities from '@/components/home/Capabilities';
@@ -35,6 +36,7 @@ export default async function HomePage() {
         <PlatformHero content={content.hero} />
       </div>
       <AgentSwitchboard content={content.socialProof} />
+      <IntegrationsHub />
       <div className="scroll-panel">
         <Solutions content={content.solutions} />
       </div>

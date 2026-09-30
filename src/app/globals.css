@@ -489,6 +489,138 @@ details[open] > summary .faq-toggle {
   .animate-marquee { animation: none; }
 }
 
+/* ── Integrations hub ────────────────────────────────────────────────────
+   A deliberately dark band in both themes: the UponAI hub sits in a
+   starfield with integration tiles drifting around it, and light pulses
+   travel along the curved connections. Tiles lean away from the pointer by
+   their depth (--mx/--my are eased by IntegrationsStage, which moves the
+   wire ends in step; keep the 22px/16px here in sync with
+   src/lib/integration-wire.ts). Everything pauses
+   while the section is off screen (data-playing), and stops outright for
+   reduced motion. Transform and opacity only. */
+.integ-band {
+  background-color: #030917;
+  background-image:
+    radial-gradient(1px 1px at 12% 18%, rgba(255, 255, 255, 0.55), transparent 60%),
+    radial-gradient(1px 1px at 68% 12%, rgba(255, 255, 255, 0.4), transparent 60%),
+    radial-gradient(1.5px 1.5px at 84% 64%, rgba(255, 255, 255, 0.45), transparent 60%),
+    radial-gradient(1px 1px at 32% 78%, rgba(255, 255, 255, 0.35), transparent 60%),
+    radial-gradient(1px 1px at 52% 38%, rgba(255, 255, 255, 0.3), transparent 60%),
+    radial-gradient(1.5px 1.5px at 6% 58%, rgba(255, 255, 255, 0.35), transparent 60%),
+    radial-gradient(ellipse 55% 45% at 50% 42%, rgba(1, 87, 163, 0.42), transparent 70%),
+    linear-gradient(180deg, #030917 0%, #071633 55%, #030917 100%);
+  background-size: 260px 260px, 340px 340px, 420px 420px, 300px 300px, 380px 380px, 460px 460px, 100% 100%, 100% 100%;
+  color: #e8eefc;
+}
+
+.integ-node {
+  position: absolute;
+  transform: translate(-50%, -50%)
+    translate3d(calc(var(--mx, 0) * var(--d) * -22px), calc(var(--my, 0) * var(--d) * -16px), 0);
+}
+
+.integ-tile {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 28%;
+  background: linear-gradient(160deg, rgba(30, 52, 96, 0.72), rgba(9, 20, 44, 0.86));
+  box-shadow:
+    inset 0 0 0 1px rgba(140, 180, 255, 0.14),
+    0 10px 30px -12px rgba(0, 0, 0, 0.7);
+  opacity: calc(0.45 + var(--d) * 0.55);
+  animation: integ-float 7s ease-in-out infinite;
+  animation-delay: calc(var(--delay) * -1s);
+  transition: opacity 200ms ease, box-shadow 200ms ease;
+}
+
+.integ-node:hover .integ-tile {
+  opacity: 1;
+  box-shadow:
+    inset 0 0 0 1px rgba(140, 200, 255, 0.5),
+    0 0 28px -4px rgba(77, 163, 232, 0.65);
+}
+
+.integ-label {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 8px);
+  translate: -50% 4px;
+  white-space: nowrap;
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  background: rgba(8, 20, 44, 0.92);
+  box-shadow: inset 0 0 0 1px rgba(140, 180, 255, 0.25);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease, translate 180ms ease;
+}
+
+.integ-node:hover .integ-label {
+  opacity: 1;
+  translate: -50% 0;
+}
+
+@keyframes integ-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-7px); }
+}
+
+.integ-wire {
+  stroke: rgba(120, 175, 255, 0.16);
+  stroke-width: 1;
+  transition: stroke 200ms ease;
+}
+
+.integ-pulse {
+  stroke: #8fd0ff;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 7 100;
+  opacity: 0.85;
+  animation: integ-pulse 3.6s linear infinite;
+}
+
+.integ-pulse[data-dir="in"] {
+  animation-direction: reverse;
+}
+
+@keyframes integ-pulse {
+  from { stroke-dashoffset: 7; }
+  to { stroke-dashoffset: -100; }
+}
+
+.integ-halo {
+  animation: integ-halo 3.2s cubic-bezier(0.22, 0.61, 0.36, 1) infinite;
+}
+
+@keyframes integ-halo {
+  0% { transform: scale(0.9); opacity: 0.55; }
+  100% { transform: scale(2.1); opacity: 0; }
+}
+
+.integ-stage[data-playing="false"] .integ-tile,
+.integ-stage[data-playing="false"] .integ-pulse,
+.integ-stage[data-playing="false"] .integ-halo,
+.integ-stage[data-playing="false"] .animate-marquee {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .integ-tile,
+  .integ-pulse,
+  .integ-halo {
+    animation: none;
+  }
+  .integ-pulse,
+  .integ-halo {
+    opacity: 0;
+  }
+}
+
 /* Listening halo on the vertical voice-agent card. */
 @keyframes agent-halo {
   0% { transform: scale(1); opacity: 0.45; }
