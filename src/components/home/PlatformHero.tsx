@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState, type CSSProperties } from 'react';
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import { uponaiBookingUrl } from '@/lib/booking';
 import { defaultHomeHero, type HomeHeroContent } from '@/lib/home-content';
 
@@ -42,6 +42,19 @@ export default function PlatformHero({ content = defaultHomeHero }: { content?: 
     [],
   );
 
+  // The shine repaints the headline for as long as it runs, so it only runs
+  // while the headline is actually on screen.
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  useEffect(() => {
+    const el = headingRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([entry]) => {
+      el.dataset.shine = entry.isIntersecting ? 'on' : 'off';
+    });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   useEffect(() => {
     const tabTimer = setInterval(() => {
       setActiveTab((i) => (i + 1) % channelTabs.length);
@@ -69,7 +82,7 @@ export default function PlatformHero({ content = defaultHomeHero }: { content?: 
               lands as a unit, draws its waveform underline and keeps a slow
               shine running (globals.css, "Hero headline"). The accent stays
               one span so the gradient runs unbroken across it. */}
-          <h1 className="theme-heading text-5xl font-extrabold leading-[1.04] md:text-6xl">
+          <h1 ref={headingRef} className="theme-heading text-5xl font-extrabold leading-[1.04] md:text-6xl">
             {words.map((word, i) => (
               <span key={i}>
                 <span className="hero-word" style={{ '--i': i } as CSSProperties}>
