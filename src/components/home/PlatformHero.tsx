@@ -96,7 +96,7 @@ export default function PlatformHero({ content = defaultHomeHero }: { content?: 
               </svg>
             </span>
           </h1>
-          <div className="hero-fade mt-8 flex flex-wrap justify-center gap-3" style={{ '--delay': '0.75s' } as CSSProperties}>
+          <div className="hero-fade mt-8 flex flex-wrap justify-center gap-3" style={{ '--delay': '0.32s' } as CSSProperties}>
             <a
               href={uponaiBookingUrl}
               target="_blank"
@@ -115,7 +115,7 @@ export default function PlatformHero({ content = defaultHomeHero }: { content?: 
           </div>
           <p
             className="hero-fade theme-subtle mt-5 text-[12.5px] font-[family-name:var(--font-mono)]"
-            style={{ '--delay': '0.9s' } as CSSProperties}
+            style={{ '--delay': '0.4s' } as CSSProperties}
           >
             <b className="font-medium text-[var(--brand)]">{content.footnoteStrong}</b>
             {content.footnoteRest}
