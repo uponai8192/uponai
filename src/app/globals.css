@@ -690,14 +690,14 @@ html[data-theme='dark'] .integ-band {
 }
 
 /* Scroll choreography. On large screens with scroll-driven animation and
-   motion allowed, the section becomes a scroll track of 180svh with its
+   motion allowed, the section becomes a scroll track of 220svh with its
    scene pinned inside for 100svh (IntegrationsHub). The whole thing is
    driven by one view timeline on the track, measured with the `cover`
    range: cover 0% is the track top reaching the bottom of the screen,
-   cover 100% is the track bottom reaching the top. With a 180svh track and
-   a 100svh pin, the pin engages at 100/280 = 35.714% and releases at
-   180/280 = 64.286%, and every range below is placed against those two
-   points. None of the named ranges fit a subject taller than the
+   cover 100% is the track bottom reaching the top. With a 220svh track and
+   a 100svh pin, the pin engages at 100/320 = 31.25% and releases at
+   220/320 = 68.75%, and every keyframe below is placed against those two
+   points. The 120svh between them is the hold. None of the named ranges fit a subject taller than the
    scrollport: entry 100% and entry-crossing 100% are both the pin
    releasing, exit 0% and exit-crossing 0% are both the pin engaging, so
    any of them runs the exit during the hold (measured, not guessed: that
@@ -726,7 +726,7 @@ html[data-theme='dark'] .integ-band {
 @supports (animation-timeline: view()) {
   @media (min-width: 64rem) and (prefers-reduced-motion: no-preference) {
     .integ-track {
-      height: 180svh;
+      height: 220svh;
     }
 
     .integ-pin {
@@ -803,58 +803,58 @@ html[data-theme='dark'] .integ-band {
 }
 
 /* Keyframe offsets are points on the cover range: the pin engages at
-   35.714% and releases at 64.286% (see above), the band is fully opaque
+   31.25% and releases at 68.75% (see above), the band is fully opaque
    from 60% of the way in, and symmetrically starts fading 60% of the way
    out. Linear timing, so every offset is a scroll position. */
 @keyframes integ-woosh {
   0% {
-    transform: translateY(6%) scale(0.68);
-    opacity: 0.2;
+    transform: translateY(10%) scale(0.5);
+    opacity: 0;
   }
-  21.43% {
+  18.75% {
     opacity: 1;
   }
-  35.714% {
+  31.25% {
     transform: none;
   }
-  64.286% {
+  68.75% {
     transform: none;
   }
-  78.57% {
+  81.25% {
     opacity: 1;
   }
   100% {
-    transform: translateY(-6%) scale(0.68);
-    opacity: 0.2;
+    transform: translateY(-10%) scale(0.5);
+    opacity: 0;
   }
 }
 
 /* Paints, so kept apart from the composited transform and opacity; it only
    changes while the band is changing size. */
 @keyframes integ-radius {
-  0% { border-radius: 48px; }
-  35.714% { border-radius: 0; }
-  64.286% { border-radius: 0; }
-  100% { border-radius: 48px; }
+  0% { border-radius: 64px; }
+  31.25% { border-radius: 0; }
+  68.75% { border-radius: 0; }
+  100% { border-radius: 64px; }
 }
 
 /* Tiles rush in from depth and settle as the pin engages; on the way out
    they lift back off the same way. */
 @keyframes integ-tiles {
   0%, 6% {
-    transform: scale(1.6);
+    transform: scale(1.9);
     opacity: 0;
   }
-  35.714% {
+  31.25% {
     transform: none;
     opacity: 1;
   }
-  64.286% {
+  68.75% {
     transform: none;
     opacity: 1;
   }
   94%, 100% {
-    transform: scale(1.6);
+    transform: scale(1.9);
     opacity: 0;
   }
 }
@@ -862,20 +862,20 @@ html[data-theme='dark'] .integ-band {
 /* Rises in last and leaves first. Composes with the headline's Tailwind
    translate, which uses the separate translate property. */
 @keyframes integ-headline {
-  0%, 14% {
-    transform: translateY(56px) scale(0.92);
+  0%, 12% {
+    transform: translateY(72px) scale(0.9);
     opacity: 0;
   }
-  35.714% {
+  31.25% {
     transform: none;
     opacity: 1;
   }
-  64.286% {
+  68.75% {
     transform: none;
     opacity: 1;
   }
-  86%, 100% {
-    transform: translateY(-56px) scale(0.92);
+  88%, 100% {
+    transform: translateY(-72px) scale(0.9);
     opacity: 0;
   }
 }
