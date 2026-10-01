@@ -707,8 +707,8 @@ html[data-theme='dark'] .integ-band {
 
    Arriving: the band swoops in from a small rounded card, growing to fill
    the screen exactly as the pin takes over, tiles rushing in from depth
-   and the headline rising last. Leaving: the same in reverse, the band
-   shrinking and dissolving as it scrolls away over the next section.
+   and the headline rising last. Leaving: the same played backwards, over
+   the same distance, as it scrolls away over the next section.
 
    The pin and the track height are set here, behind the same gate as the
    motion, so no one gets a pinned hold without it. Everywhere else, phones
@@ -758,112 +758,124 @@ html[data-theme='dark'] .integ-band {
       }
     }
 
-    /* The radius has its own animation so transform and opacity can stay on
-       the compositor. Both exit animations fill forwards only, so they can
-       never hold anything invisible before their range starts. */
+    /* One animation per element, spanning the whole cover range with the
+       hold written into its keyframes, so each rule carries a single range.
+       The exit is the entry played backwards.
+
+       Keep the animation, animation-timeline and animation-range lists the
+       same length. When the animation list is longer than the timeline
+       list, the production minifier (Lightning CSS) cannot keep the
+       shorthand, expands it to longhands and writes animation-duration: 0s,
+       which a scroll-driven animation reads as "already finished": the
+       band then sits at its last keyframe for the whole section. That is
+       what broke the first build of this. The radius has its own animation
+       so transform and opacity can stay on the compositor. */
     .integ-woosh {
-      transform-origin: 50% 60%;
+      transform-origin: 50% 50%;
       animation:
-        integ-woosh-in linear both,
-        integ-radius-in linear both,
-        integ-woosh-out linear forwards,
-        integ-radius-out linear forwards;
-      animation-timeline: --integ;
-      animation-range:
-        cover 0% cover 35.714%,
-        cover 0% cover 35.714%,
-        cover 64.286% cover 92%,
-        cover 64.286% cover 92%;
+        integ-woosh linear both,
+        integ-radius linear both;
+      animation-timeline: --integ, --integ;
+      animation-range: cover 0% cover 100%, cover 0% cover 100%;
     }
 
     .integ-tiles {
-      animation: integ-tiles-in linear both;
+      animation: integ-tiles linear both;
       animation-timeline: --integ;
-      animation-range: cover 6% cover 42%;
+      animation-range: cover 0% cover 100%;
     }
 
     .integ-headline {
-      animation: integ-headline-in linear both;
+      animation: integ-headline linear both;
       animation-timeline: --integ;
-      animation-range: cover 18% cover 44%;
-    }
-
-    .integ-content {
-      animation: integ-content-out linear forwards;
-      animation-timeline: --integ;
-      animation-range: cover 64.286% cover 84%;
+      animation-range: cover 0% cover 100%;
     }
 
     /* Shift+Tab back up from the next section scrolls the CTA into view at
        a point where the exit has already hidden it. A keyboard user inside
-       the band always gets it fully visible. */
+       the band always gets the whole scene fully visible. */
     .integ-woosh:has(:focus-visible),
-    .integ-woosh:has(:focus-visible) .integ-content {
+    .integ-woosh:has(:focus-visible) .integ-tiles,
+    .integ-woosh:has(:focus-visible) .integ-headline {
       animation: none;
     }
   }
 }
 
-@keyframes integ-woosh-in {
-  from {
+/* Keyframe offsets are points on the cover range: the pin engages at
+   35.714% and releases at 64.286% (see above), the band is fully opaque
+   from 60% of the way in, and symmetrically starts fading 60% of the way
+   out. Linear timing, so every offset is a scroll position. */
+@keyframes integ-woosh {
+  0% {
     transform: translateY(6%) scale(0.68);
     opacity: 0.2;
   }
-  60% {
+  21.43% {
     opacity: 1;
   }
-  to {
+  35.714% {
     transform: none;
+  }
+  64.286% {
+    transform: none;
+  }
+  78.57% {
     opacity: 1;
   }
-}
-
-@keyframes integ-woosh-out {
-  to {
-    transform: translateY(-4%) scale(0.86);
-    opacity: 0;
+  100% {
+    transform: translateY(-6%) scale(0.68);
+    opacity: 0.2;
   }
 }
 
 /* Paints, so kept apart from the composited transform and opacity; it only
-   runs while the band is changing size, so the cost is brief. */
-@keyframes integ-radius-in {
-  from { border-radius: 48px; }
-  to { border-radius: 0; }
+   changes while the band is changing size. */
+@keyframes integ-radius {
+  0% { border-radius: 48px; }
+  35.714% { border-radius: 0; }
+  64.286% { border-radius: 0; }
+  100% { border-radius: 48px; }
 }
 
-@keyframes integ-radius-out {
-  to { border-radius: 40px; }
-}
-
-/* Tiles arrive from outside their places, the way the camera would push in. */
-@keyframes integ-tiles-in {
-  from {
+/* Tiles rush in from depth and settle as the pin engages; on the way out
+   they lift back off the same way. */
+@keyframes integ-tiles {
+  0%, 6% {
     transform: scale(1.6);
     opacity: 0;
   }
-  to {
+  35.714% {
     transform: none;
     opacity: 1;
   }
+  64.286% {
+    transform: none;
+    opacity: 1;
+  }
+  94%, 100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
 }
 
-/* Composes with the headline's Tailwind translate, which uses the separate
-   translate property rather than transform. */
-@keyframes integ-headline-in {
-  from {
+/* Rises in last and leaves first. Composes with the headline's Tailwind
+   translate, which uses the separate translate property. */
+@keyframes integ-headline {
+  0%, 14% {
     transform: translateY(56px) scale(0.92);
     opacity: 0;
   }
-  to {
+  35.714% {
     transform: none;
     opacity: 1;
   }
-}
-
-@keyframes integ-content-out {
-  to {
-    transform: translateY(-40px) scale(0.96);
+  64.286% {
+    transform: none;
+    opacity: 1;
+  }
+  86%, 100% {
+    transform: translateY(-56px) scale(0.92);
     opacity: 0;
   }
 }
