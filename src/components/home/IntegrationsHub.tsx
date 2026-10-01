@@ -65,7 +65,7 @@ const wireHoverCss = integrations
   .filter((i) => i >= 0)
   .map(
     (i) =>
-      `.integ-stage:has([data-node="${i}"]:hover) [data-wire="${i}"]{stroke:rgba(143,208,255,.75);stroke-width:1.5}`,
+      `.integ-stage:has([data-node="${i}"]:hover) [data-wire="${i}"]{stroke:var(--integ-wire-hover);stroke-width:1.5}`,
   )
   .join('');
 
@@ -160,10 +160,10 @@ export default function IntegrationsHub() {
                 className="integ-headline relative z-10 flex flex-col items-center text-center md:absolute md:left-1/2 md:w-[62cqw] md:top-[44.444%] lg:w-[46cqw] md:-translate-x-1/2 md:-translate-y-[24px]"
               >
                 <span className="relative grid place-items-center">
-                  <span aria-hidden className="integ-halo absolute inset-0 rounded-full bg-[#4da3e8]/35" />
+                  <span aria-hidden className="integ-halo absolute inset-0 rounded-full bg-[var(--integ-halo)]" />
                   {/* logo.png is a 1024 square with the mark in its middle 38%, so
                       the image box is oversized and clipped by the pill. */}
-                  <span className="relative grid h-12 w-32 place-items-center overflow-hidden rounded-full bg-white shadow-[0_0_40px_rgba(77,163,232,0.55)]">
+                  <span className="relative grid h-12 w-32 place-items-center overflow-hidden rounded-full bg-white shadow-[0_0_40px_var(--integ-glow)]">
                     <Image src="/logo.png" alt="UponAI" width={150} height={150} className="absolute h-[150px] w-[150px] max-w-none" />
                   </span>
                 </span>
@@ -172,18 +172,18 @@ export default function IntegrationsHub() {
                   <span className="text-6xl font-bold leading-none tracking-tight md:text-[min(7cqw,6.5rem,11svh)]">
                     <CountUp to={copy.count} suffix="+" />
                   </span>
-                  <span className="mt-3 text-sm font-semibold uppercase tracking-[0.35em] text-[#b9d4f5] font-[family-name:var(--font-mono)] md:text-base">
+                  <span className="mt-3 text-sm font-semibold uppercase tracking-[0.35em] text-[var(--integ-label)] font-[family-name:var(--font-mono)] md:text-base">
                     {' '}
                     {copy.label}
                   </span>
                 </h2>
-                <p className="mt-4 text-base font-medium text-[#d6e3f7] md:text-lg">{copy.tagline}</p>
-                <p className="integ-lede mt-2 max-w-md text-sm leading-relaxed text-[#8ea3c2]">{copy.lede}</p>
+                <p className="mt-4 text-base font-medium text-[var(--integ-text-soft)] md:text-lg">{copy.tagline}</p>
+                <p className="integ-lede mt-2 max-w-md text-sm leading-relaxed text-[var(--integ-text-dim)]">{copy.lede}</p>
                 <a
                   href={uponaiBookingUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="mt-6 rounded-full bg-[#1668b5] px-6 py-2.5 text-sm font-bold text-white shadow-[0_8px_24px_-8px_rgba(77,163,232,0.8)] transition-colors hover:bg-[#2e7cc4]"
+                  className="mt-6 rounded-full bg-[var(--integ-cta-bg)] px-6 py-2.5 text-sm font-bold text-[var(--integ-cta-text)] shadow-[0_8px_24px_-8px_var(--integ-glow)] transition-colors hover:bg-[var(--integ-cta-hover)]"
                 >
                   {copy.ctaLabel}
                 </a>

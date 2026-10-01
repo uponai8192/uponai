@@ -617,15 +617,66 @@ h1[data-shine='off'] .hero-shine {
 }
 
 /* ── Integrations hub ────────────────────────────────────────────────────
-   A deliberately dark band in both themes: the UponAI hub sits in a
-   starfield with integration tiles drifting around it, and light pulses
-   travel along the curved connections. Tiles lean away from the pointer by
-   their depth (--mx/--my are eased by IntegrationsStage, which moves the
-   wire ends in step; keep the 22px/16px here in sync with
-   src/lib/integration-wire.ts). Everything pauses
-   while the section is off screen (data-playing), and stops outright for
-   reduced motion. Transform and opacity only. */
+   The UponAI hub sits in a starfield with integration tiles drifting around
+   it, and pulses travel along the curved connections. The scene is themed
+   through the --integ-* tokens: a pale blue sky in light mode, deep navy in
+   dark mode, so the band never fights the page around it. Tiles lean away
+   from the pointer by their depth (--mx/--my are eased by IntegrationsStage,
+   which moves the wire ends in step; keep the 22px/16px here in sync with
+   src/lib/integration-wire.ts). Everything pauses while the section is off
+   screen (data-playing), and stops outright for reduced motion. */
 .integ-band {
+  --integ-text: #1b2a41;
+  --integ-text-soft: #2f4b6c;
+  --integ-text-dim: #4a5f78;
+  --integ-label: #0157a3;
+  /* Tiles stay navy in both themes: the brand marks were drawn for a dark
+     surface (pale yellows and limes vanish on white), and a dark tile on
+     the pale sky reads as the same scene as the dark-mode one. */
+  --integ-tile-bg: linear-gradient(160deg, #22406c, #0d1c3a);
+  --integ-tile-ring: rgba(140, 180, 255, 0.22);
+  --integ-tile-shadow: rgba(1, 87, 163, 0.35);
+  --integ-tile-ring-hover: rgba(77, 163, 232, 0.75);
+  --integ-label-bg: rgba(8, 20, 44, 0.94);
+  --integ-label-text: #e8eefc;
+  --integ-glow: rgba(1, 87, 163, 0.32);
+  --integ-wire: rgba(1, 87, 163, 0.2);
+  --integ-wire-hover: rgba(1, 87, 163, 0.65);
+  --integ-pulse: #1668b5;
+  --integ-halo: rgba(1, 87, 163, 0.28);
+  --integ-cta-bg: #0157a3;
+  --integ-cta-hover: #1668b5;
+  --integ-cta-text: #ffffff;
+  background-color: #e4eefa;
+  background-image:
+    radial-gradient(1px 1px at 12% 18%, rgba(1, 87, 163, 0.35), transparent 60%),
+    radial-gradient(1px 1px at 68% 12%, rgba(1, 87, 163, 0.28), transparent 60%),
+    radial-gradient(1.5px 1.5px at 84% 64%, rgba(1, 87, 163, 0.3), transparent 60%),
+    radial-gradient(1px 1px at 32% 78%, rgba(1, 87, 163, 0.25), transparent 60%),
+    radial-gradient(1px 1px at 52% 38%, rgba(1, 87, 163, 0.22), transparent 60%),
+    radial-gradient(1.5px 1.5px at 6% 58%, rgba(1, 87, 163, 0.25), transparent 60%),
+    radial-gradient(ellipse 55% 45% at 50% 42%, rgba(255, 255, 255, 0.85), transparent 70%),
+    linear-gradient(180deg, #eef5fd 0%, #d9e7f8 55%, #eef5fd 100%);
+  background-size: 260px 260px, 340px 340px, 420px 420px, 300px 300px, 380px 380px, 460px 460px, 100% 100%, 100% 100%;
+  color: var(--integ-text);
+}
+
+html[data-theme='dark'] .integ-band {
+  --integ-text: #e8eefc;
+  --integ-text-soft: #d6e3f7;
+  --integ-text-dim: #8ea3c2;
+  --integ-label: #b9d4f5;
+  --integ-tile-bg: linear-gradient(160deg, rgba(30, 52, 96, 0.72), rgba(9, 20, 44, 0.86));
+  --integ-tile-ring: rgba(140, 180, 255, 0.14);
+  --integ-tile-shadow: rgba(0, 0, 0, 0.7);
+  --integ-tile-ring-hover: rgba(140, 200, 255, 0.5);
+  --integ-glow: rgba(77, 163, 232, 0.6);
+  --integ-wire: rgba(120, 175, 255, 0.16);
+  --integ-wire-hover: rgba(143, 208, 255, 0.75);
+  --integ-pulse: #8fd0ff;
+  --integ-halo: rgba(77, 163, 232, 0.35);
+  --integ-cta-bg: #1668b5;
+  --integ-cta-hover: #2e7cc4;
   background-color: #030917;
   background-image:
     radial-gradient(1px 1px at 12% 18%, rgba(255, 255, 255, 0.55), transparent 60%),
@@ -636,19 +687,33 @@ h1[data-shine='off'] .hero-shine {
     radial-gradient(1.5px 1.5px at 6% 58%, rgba(255, 255, 255, 0.35), transparent 60%),
     radial-gradient(ellipse 55% 45% at 50% 42%, rgba(1, 87, 163, 0.42), transparent 70%),
     linear-gradient(180deg, #030917 0%, #071633 55%, #030917 100%);
-  background-size: 260px 260px, 340px 340px, 420px 420px, 300px 300px, 380px 380px, 460px 460px, 100% 100%, 100% 100%;
-  color: #e8eefc;
 }
 
 /* Scroll choreography. On large screens with scroll-driven animation and
-   motion allowed, the section becomes a scroll track taller than the screen
-   with its scene pinned inside (IntegrationsHub): the band grows in from a
-   rounded card until it fills the screen, holds while pinned, then fades to
-   the page background as the pin lets go. The pin and the track height are
-   set here, behind the same gate as the motion, so no one gets a pinned hold
-   without it. Everywhere else, phones and tablets included, the band simply
-   sits in the page, and its top and bottom edges feather into the page
-   background so a dark band never cuts hard across a light page. */
+   motion allowed, the section becomes a scroll track of 180svh with its
+   scene pinned inside for 100svh (IntegrationsHub). The whole thing is
+   driven by one view timeline on the track, measured with the `cover`
+   range: cover 0% is the track top reaching the bottom of the screen,
+   cover 100% is the track bottom reaching the top. With a 180svh track and
+   a 100svh pin, the pin engages at 100/280 = 35.714% and releases at
+   180/280 = 64.286%, and every range below is placed against those two
+   points. None of the named ranges fit a subject taller than the
+   scrollport: entry 100% and entry-crossing 100% are both the pin
+   releasing, exit 0% and exit-crossing 0% are both the pin engaging, so
+   any of them runs the exit during the hold (measured, not guessed: that
+   was the blank screen). The percentages assume the scrollport is 100svh;
+   a tablet whose toolbar collapses mid-scroll shifts them by a few
+   percent, which is tolerable.
+
+   Arriving: the band swoops in from a small rounded card, growing to fill
+   the screen exactly as the pin takes over, tiles rushing in from depth
+   and the headline rising last. Leaving: the same in reverse, the band
+   shrinking and dissolving as it scrolls away over the next section.
+
+   The pin and the track height are set here, behind the same gate as the
+   motion, so no one gets a pinned hold without it. Everywhere else, phones
+   and tablets included, the band simply sits in the page, and its top and
+   bottom edges feather into the page background. */
 .integ-track {
   view-timeline: --integ block;
 }
@@ -693,44 +758,45 @@ h1[data-shine='off'] .hero-shine {
       }
     }
 
-    /* Entry runs until the track's top reaches the top of the screen, the
-       moment the pin engages; exit starts when the pin lets go. The radius
-       has its own animation so the transform and opacity can stay on the
-       compositor. The fade-outs fill forwards only, so they cannot hold
-       anything invisible before their range starts. */
+    /* The radius has its own animation so transform and opacity can stay on
+       the compositor. Both exit animations fill forwards only, so they can
+       never hold anything invisible before their range starts. */
     .integ-woosh {
+      transform-origin: 50% 60%;
       animation:
-        integ-woosh linear both,
-        integ-woosh-radius linear both,
-        integ-fade-out linear forwards;
+        integ-woosh-in linear both,
+        integ-radius-in linear both,
+        integ-woosh-out linear forwards,
+        integ-radius-out linear forwards;
       animation-timeline: --integ;
       animation-range:
-        entry 0% entry 100%,
-        entry 0% entry 100%,
-        exit 0% exit 55%;
+        cover 0% cover 35.714%,
+        cover 0% cover 35.714%,
+        cover 64.286% cover 92%,
+        cover 64.286% cover 92%;
     }
 
     .integ-tiles {
       animation: integ-tiles-in linear both;
       animation-timeline: --integ;
-      animation-range: entry 30% entry 100%;
+      animation-range: cover 6% cover 42%;
     }
 
     .integ-headline {
       animation: integ-headline-in linear both;
       animation-timeline: --integ;
-      animation-range: entry 55% entry 100%;
+      animation-range: cover 18% cover 44%;
     }
 
     .integ-content {
       animation: integ-content-out linear forwards;
       animation-timeline: --integ;
-      animation-range: exit 0% exit 45%;
+      animation-range: cover 64.286% cover 84%;
     }
 
     /* Shift+Tab back up from the next section scrolls the CTA into view at
-       a point where the exit fade has already hidden it. A keyboard user
-       inside the band always gets it fully visible. */
+       a point where the exit has already hidden it. A keyboard user inside
+       the band always gets it fully visible. */
     .integ-woosh:has(:focus-visible),
     .integ-woosh:has(:focus-visible) .integ-content {
       animation: none;
@@ -738,10 +804,13 @@ h1[data-shine='off'] .hero-shine {
   }
 }
 
-@keyframes integ-woosh {
+@keyframes integ-woosh-in {
   from {
-    transform: scale(0.84);
-    opacity: 0.4;
+    transform: translateY(6%) scale(0.68);
+    opacity: 0.2;
+  }
+  60% {
+    opacity: 1;
   }
   to {
     transform: none;
@@ -749,21 +818,28 @@ h1[data-shine='off'] .hero-shine {
   }
 }
 
-/* Paints, so it is kept apart from the composited transform and opacity. It
-   only runs during the entry, so the cost is brief. */
-@keyframes integ-woosh-radius {
-  from { border-radius: 56px; }
+@keyframes integ-woosh-out {
+  to {
+    transform: translateY(-4%) scale(0.86);
+    opacity: 0;
+  }
+}
+
+/* Paints, so kept apart from the composited transform and opacity; it only
+   runs while the band is changing size, so the cost is brief. */
+@keyframes integ-radius-in {
+  from { border-radius: 48px; }
   to { border-radius: 0; }
 }
 
-@keyframes integ-fade-out {
-  to { opacity: 0; }
+@keyframes integ-radius-out {
+  to { border-radius: 40px; }
 }
 
 /* Tiles arrive from outside their places, the way the camera would push in. */
 @keyframes integ-tiles-in {
   from {
-    transform: scale(1.35);
+    transform: scale(1.6);
     opacity: 0;
   }
   to {
@@ -776,7 +852,7 @@ h1[data-shine='off'] .hero-shine {
    translate property rather than transform. */
 @keyframes integ-headline-in {
   from {
-    transform: translateY(40px) scale(0.94);
+    transform: translateY(56px) scale(0.92);
     opacity: 0;
   }
   to {
@@ -787,7 +863,7 @@ h1[data-shine='off'] .hero-shine {
 
 @keyframes integ-content-out {
   to {
-    transform: translateY(-48px) scale(0.97);
+    transform: translateY(-40px) scale(0.96);
     opacity: 0;
   }
 }
@@ -804,10 +880,10 @@ h1[data-shine='off'] .hero-shine {
   width: 100%;
   height: 100%;
   border-radius: 28%;
-  background: linear-gradient(160deg, rgba(30, 52, 96, 0.72), rgba(9, 20, 44, 0.86));
+  background: var(--integ-tile-bg);
   box-shadow:
-    inset 0 0 0 1px rgba(140, 180, 255, 0.14),
-    0 10px 30px -12px rgba(0, 0, 0, 0.7);
+    inset 0 0 0 1px var(--integ-tile-ring),
+    0 10px 30px -12px var(--integ-tile-shadow);
   opacity: calc(0.45 + var(--d) * 0.55);
   animation: integ-float 7s ease-in-out infinite;
   animation-delay: calc(var(--delay) * -1s);
@@ -817,8 +893,8 @@ h1[data-shine='off'] .hero-shine {
 .integ-node:hover .integ-tile {
   opacity: 1;
   box-shadow:
-    inset 0 0 0 1px rgba(140, 200, 255, 0.5),
-    0 0 28px -4px rgba(77, 163, 232, 0.65);
+    inset 0 0 0 1px var(--integ-tile-ring-hover),
+    0 0 28px -4px var(--integ-glow);
 }
 
 .integ-label {
@@ -831,8 +907,9 @@ h1[data-shine='off'] .hero-shine {
   padding: 3px 10px;
   font-size: 12px;
   font-weight: 600;
-  background: rgba(8, 20, 44, 0.92);
-  box-shadow: inset 0 0 0 1px rgba(140, 180, 255, 0.25);
+  color: var(--integ-label-text);
+  background: var(--integ-label-bg);
+  box-shadow: inset 0 0 0 1px var(--integ-tile-ring-hover);
   opacity: 0;
   pointer-events: none;
   transition: opacity 180ms ease, translate 180ms ease;
@@ -849,13 +926,13 @@ h1[data-shine='off'] .hero-shine {
 }
 
 .integ-wire {
-  stroke: rgba(120, 175, 255, 0.16);
+  stroke: var(--integ-wire);
   stroke-width: 1;
   transition: stroke 200ms ease;
 }
 
 .integ-pulse {
-  stroke: #8fd0ff;
+  stroke: var(--integ-pulse);
   stroke-width: 2;
   stroke-linecap: round;
   stroke-dasharray: 7 100;
@@ -1035,12 +1112,6 @@ h1[data-shine='off'] .hero-shine {
 
 html[data-theme='light'] .text-white {
   color: var(--text-strong);
-}
-
-/* The integrations band stays dark in both themes, so the light-theme
-   remap above would put dark text on its dark background. */
-html[data-theme='light'] .integ-content .text-white {
-  color: #ffffff;
 }
 
 html[data-theme='light'] .text-slate-200,
