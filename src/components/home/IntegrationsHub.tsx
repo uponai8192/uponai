@@ -100,6 +100,15 @@ export default function IntegrationsHub() {
               stageWidth={STAGE_W}
               stageHeight={STAGE_H}
               className="integ-stage relative mx-auto w-full max-w-[1500px] md:h-[min(56.25vw,844px)] md:min-h-[700px] md:[container-type:inline-size]">
+              {/* Bloom behind the hub: swells as the band fills the screen,
+                  settles for the hold, then flares past the camera on the way
+                  out. Before the tile layer in the DOM so it paints under the
+                  wires and tiles. */}
+              <span
+                aria-hidden
+                className="integ-bloom pointer-events-none absolute left-1/2 top-[44.444%] hidden h-[70vmin] w-[70vmin] rounded-full md:block"
+              />
+
               {/* Wires and tiles: desktop only, decorative. The names are listed
                   for assistive tech below. */}
               <div aria-hidden className="integ-tiles absolute inset-0 hidden md:block">
@@ -136,7 +145,9 @@ export default function IntegrationsHub() {
                   <span
                     key={item.name}
                     data-node={i}
-                    className="integ-node"
+                    // Unwired tiles drift with the scroll by depth; wired ones
+                    // stay put so the wires IntegrationsStage aims stay attached.
+                    className={item.wired ? 'integ-node' : 'integ-node integ-drift'}
                     style={
                       {
                         left: `${(item.x / STAGE_W) * 100}%`,

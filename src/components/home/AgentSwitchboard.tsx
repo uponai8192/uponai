@@ -189,7 +189,10 @@ export default function AgentSwitchboard({
     >
       <div
         ref={stickyRef}
-        className="sticky top-[4.75rem] flex h-[calc(100svh-4.75rem)] items-center py-4 md:py-8"
+        // sw-stage: the integrations band that follows pushes this stage
+        // toward the camera and dissolves it as it arrives (globals.css,
+        // "Scroll choreography").
+        className="sw-stage sticky top-[4.75rem] flex h-[calc(100svh-4.75rem)] items-center py-4 md:py-8"
       >
         <div className="mx-auto grid w-full max-w-7xl items-center gap-5 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-12 lg:gap-16">
           {/* Dial */}

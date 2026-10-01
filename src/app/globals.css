@@ -705,10 +705,14 @@ html[data-theme='dark'] .integ-band {
    a tablet whose toolbar collapses mid-scroll shifts them by a few
    percent, which is tolerable.
 
-   Arriving: the band swoops in from a small rounded card, growing to fill
-   the screen exactly as the pin takes over, tiles rushing in from depth
-   and the headline rising last. Leaving: the same played backwards, over
-   the same distance, as it scrolls away over the next section.
+   The camera only ever moves forward. Arriving: the switchboard stage
+   ahead of the band grows toward the camera and dissolves while the band
+   swoops up from a small rounded card, filling the screen exactly as the
+   pin takes over, tiles rushing in from depth and the headline rising
+   last. Holding: the outer tiles drift by depth and the bloom behind the
+   hub breathes. Leaving: the band keeps growing past the camera and
+   dissolves, tiles and headline flying past, while the next section comes
+   up from slightly below full size.
 
    The pin and the track height are set here, behind the same gate as the
    motion, so no one gets a pinned hold without it. Everywhere else, phones
@@ -716,6 +720,13 @@ html[data-theme='dark'] .integ-band {
    bottom edges feather into the page background. */
 .integ-track {
   view-timeline: --integ block;
+}
+
+/* Still glow for everyone; the choreography below animates it. */
+.integ-bloom {
+  background: radial-gradient(circle, var(--integ-glow) 0%, transparent 62%);
+  transform: translate(-50%, -50%);
+  opacity: 0.6;
 }
 
 /* Hoists the section's timeline to the body so the fixed header, which is
@@ -798,6 +809,41 @@ body {
       animation-range: cover 0% cover 100%;
     }
 
+    /* Unwired tiles drift with the scroll by their depth, near ones
+       faster, on the separate translate property so the pointer parallax
+       on transform is untouched. Wired tiles stay put for their wires. */
+    .integ-drift {
+      animation: integ-drift linear both;
+      animation-timeline: --integ;
+      animation-range: cover 0% cover 100%;
+    }
+
+    .integ-bloom {
+      animation: integ-bloom linear both;
+      animation-timeline: --integ;
+      animation-range: cover 0% cover 100%;
+    }
+
+    /* The section before: its pinned stage pushes toward the camera and
+       dissolves over the band's arrival. A running transform animation makes
+       this stage, and the next panel below, a containing block for fixed
+       descendants for the life of the page; neither has any today. */
+    .sw-stage {
+      transform-origin: 50% 50%;
+      animation: integ-prev-out linear both;
+      animation-timeline: --integ;
+      animation-range: cover 0% cover 31.25%;
+    }
+
+    /* The section after: it comes up from just under full size while the
+       band flies past the camera. */
+    .integ-track + .scroll-panel {
+      transform-origin: 50% 30%;
+      animation: integ-next-in linear both;
+      animation-timeline: --integ;
+      animation-range: cover 68.75% cover 100%;
+    }
+
     /* The header steps aside while the scene holds the screen, so the
        section stands on its own, and returns as the band leaves. Hidden
        means hidden: visibility goes too, so nothing invisible is focusable. */
@@ -812,7 +858,8 @@ body {
        the band always gets the whole scene fully visible. */
     .integ-woosh:has(:focus-visible),
     .integ-woosh:has(:focus-visible) .integ-tiles,
-    .integ-woosh:has(:focus-visible) .integ-headline {
+    .integ-woosh:has(:focus-visible) .integ-headline,
+    .integ-woosh:has(:focus-visible) .integ-bloom {
       animation: none;
     }
   }
@@ -835,13 +882,62 @@ body {
   }
   68.75% {
     transform: none;
-  }
-  81.25% {
     opacity: 1;
   }
   100% {
-    transform: translateY(-10%) scale(0.5);
+    transform: translateY(-3%) scale(1.3);
     opacity: 0;
+  }
+}
+
+/* Outer tiles: 60px of travel at full depth across the whole range. */
+@keyframes integ-drift {
+  from { translate: 0 calc(var(--d) * 60px); }
+  to { translate: 0 calc(var(--d) * -60px); }
+}
+
+@keyframes integ-bloom {
+  0%, 8% {
+    transform: translate(-50%, -50%) scale(0.2);
+    opacity: 0;
+  }
+  31.25% {
+    transform: translate(-50%, -50%) scale(1.15);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(0.9);
+    opacity: 0.8;
+  }
+  68.75% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2.2);
+    opacity: 0;
+  }
+}
+
+@keyframes integ-prev-out {
+  from {
+    transform: none;
+    opacity: 1;
+  }
+  to {
+    transform: scale(1.12);
+    opacity: 0;
+  }
+}
+
+@keyframes integ-next-in {
+  from {
+    transform: scale(0.94);
+    opacity: 0.5;
+  }
+  to {
+    transform: none;
+    opacity: 1;
   }
 }
 
@@ -876,13 +972,11 @@ body {
    changes while the band is changing size. */
 @keyframes integ-radius {
   0% { border-radius: 64px; }
-  31.25% { border-radius: 0; }
-  68.75% { border-radius: 0; }
-  100% { border-radius: 64px; }
+  31.25%, 100% { border-radius: 0; }
 }
 
 /* Tiles rush in from depth and settle as the pin engages; on the way out
-   they lift back off the same way. */
+   they keep coming and fly past the camera. */
 @keyframes integ-tiles {
   0%, 6% {
     transform: scale(1.9);
@@ -897,13 +991,14 @@ body {
     opacity: 1;
   }
   94%, 100% {
-    transform: scale(1.9);
+    transform: scale(1.4);
     opacity: 0;
   }
 }
 
-/* Rises in last and leaves first. Composes with the headline's Tailwind
-   translate, which uses the separate translate property. */
+/* Rises in last, and on the way out grows toward the camera as it goes.
+   Composes with the headline's Tailwind translate, which uses the separate
+   translate property. */
 @keyframes integ-headline {
   0%, 12% {
     transform: translateY(72px) scale(0.9);
@@ -917,8 +1012,8 @@ body {
     transform: none;
     opacity: 1;
   }
-  88%, 100% {
-    transform: translateY(-72px) scale(0.9);
+  90%, 100% {
+    transform: translateY(-40px) scale(1.1);
     opacity: 0;
   }
 }
