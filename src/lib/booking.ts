@@ -1,1 +1,1 @@
-export const uponaiBookingUrl = 'https://uponai.ai/uponai-booking-page';
+export const uponaiBookingUrl = 'https://uponai.ai/uponai-book-your-democall';
