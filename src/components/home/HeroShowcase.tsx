@@ -71,14 +71,18 @@ export default function HeroShowcase() {
   };
 
   return (
-    <div className="relative mx-auto mt-12 w-full max-w-7xl overflow-hidden rounded-2xl">
+    <div className="mt-12 flex w-full justify-center">
       {/* The footage carries a wide margin around the console, so the frame
           crops rather than letterboxes: phones crop the sides (a 16/9 frame
           375px wide leaves the UI unreadable) and every size caps its height,
           which keeps the hero close to one screen tall. Before the cap this
           pushed the hero 234px past the fold at 1280x720, against 29px for
           the console mock it replaced. */}
-      <div className="relative aspect-[4/3] max-h-[55svh] sm:aspect-[16/9]">
+      {/* The height cap makes the ratio box shrink its own width, so the
+          rounding and the clip live here rather than on a full-width wrapper:
+          otherwise the frame keeps its corners where the video no longer
+          reaches, and the video sits left of centre inside it. */}
+      <div className="relative aspect-[4/3] max-h-[55svh] w-full max-w-7xl overflow-hidden rounded-2xl sm:aspect-[16/9]">
         {/* A plain img on purpose: next.config.ts sets images.unoptimized, so
             next/image would emit no srcset here and only add indirection. */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
