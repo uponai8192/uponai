@@ -173,8 +173,10 @@ export default function Nav({ settings = defaultSiteSettings }: { settings?: Sit
   const floating = scrolled && !mobileOpen;
 
   return (
+    // site-nav lets the homepage integrations section fade the whole header
+    // out while it holds the screen (globals.css, "Scroll choreography").
     <header
-      className={`fixed left-0 right-0 top-0 z-50 transition-[background-color,border-color] duration-300 ${
+      className={`site-nav fixed left-0 right-0 top-0 z-50 transition-[background-color,border-color] duration-300 ${
         floating ? 'border-b border-transparent' : 'theme-header border-b'
       }`}
     >
