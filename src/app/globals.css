@@ -287,9 +287,9 @@ h1, h2, h3, h4 {
    position through view() timelines: elements finish entering by the time
    their panel is 60-65% into the viewport, and reversing the scroll reverses
    the motion. Entry only for content, deliberately, so the lower half of
-   taller-than-viewport sections is never dimmed while being read; the one
-   exit animation is the hero panel departing, which is exactly one screen
-   tall. Transform and opacity only, so nothing here costs layout or paint. */
+   taller-than-viewport sections is never dimmed while being read; the hero
+   runs its own departure (see "Hero choreography"). Transform and opacity
+   only, so nothing here costs layout or paint. */
 
 @keyframes sd-rise {
   from { opacity: 0; transform: translateY(56px); }
@@ -330,17 +330,6 @@ h1, h2, h3, h4 {
   to {
     opacity: 1;
     transform: none;
-  }
-}
-
-/* The camera pushes through the hero as the visitor commits to the page.
-   Opacity and scale only: a scrubbed blur over a full-viewport surface has
-   to re-rasterize the whole panel every frame and stutters the scroll on
-   weaker GPUs. */
-@keyframes sd-depart {
-  to {
-    opacity: 0.1;
-    transform: scale(1.04);
   }
 }
 
@@ -412,13 +401,6 @@ h1, h2, h3, h4 {
   .sd-stagger > :nth-child(5) { animation-range: entry 35% entry 80%; }
   .sd-stagger > :nth-child(n + 6) { animation-range: entry 41% entry 86%; }
 
-  /* The camera pushes through the hero as the visitor scrolls into the page. */
-  .scroll-panel:first-of-type {
-    animation: sd-depart linear both;
-    animation-timeline: view();
-    animation-range: exit 0% exit 60%;
-  }
-
   .scroll-progress {
     animation: sd-progress linear both;
     animation-timeline: scroll();
@@ -437,8 +419,7 @@ h1, h2, h3, h4 {
   .sd-left,
   .sd-right,
   .sd-pop,
-  .sd-stagger > *,
-  .scroll-panel:first-of-type {
+  .sd-stagger > * {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
@@ -561,8 +542,262 @@ details[open] > summary .faq-toggle {
   40%, 100% { background-position: 0% 0; }
 }
 
-h1[data-shine='off'] .hero-shine {
+/* Hero choreography. On large screens with scroll-driven animation and
+   motion allowed, the hero is a 160svh scroll track with its stage pinned
+   for 100svh. The page loads with the pin already engaged, which on the
+   track's cover range is 100/260 = 38.46%; the pin releases at 160/260 =
+   61.54%. From the first scroll the walkthrough frame grows toward the
+   camera until it fills the screen (done at 54.6%, with a short hold), the
+   copy lifts away and the header steps aside; after release the frame
+   keeps growing past the camera and dissolves while the switchboard comes
+   up underneath. The frame is sized from the viewport height so a fixed
+   scale of 1.8 is exactly full height at every viewport.
+
+   Same rules as the integrations choreography: one animation per rule, or
+   equal length lists, because the production minifier writes
+   animation-duration: 0s otherwise. */
+body {
+  timeline-scope: --integ, --hero;
+}
+
+.hero-track {
+  view-timeline: --hero block;
+}
+
+.hero-aurora {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: 56vmax;
+  height: 56vmax;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--a) 0%, transparent 62%);
+  animation: hero-aurora var(--t, 30s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes hero-aurora {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(6vw, -4vh) scale(1.12); }
+  66% { transform: translate(-5vw, 5vh) scale(0.92); }
+}
+
+.hero-track[data-active='off'] .hero-shine,
+.hero-track[data-active='off'] .hero-aurora {
   animation-play-state: paused;
+}
+
+/* Light sweep across the primary button on hover. */
+.hero-cta {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-cta::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, 0.35) 50%, transparent 70%);
+  transform: translateX(-130%);
+  transition: transform 700ms ease;
+}
+
+.hero-cta:hover::after {
+  transform: translateX(130%);
+}
+
+@supports (animation-timeline: view()) {
+  @media (min-width: 64rem) and (prefers-reduced-motion: no-preference) {
+    .hero-track {
+      height: 160svh;
+    }
+
+    /* The frame is sized from the viewport height so a fixed scale takes
+       it to exactly full height: --hero-dolly is 100svh over the frame
+       height, and the lift is the distance from the frame's resting centre
+       (4svh above the bottom, half a frame up) to the viewport centre. The
+       copy has to fit in what is left above the frame, so shorter screens
+       get a shorter frame and tighter copy. Checked at 1920x1030, 1440x900
+       and 1366x657. */
+    .hero-pin {
+      --hero-frame-h: 56svh;
+      --hero-dolly: 1.79;
+      --hero-lift: calc(-46svh + var(--hero-frame-h) / 2);
+      position: sticky;
+      top: 0;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      align-items: center;
+      height: 100svh;
+      padding-top: 6rem;
+      padding-bottom: 4svh;
+    }
+
+    @media (max-height: 900px) {
+      .hero-pin {
+        --hero-frame-h: 48svh;
+        --hero-dolly: 2.09;
+      }
+      .hero-pin .hero-footnote {
+        display: none;
+      }
+      .hero-pin h1 {
+        font-size: 3rem;
+      }
+      .hero-pin .hero-showcase {
+        margin-top: 1.5rem;
+      }
+    }
+
+    @media (max-height: 720px) {
+      .hero-pin {
+        --hero-frame-h: 42svh;
+        --hero-dolly: 2.39;
+        padding-top: 5rem;
+      }
+      .hero-pin h1 {
+        font-size: 2.5rem;
+      }
+      .hero-pin .hero-copy > .mt-8 {
+        margin-top: 1.25rem;
+      }
+    }
+
+    .hero-pin > .hero-inner {
+      display: contents;
+    }
+
+    /* Width is capped as well so a gated portrait tablet does not get a
+       frame wider than the screen; the dolly then overshoots a little
+       vertically there, which only crops the footage's own margin. */
+    .hero-pin .hero-frame {
+      height: min(var(--hero-frame-h), calc((100vw - 2rem) * 9 / 16));
+      width: auto;
+      max-width: none;
+      transform-origin: 50% 50%;
+      animation:
+        hero-dolly linear both,
+        hero-dolly-radius linear both;
+      animation-timeline: --hero, --hero;
+      animation-range: cover 0% cover 100%, cover 0% cover 100%;
+    }
+
+    .hero-pin .hero-copy {
+      animation: hero-copy-out linear both;
+      animation-timeline: --hero;
+      animation-range: cover 0% cover 100%;
+    }
+
+    /* Keyboard focus inside the hero brings the whole stage back, as the
+       integrations band does, so nothing focused is ever invisible. */
+    .hero-pin:has(:focus-visible) .hero-copy,
+    .hero-pin:has(:focus-visible) .hero-frame {
+      animation: none;
+    }
+
+    /* The header hides while the walkthrough fills the screen. This is a
+       second animation on the same element as the integrations fade; it
+       fills nothing outside its range, so it never overrides that one. */
+    .site-nav {
+      animation:
+        integ-nav linear both,
+        hero-nav linear none;
+      animation-timeline: --integ, --hero;
+      animation-range: cover 0% cover 100%, cover 0% cover 100%;
+    }
+  }
+}
+
+/* The lift and the scale read the stage's custom properties, so one set
+   of keyframes serves every viewport height. */
+@keyframes hero-dolly {
+  0%, 38.46% {
+    translate: 0 0;
+    scale: 1;
+    opacity: 1;
+  }
+  54.6% {
+    translate: 0 var(--hero-lift);
+    scale: var(--hero-dolly);
+    opacity: 1;
+  }
+  61.54% {
+    translate: 0 var(--hero-lift);
+    scale: var(--hero-dolly);
+    opacity: 1;
+  }
+  100% {
+    translate: 0 var(--hero-lift);
+    scale: calc(var(--hero-dolly) * 1.17);
+    opacity: 0;
+  }
+}
+
+@keyframes hero-dolly-radius {
+  0%, 38.46% { border-radius: 16px; }
+  54.6%, 100% { border-radius: 0; }
+}
+
+/* Visibility flips only once the copy is fully gone, so the buttons stop
+   being focusable exactly while they are invisible. */
+@keyframes hero-copy-out {
+  0%, 38.46% {
+    transform: none;
+    opacity: 1;
+    visibility: visible;
+  }
+  50%, 100% {
+    transform: translateY(-80px);
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* Entrance for the showcase: a rise only, no fade, because the poster inside
+   it is the desktop LCP element and Chrome does not count it until it paints
+   at non-zero opacity. */
+.hero-rise {
+  animation: hero-rise 700ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  animation-delay: 0.35s;
+}
+
+@keyframes hero-rise {
+  from { transform: translateY(18px); }
+  to { transform: none; }
+}
+
+@keyframes hero-nav {
+  0%, 38.46% {
+    opacity: 1;
+    transform: none;
+    visibility: visible;
+  }
+  47% {
+    opacity: 0;
+    transform: translateY(-16px);
+    visibility: hidden;
+  }
+  61.54% {
+    opacity: 0;
+    transform: translateY(-16px);
+    visibility: hidden;
+  }
+  72%, 100% {
+    opacity: 1;
+    transform: none;
+    visibility: visible;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-aurora,
+  .hero-rise {
+    animation: none;
+  }
+  .hero-cta::after {
+    transition: none;
+  }
 }
 
 .hero-wave {
@@ -729,13 +964,6 @@ html[data-theme='dark'] .integ-band {
   opacity: 0.6;
 }
 
-/* Hoists the section's timeline to the body so the fixed header, which is
-   not inside the section, can follow it. Pages without the section leave
-   the name unbound and the header animation simply never applies. */
-body {
-  timeline-scope: --integ;
-}
-
 .integ-band {
   -webkit-mask-image: linear-gradient(180deg, transparent, #000 72px, #000 calc(100% - 72px), transparent);
   mask-image: linear-gradient(180deg, transparent, #000 72px, #000 calc(100% - 72px), transparent);
@@ -844,14 +1072,9 @@ body {
       animation-range: cover 68.75% cover 100%;
     }
 
-    /* The header steps aside while the scene holds the screen, so the
-       section stands on its own, and returns as the band leaves. Hidden
-       means hidden: visibility goes too, so nothing invisible is focusable. */
-    .site-nav {
-      animation: integ-nav linear both;
-      animation-timeline: --integ;
-      animation-range: cover 0% cover 100%;
-    }
+    /* The header steps aside while the scene holds the screen (integ-nav);
+       the rule lives with the hero choreography, since the same element also
+       follows the hero's timeline. */
 
     /* Shift+Tab back up from the next section scrolls the CTA into view at
        a point where the exit has already hidden it. A keyboard user inside

@@ -14,34 +14,41 @@ export default function PlatformHero({ content = defaultHomeHero }: { content?: 
   // otherwise render blank spans and push the accent's delay out.
   const words = useMemo(() => content.headline.split(/\s+/).filter(Boolean), [content.headline]);
 
-  // The shine repaints the headline for as long as it runs, so it only runs
-  // while the headline is actually on screen.
-  const headingRef = useRef<HTMLHeadingElement>(null);
+  // The headline shine and the aurora repaint for as long as they run, so
+  // they only run while the hero is actually on screen.
+  const sectionRef = useRef<HTMLElement>(null);
   useEffect(() => {
-    const el = headingRef.current;
+    const el = sectionRef.current;
     if (!el) return;
     const io = new IntersectionObserver(([entry]) => {
-      el.dataset.shine = entry.isIntersecting ? 'on' : 'off';
+      el.dataset.active = entry.isIntersecting ? 'on' : 'off';
     });
     io.observe(el);
     return () => io.disconnect();
   }, []);
 
   return (
-    <section className="relative overflow-hidden px-4 pb-14 pt-16 md:pt-20">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -right-24 -top-24 h-[640px] w-[640px] rounded-full"
-        style={{ background: 'radial-gradient(circle, var(--wash-1), var(--wash-2) 48%, transparent 70%)' }}
-      />
-      <div className="relative mx-auto max-w-7xl">
+    // On large screens the hero is a scroll track with its stage pinned: as
+    // the visitor starts to scroll, the walkthrough grows toward the camera
+    // until it fills the screen while the copy lifts away, then it keeps
+    // growing past the camera and dissolves into the switchboard (globals.css,
+    // "Hero choreography"). Everywhere else it is a plain hero in flow.
+    <section ref={sectionRef} className="hero-track relative">
+      <div className="hero-pin relative overflow-clip px-4 pb-14 pt-16 md:pt-20">
+        {/* Aurora: three soft colour fields drifting slowly behind the copy. */}
+        <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+          <span className="hero-aurora" style={{ '--a': 'var(--wash-1)', '--x': '70%', '--y': '10%', '--t': '26s' } as CSSProperties} />
+          <span className="hero-aurora" style={{ '--a': 'var(--wash-2)', '--x': '15%', '--y': '35%', '--t': '34s', '--delay': '-11s' } as CSSProperties} />
+          <span className="hero-aurora" style={{ '--a': 'var(--brand-accent-bg)', '--x': '55%', '--y': '70%', '--t': '30s', '--delay': '-19s' } as CSSProperties} />
+        </div>
+      <div className="hero-inner relative mx-auto max-w-7xl">
         {/* Centred tagline and calls to action */}
-        <div className="mx-auto max-w-4xl text-center">
+        <div className="hero-copy relative mx-auto max-w-4xl text-center">
           {/* Entrance: the plain words rise in one by one, then the accent
               lands as a unit, draws its waveform underline and keeps a slow
               shine running (globals.css, "Hero headline"). The accent stays
               one span so the gradient runs unbroken across it. */}
-          <h1 ref={headingRef} className="theme-heading text-5xl font-extrabold leading-[1.04] md:text-6xl">
+          <h1 className="theme-heading text-5xl font-extrabold leading-[1.04] md:text-6xl">
             {words.map((word, i) => (
               <span key={i}>
                 <span className="hero-word" style={{ '--i': i } as CSSProperties}>
@@ -73,7 +80,7 @@ export default function PlatformHero({ content = defaultHomeHero }: { content?: 
               href={uponaiBookingUrl}
               target="_blank"
               rel="noreferrer"
-              className="theme-primary-button rounded-xl px-6 py-3.5 text-[15px] font-semibold"
+              className="theme-primary-button hero-cta rounded-xl px-6 py-3.5 text-[15px] font-semibold"
             >
               {content.primaryCtaLabel}
             </a>
@@ -86,7 +93,7 @@ export default function PlatformHero({ content = defaultHomeHero }: { content?: 
             </button>
           </div>
           <p
-            className="hero-fade theme-subtle mt-5 text-[12.5px] font-[family-name:var(--font-mono)]"
+            className="hero-fade hero-footnote theme-subtle mt-5 text-[12.5px] font-[family-name:var(--font-mono)]"
             style={{ '--delay': '0.4s' } as CSSProperties}
           >
             <b className="font-medium text-[var(--brand)]">{content.footnoteStrong}</b>
@@ -95,6 +102,7 @@ export default function PlatformHero({ content = defaultHomeHero }: { content?: 
         </div>
 
         <HeroShowcase />
+      </div>
       </div>
     </section>
   );
