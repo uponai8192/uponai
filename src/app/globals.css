@@ -609,8 +609,13 @@ body {
 
 @supports (animation-timeline: view()) {
   @media (min-width: 64rem) and (prefers-reduced-motion: no-preference) {
+    /* main pads 7rem for the fixed header; the track pulls up under it so
+       it starts at the very top of the page and the pin is engaged on load
+       (the stage's own padding-top keeps the copy clear of the header).
+       Without this the whole cover range shifts by the padding. */
     .hero-track {
       height: 160svh;
+      margin-top: -7rem;
     }
 
     /* The frame is sized from the viewport height so a fixed scale takes
