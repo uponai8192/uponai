@@ -12,11 +12,13 @@ import { PARALLAX_X, PARALLAX_Y, wirePath } from '@/lib/integration-wire';
 export function IntegrationsStage({
   hub,
   stageWidth,
+  stageHeight,
   className,
   children,
 }: {
   hub: { x: number; y: number };
   stageWidth: number;
+  stageHeight: number;
   className?: string;
   children: ReactNode;
 }) {
@@ -46,7 +48,10 @@ export function IntegrationsStage({
     const target = { x: 0, y: 0 };
     const current = { x: 0, y: 0 };
     let frame = 0;
-    let width = el.getBoundingClientRect().width;
+    // Untransformed size: the band scales the scene while it arrives, and a
+    // bounding rect would fold that scale into the wire maths.
+    let width = el.offsetWidth;
+    let height = el.offsetHeight;
 
     const step = () => {
       current.x += (target.x - current.x) * 0.08;
@@ -60,11 +65,14 @@ export function IntegrationsStage({
       el.style.setProperty('--mx', current.x.toFixed(4));
       el.style.setProperty('--my', current.y.toFixed(4));
 
-      // Tile offsets are CSS px; the wires live in stage units.
-      const scale = stageWidth / width;
+      // Tile offsets are CSS px; the wires live in stage units. The wire layer
+      // stretches to the stage (preserveAspectRatio none), which is no longer
+      // 16/9 once pinned to the screen, so each axis gets its own scale.
+      const scaleX = stageWidth / width;
+      const scaleY = stageHeight / height;
       for (const w of wires) {
-        const nx = w.x - current.x * w.depth * PARALLAX_X * scale;
-        const ny = w.y - current.y * w.depth * PARALLAX_Y * scale;
+        const nx = w.x - current.x * w.depth * PARALLAX_X * scaleX;
+        const ny = w.y - current.y * w.depth * PARALLAX_Y * scaleY;
         w.path.setAttribute('d', wirePath(hub.x, hub.y, nx, ny, w.bend));
       }
 
@@ -76,7 +84,8 @@ export function IntegrationsStage({
 
     const onMove = (e: PointerEvent) => {
       const r = el.getBoundingClientRect();
-      width = r.width;
+      width = el.offsetWidth;
+      height = el.offsetHeight;
       target.x = ((e.clientX - r.left) / r.width) * 2 - 1;
       target.y = ((e.clientY - r.top) / r.height) * 2 - 1;
       kick();
@@ -95,7 +104,7 @@ export function IntegrationsStage({
       el.removeEventListener('pointermove', onMove);
       el.removeEventListener('pointerleave', onLeave);
     };
-  }, [hub.x, hub.y, stageWidth]);
+  }, [hub.x, hub.y, stageWidth, stageHeight]);
 
   return (
     <div ref={ref} data-playing="false" className={className}>
@@ -132,7 +141,9 @@ export function CountUp({ to, suffix = '' }: { to: number; suffix?: string }) {
         };
         frame = requestAnimationFrame(tick);
       },
-      { threshold: 0.6 },
+      // Waits until the figure is well up the screen: in the pinned section
+      // it is still fading in lower down, and the count would play unseen.
+      { threshold: 0.6, rootMargin: '0px 0px -35% 0px' },
     );
     io.observe(el);
     return () => {
