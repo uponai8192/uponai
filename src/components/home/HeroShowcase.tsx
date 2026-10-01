@@ -72,17 +72,13 @@ export default function HeroShowcase() {
 
   return (
     <div className="mt-12 flex w-full justify-center">
-      {/* The footage carries a wide margin around the console, so the frame
-          crops rather than letterboxes: phones crop the sides (a 16/9 frame
-          375px wide leaves the UI unreadable) and every size caps its height,
-          which keeps the hero close to one screen tall. Before the cap this
-          pushed the hero 234px past the fold at 1280x720, against 29px for
-          the console mock it replaced. */}
-      {/* The height cap makes the ratio box shrink its own width, so the
-          rounding and the clip live here rather than on a full-width wrapper:
-          otherwise the frame keeps its corners where the video no longer
-          reaches, and the video sits left of centre inside it. */}
-      <div className="relative aspect-[4/3] max-h-[55svh] w-full max-w-7xl overflow-hidden rounded-2xl sm:aspect-[16/9]">
+      {/* The frame matches the footage's own 16/9 and the media is contained,
+          not cropped, so nothing is cut off or enlarged at any width. The
+          width stays below the container's so the hero remains close to one
+          screen tall: at full container width this frame alone is 720px. The
+          rounding and the clip live on this box rather than a wrapper, so the
+          corners always follow the video's actual edges. */}
+      <div className="relative aspect-[16/9] w-full max-w-5xl overflow-hidden rounded-2xl">
         {/* A plain img on purpose: next.config.ts sets images.unoptimized, so
             next/image would emit no srcset here and only add indirection. */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -93,7 +89,7 @@ export default function HeroShowcase() {
           height={900}
           fetchPriority="high"
           decoding="async"
-          className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${
+          className={`absolute inset-0 h-full w-full object-contain transition-opacity duration-500 ${
             playing ? 'opacity-0' : 'opacity-100'
           }`}
         />
@@ -107,7 +103,7 @@ export default function HeroShowcase() {
           onPlaying={() => setPlaying(true)}
           onError={onStalled}
           onEmptied={onStalled}
-          className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${
+          className={`absolute inset-0 h-full w-full object-contain transition-opacity duration-500 ${
             playing ? 'opacity-100' : 'opacity-0'
           }`}
         />
