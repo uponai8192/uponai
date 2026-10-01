@@ -12,6 +12,11 @@
 //   node scripts/update-booking-url.mjs                   # dry run, lists hits
 //   node scripts/update-booking-url.mjs --apply           # write
 //   node scripts/update-booking-url.mjs --from <old> --to <new>
+//
+// Writing needs an Editor token. The SANITY_API_TOKEN in .env.local is
+// read-only, so put a write token in SANITY_WRITE_TOKEN rather than
+// replacing it: create one under sanity.io/manage, project foyo2c78,
+// API, Tokens, with the Editor role.
 
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
@@ -30,10 +35,14 @@ const envFile = readFileSync(path.join(repoRoot, '.env.local'), 'utf8');
 const env = (key) => envFile.match(new RegExp(`^${key}=(.+)$`, 'm'))?.[1]?.trim();
 const projectId = env('SANITY_PROJECT_ID');
 const dataset = env('SANITY_DATASET');
-const token = env('SANITY_API_TOKEN');
+const readToken = env('SANITY_API_TOKEN');
+const token = env('SANITY_WRITE_TOKEN') ?? readToken;
 if (!projectId || !dataset || !token) {
   console.error('Missing SANITY_PROJECT_ID, SANITY_DATASET or SANITY_API_TOKEN in .env.local');
   process.exit(1);
+}
+if (apply && !env('SANITY_WRITE_TOKEN')) {
+  console.warn('No SANITY_WRITE_TOKEN set; falling back to SANITY_API_TOKEN, which is read-only.');
 }
 const API = `https://${projectId}.api.sanity.io/v2025-02-19`;
 
@@ -84,10 +93,9 @@ if (!apply) {
 
 // One transaction: either every document moves to the new link or none does.
 const mutations = patches.map(({ doc, next }) => {
+  // _type and the system fields stay as they are; only the content is set.
   const { _id, _rev, _createdAt, _updatedAt, _type, ...fields } = next;
-  void _rev;
-  void _createdAt;
-  void _updatedAt;
+  void [_rev, _createdAt, _updatedAt, _type];
   return { patch: { id: _id, ifRevisionID: doc._rev, set: fields } };
 });
 const write = await fetch(`${API}/data/mutate/${dataset}`, {
@@ -96,7 +104,13 @@ const write = await fetch(`${API}/data/mutate/${dataset}`, {
   body: JSON.stringify({ mutations }),
 });
 if (!write.ok) {
-  console.error(`Write failed: ${write.status} ${await write.text()}`);
+  const detail = await write.text();
+  console.error(`Write failed: ${write.status} ${detail}`);
+  if (write.status === 403) {
+    console.error('The token lacks the "update" permission. Add an Editor token as');
+    console.error('SANITY_WRITE_TOKEN in .env.local and run this again. Nothing was');
+    console.error('written: the mutations go in one transaction, so it is all or nothing.');
+  }
   process.exit(1);
 }
 console.log(`\nUpdated ${patches.length} document(s). Publishing a change in the Studio, or the`);
