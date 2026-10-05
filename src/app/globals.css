@@ -691,6 +691,9 @@ body {
     .hero-pin .hero-showcase {
       height: var(--hero-frame-h);
       margin-top: 0;
+      /* Not positioned, so the frame's containing block is the stage and
+         its centring is the viewport's, not the placeholder's. */
+      position: static;
     }
 
     .hero-pin .hero-frame {
