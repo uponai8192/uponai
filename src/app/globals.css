@@ -618,17 +618,22 @@ body {
       margin-top: -7rem;
     }
 
-    /* The frame is sized from the viewport height so a fixed scale takes
-       it to exactly full height: --hero-dolly is 100svh over the frame
-       height, and the lift is the distance from the frame's resting centre
-       (4svh above the bottom, half a frame up) to the viewport centre. The
-       copy has to fit in what is left above the frame, so shorter screens
-       get a shorter frame and tighter copy. Checked at 1920x1030, 1440x900
-       and 1366x657. */
+    /* The frame is laid out at its FULL-SCREEN size and scaled DOWN to rest,
+       never up: a layer scaled up from a small layout box is rasterised at
+       the small size and stretched, which is what made the footage go soft
+       as it grew. Scaling down keeps every step sharp and the hold is a 1:1
+       render. --hero-rest is the resting scale (resting height over 100svh),
+       --hero-rest-lift the distance from the viewport centre down to the
+       resting centre (4svh above the bottom, half a frame up), and the
+       radius is pre-divided by the rest scale so it reads as 16px at rest.
+       The copy has to fit above the resting frame, so shorter screens get a
+       smaller rest and tighter copy. Checked at 1920x1030, 1440x900 and
+       1366x657. */
     .hero-pin {
       --hero-frame-h: 56svh;
-      --hero-dolly: 1.79;
-      --hero-lift: calc(-46svh + var(--hero-frame-h) / 2);
+      --hero-rest: 0.56;
+      --hero-rest-lift: 18svh;
+      --hero-rest-radius: 29px;
       position: sticky;
       top: 0;
       display: grid;
@@ -642,7 +647,9 @@ body {
     @media (max-height: 900px) {
       .hero-pin {
         --hero-frame-h: 48svh;
-        --hero-dolly: 2.09;
+        --hero-rest: 0.48;
+        --hero-rest-lift: 22svh;
+        --hero-rest-radius: 33px;
       }
       .hero-pin .hero-footnote {
         display: none;
@@ -658,7 +665,9 @@ body {
     @media (max-height: 720px) {
       .hero-pin {
         --hero-frame-h: 42svh;
-        --hero-dolly: 2.39;
+        --hero-rest: 0.42;
+        --hero-rest-lift: 25svh;
+        --hero-rest-radius: 38px;
         padding-top: 5rem;
       }
       .hero-pin h1 {
@@ -673,11 +682,24 @@ body {
       display: contents;
     }
 
-    /* Width is capped as well so a gated portrait tablet does not get a
-       frame wider than the screen; the dolly then overshoots a little
-       vertically there, which only crops the footage's own margin. */
+    /* The showcase wrapper stays in the grid as a placeholder of the
+       resting height; the frame itself is taken out of flow, centred in the
+       stage at full-screen size, and scaled down to sit in that placeholder.
+       Width is capped so a gated portrait tablet never gets a frame wider
+       than the screen; the rest scale is then a little small there, which
+       only shows more of the footage's own margin. */
+    .hero-pin .hero-showcase {
+      height: var(--hero-frame-h);
+      margin-top: 0;
+    }
+
     .hero-pin .hero-frame {
-      height: min(var(--hero-frame-h), calc((100vw - 2rem) * 9 / 16));
+      --hero-full-h: min(100svh, calc((100vw - 2rem) * 9 / 16));
+      position: absolute;
+      top: calc(50% - var(--hero-full-h) / 2);
+      left: 50%;
+      margin-left: calc(var(--hero-full-h) * -8 / 9);
+      height: var(--hero-full-h);
       width: auto;
       max-width: none;
       transform-origin: 50% 50%;
@@ -694,11 +716,19 @@ body {
       animation-range: cover 0% cover 100%;
     }
 
-    /* Keyboard focus inside the hero brings the whole stage back, as the
-       integrations band does, so nothing focused is ever invisible. */
+    /* Keyboard focus inside the hero brings the whole stage back to rest,
+       as the integrations band does, so nothing focused is ever invisible.
+       The frame's rest is its animated start state, so it is restated. */
     .hero-pin:has(:focus-visible) .hero-copy,
     .hero-pin:has(:focus-visible) .hero-frame {
       animation: none;
+    }
+
+    .hero-pin:has(:focus-visible) .hero-frame {
+      translate: 0 var(--hero-rest-lift);
+      scale: var(--hero-rest);
+      border-radius: var(--hero-rest-radius);
+      opacity: 1;
     }
 
     /* The header hides while the walkthrough fills the screen. This is a
@@ -714,33 +744,34 @@ body {
   }
 }
 
-/* The lift and the scale read the stage's custom properties, so one set
-   of keyframes serves every viewport height. */
+/* Rest is the scaled-down start; full screen is identity. The values read
+   the stage's custom properties, so one set of keyframes serves every
+   viewport height. */
 @keyframes hero-dolly {
   0%, 38.46% {
+    translate: 0 var(--hero-rest-lift);
+    scale: var(--hero-rest);
+    opacity: 1;
+  }
+  54.6% {
     translate: 0 0;
     scale: 1;
     opacity: 1;
   }
-  54.6% {
-    translate: 0 var(--hero-lift);
-    scale: var(--hero-dolly);
-    opacity: 1;
-  }
   61.54% {
-    translate: 0 var(--hero-lift);
-    scale: var(--hero-dolly);
+    translate: 0 0;
+    scale: 1;
     opacity: 1;
   }
   100% {
-    translate: 0 var(--hero-lift);
-    scale: calc(var(--hero-dolly) * 1.17);
+    translate: 0 0;
+    scale: 1.17;
     opacity: 0;
   }
 }
 
 @keyframes hero-dolly-radius {
-  0%, 38.46% { border-radius: 16px; }
+  0%, 38.46% { border-radius: var(--hero-rest-radius); }
   54.6%, 100% { border-radius: 0; }
 }
 
