@@ -15,9 +15,13 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 //
 // Playback is held back entirely for reduced motion, Save-Data and slow
 // connections; the poster alone is then the whole experience.
+// Encoded from the 4K master (kept in Downloads, not in the repo). The wide
+// tier is 1920 because the hero dolly takes the frame to full screen, where
+// the 1600 cut it replaced went soft. There is no wide H.264: at 11MB it is
+// not worth carrying for the few browsers without VP9, which get the 960.
 const SOURCES = {
-  webm: { wide: '/videos/showcase-1600.webm', narrow: '/videos/showcase-960.webm' },
-  mp4: { narrow: '/videos/showcase-960.mp4' },
+  webm: { wide: '/videos/showcase-1920.webm', narrow: '/videos/showcase-960.webm' },
+  mp4: { wide: '/videos/showcase-960.mp4', narrow: '/videos/showcase-960.mp4' },
 };
 
 type Connection = { saveData?: boolean; effectiveType?: string };
@@ -99,7 +103,8 @@ export default function HeroShowcase() {
 
     const wide = window.matchMedia('(min-width: 768px)').matches;
     const canWebm = video.canPlayType('video/webm; codecs="vp9"') !== '';
-    video.src = canWebm ? (wide ? SOURCES.webm.wide : SOURCES.webm.narrow) : SOURCES.mp4.narrow;
+    const tier = canWebm ? SOURCES.webm : SOURCES.mp4;
+    video.src = wide ? tier.wide : tier.narrow;
 
     const io = new IntersectionObserver(
       ([entry]) => {
