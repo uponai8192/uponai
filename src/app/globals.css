@@ -622,18 +622,15 @@ body {
        never up: a layer scaled up from a small layout box is rasterised at
        the small size and stretched, which is what made the footage go soft
        as it grew. Scaling down keeps every step sharp and the hold is a 1:1
-       render. --hero-rest is the resting scale (resting height over 100svh),
-       --hero-rest-lift the distance from the viewport centre down to the
-       resting centre (4svh above the bottom, half a frame up), and the
-       radius is pre-divided by the rest scale so it reads as 16px at rest.
+       render. --hero-rest-lift is the distance from the viewport centre down
+       to the resting centre (4svh above the bottom, half a frame up); the
+       rest scale and radius are derived on the frame rule below.
        The copy has to fit above the resting frame, so shorter screens get a
        smaller rest and tighter copy. Checked at 1920x1030, 1440x900 and
        1366x657. */
     .hero-pin {
       --hero-frame-h: 56svh;
-      --hero-rest: 0.56;
       --hero-rest-lift: 18svh;
-      --hero-rest-radius: 29px;
       position: sticky;
       top: 0;
       display: grid;
@@ -647,9 +644,7 @@ body {
     @media (max-height: 900px) {
       .hero-pin {
         --hero-frame-h: 48svh;
-        --hero-rest: 0.48;
         --hero-rest-lift: 22svh;
-        --hero-rest-radius: 33px;
       }
       .hero-pin .hero-footnote {
         display: none;
@@ -665,9 +660,7 @@ body {
     @media (max-height: 720px) {
       .hero-pin {
         --hero-frame-h: 42svh;
-        --hero-rest: 0.42;
         --hero-rest-lift: 25svh;
-        --hero-rest-radius: 38px;
         padding-top: 5rem;
       }
       .hero-pin h1 {
@@ -691,18 +684,29 @@ body {
     .hero-pin .hero-showcase {
       height: var(--hero-frame-h);
       margin-top: 0;
-      /* Not positioned, so the frame's containing block is the stage and
-         its centring is the viewport's, not the placeholder's. */
+      /* Neither positioned nor animated, so the frame's containing block is
+         the stage and it centres on the viewport, not on this placeholder.
+         (A transform animation makes an element a containing block in
+         Chrome even while its value is none, so the entrance rise goes.) */
       position: static;
+      animation: none;
     }
 
-    /* Size and offsets are rounded to even whole pixels: a video layer
-       sitting at a fractional position (the natural centring lands at
-       x = 44.4px at 1920 wide) is resampled with a half-pixel shift and the
-       whole picture goes soft. Even values keep the centring integral too. */
+    /* Full screen means covering the viewport, not fitting inside it: the
+       frame is as wide as the screen (or as tall, on screens taller than
+       16:9) and the stage clips the overshoot, which is only the footage's
+       own margin. On a 1920-wide screen the 1920 encode then paints 1:1,
+       and measured in the browser that is the whole difference: resampled
+       to 1830 the picture lost a quarter of its detail, at 1:1 it matches
+       the decoded frame exactly. Sizes are rounded to even whole pixels so
+       the centring stays integral. The resting scale is the resting height
+       over the full height, taken as a ratio with tan(atan2()) since calc()
+       cannot divide lengths. */
     .hero-pin .hero-frame {
-      --hero-full-h: round(down, min(100svh, calc((100vw - 2rem) * 9 / 16)), 2px);
-      --hero-full-w: round(down, calc(var(--hero-full-h) * 16 / 9), 2px);
+      --hero-full-w: round(down, max(100vw, calc(100svh * 16 / 9)), 2px);
+      --hero-full-h: round(down, calc(var(--hero-full-w) * 9 / 16), 2px);
+      --hero-rest: tan(atan2(var(--hero-frame-h), var(--hero-full-h)));
+      --hero-rest-radius: calc(16px / var(--hero-rest));
       position: absolute;
       top: round(down, calc(50% - var(--hero-full-h) / 2), 1px);
       left: 50%;
