@@ -56,9 +56,17 @@ export default function HeroShowcase() {
       }
       // Gone by the time the dolly has the frame full screen (42svh of scroll).
       const damp = Math.max(0, 1 - window.scrollY / (window.innerHeight * 0.42));
-      const rx = (-current.y * 7 * damp).toFixed(3);
-      const ry = (current.x * 9 * damp).toFixed(3);
-      frame.style.transform = `perspective(1400px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+      const rx = -current.y * 7 * damp;
+      const ry = current.x * 9 * damp;
+      // No transform at all when there is nothing to tilt: a perspective()
+      // with zero rotations is still a 3D transform, and at the full-screen
+      // hold it made the compositor resample the video through a filtered
+      // surface, softening it. Clearing it leaves the video on a clean 2D
+      // layer and lets the measured sharpness match the decoded frame.
+      frame.style.transform =
+        Math.abs(rx) < 0.01 && Math.abs(ry) < 0.01
+          ? ''
+          : `perspective(1400px) rotateX(${rx.toFixed(3)}deg) rotateY(${ry.toFixed(3)}deg)`;
       raf = settled ? 0 : requestAnimationFrame(step);
     };
     const kick = () => {
