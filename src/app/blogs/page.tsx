@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
+import BlogPostCard from '@/components/blog/BlogPostCard';
 import CTASection from '@/components/sections/CTASection';
 import PaginationNav from '@/components/ui/PaginationNav';
 import { normalizeBlogPageNumber, paginateBlogPosts } from '@/lib/blog-posts';
-import { getBlogPosts, getBlogTopics } from '@/lib/cms/blog';
+import { getBlogPosts, getBlogTopics, getCaseStudies } from '@/lib/cms/blog';
 import { buildBreadcrumbSchema, buildCollectionPageSchema, buildPageMetadata } from '@/lib/seo';
 
 type Props = {
@@ -26,18 +26,15 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   });
 }
 
-function formatDate(value: string) {
-  return new Intl.DateTimeFormat('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  }).format(new Date(value));
-}
-
 export default async function BlogsPage({ searchParams }: Props) {
   const params = searchParams ? await searchParams : undefined;
   const requestedPage = normalizeBlogPageNumber(params?.page);
-  const [posts, topics] = await Promise.all([getBlogPosts(), getBlogTopics()]);
+  const [posts, topics, caseStudies] = await Promise.all([
+    getBlogPosts(),
+    getBlogTopics(),
+    getCaseStudies(),
+  ]);
+  const featuredCaseStudies = caseStudies.slice(0, 3);
   const archive = paginateBlogPosts(posts, requestedPage);
   const archivePath = archive.currentPage > 1 ? `/blogs?page=${archive.currentPage}` : '/blogs';
 
@@ -76,7 +73,7 @@ export default async function BlogsPage({ searchParams }: Props) {
         <div className="relative mx-auto max-w-7xl">
           <div className="max-w-4xl">
             <div className="theme-pill-primary inline-flex items-center gap-3 rounded-full px-5 py-2 text-sm font-medium">
-              <span className="inline-flex h-2.5 w-2.5 rounded-full bg-[#1e78cc] shadow-[0_0_16px_rgba(30, 120, 204,0.75)]" />
+              <span className="inline-flex h-2.5 w-2.5 rounded-full bg-[#1e78cc] shadow-[0_0_16px_rgba(30,120,204,0.75)]" />
               Insights From UponAI
             </div>
 
@@ -116,6 +113,41 @@ export default async function BlogsPage({ searchParams }: Props) {
             </p>
           </div>
 
+          {featuredCaseStudies.length ? (
+            <div className="theme-card mb-10 rounded-[2rem] p-6">
+              <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+                <div className="max-w-2xl">
+                  <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--brand-primary-text)]">
+                    Customer Stories
+                  </p>
+                  <h2 className="theme-heading mt-3 text-2xl font-bold md:text-4xl">
+                    What partners report after running UponAI in production.
+                  </h2>
+                </div>
+                <Link href="/case-studies" className="theme-link-muted shrink-0 text-sm font-semibold">
+                  View all case studies
+                </Link>
+              </div>
+
+              <div className="mt-6 grid gap-4 md:grid-cols-3">
+                {featuredCaseStudies.map((post) => (
+                  <Link
+                    key={post.slug}
+                    href={`/post/${post.slug}`}
+                    className="theme-section-alt rounded-[1.5rem] p-5 transition-transform duration-300 hover:-translate-y-1"
+                  >
+                    <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-primary-text)]">
+                      Case Study
+                    </p>
+                    <h3 className="theme-heading mt-3 text-xl font-semibold leading-tight">{post.title}</h3>
+                    <p className="theme-soft mt-3 text-sm leading-7">{post.excerpt}</p>
+                    <span className="theme-link-muted mt-4 inline-flex text-sm font-semibold">Read Story</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          ) : null}
+
           <div className="theme-card mb-10 rounded-[2rem] p-6">
             <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
               <div className="max-w-2xl">
@@ -151,63 +183,7 @@ export default async function BlogsPage({ searchParams }: Props) {
 
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {archive.items.map((post, index) => (
-              <article
-                key={post.slug}
-                className="theme-panel overflow-hidden rounded-[2rem]"
-              >
-                <div className="theme-section-alt aspect-[16/9] overflow-hidden border-b border-[var(--border)]">
-                  <Image
-                    src={post.imageUrl}
-                    alt={post.imageAlt ?? post.title}
-                    width={1200}
-                    height={750}
-                    className="h-full w-full object-cover transition-transform duration-300 hover:scale-[1.03]"
-                    unoptimized
-                  />
-                </div>
-
-                <div className="p-6">
-                  <div className="flex flex-wrap items-center gap-3 text-xs uppercase tracking-[0.22em]">
-                    <span className={`rounded-full px-3 py-1 font-semibold ${
-                      index % 2 === 0 ? 'theme-pill-primary' : 'theme-pill-accent'
-                    }`}>
-                      {post.category}
-                    </span>
-                    <span className="theme-subtle">{formatDate(post.publishedAt)}</span>
-                    <span className="theme-subtle">{post.readTimeMinutes.toFixed(1)} min read</span>
-                  </div>
-
-                  <h3 className="theme-heading mt-5 text-2xl font-semibold leading-tight">{post.title}</h3>
-                  <p className="theme-soft mt-4 text-sm leading-7">{post.excerpt}</p>
-
-                  <div className="mt-5 flex flex-wrap gap-2">
-                    {post.topicSlugs.map((slug) => {
-                      const topic = topics.find((entry) => entry.slug === slug);
-                      if (!topic) return null;
-
-                      return (
-                        <Link
-                          key={slug}
-                          href={`/blogs/topics/${slug}`}
-                          className="theme-card-soft rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--text-subtle)] transition-colors hover:text-[var(--text-strong)]"
-                        >
-                          {topic.title}
-                        </Link>
-                      );
-                    })}
-                  </div>
-
-                  <div className="mt-6 flex items-center justify-between gap-4">
-                    <p className="theme-subtle text-sm">By {post.author}</p>
-                    <Link
-                      href={`/post/${post.slug}`}
-                      className="theme-primary-button rounded-full px-4 py-2 text-sm font-bold"
-                    >
-                      Read Article
-                    </Link>
-                  </div>
-                </div>
-              </article>
+              <BlogPostCard key={post.slug} post={post} topics={topics} index={index} />
             ))}
           </div>
 

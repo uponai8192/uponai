@@ -85,6 +85,7 @@ const priorityCities = cities.filter((city) => priorityCitySlugs.has(city.slug))
 const standalonePages: SitemapEntry[] = [
   { url: '/', lastModified: staticTimestamp, changeFrequency: 'weekly', priority: 1.0 },
   { url: '/blogs', lastModified: staticTimestamp, changeFrequency: 'weekly', priority: 0.8 },
+  { url: '/case-studies', lastModified: staticTimestamp, changeFrequency: 'weekly', priority: 0.8 },
   { url: '/contact-us-page', lastModified: staticTimestamp, changeFrequency: 'monthly', priority: 0.8 },
   { url: '/quote', lastModified: staticTimestamp, changeFrequency: 'monthly', priority: 0.7 },
   { url: '/trust-center', lastModified: staticTimestamp, changeFrequency: 'monthly', priority: 0.7 },

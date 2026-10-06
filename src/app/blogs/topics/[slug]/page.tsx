@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import BlogPostCard from '@/components/blog/BlogPostCard';
 import CTASection from '@/components/sections/CTASection';
 import PaginationNav from '@/components/ui/PaginationNav';
 import { normalizeBlogPageNumber, paginateBlogPosts } from '@/lib/blog-posts';
@@ -12,14 +12,6 @@ type Props = {
   params: Promise<{ slug: string }>;
   searchParams?: Promise<{ page?: string | string[] }>;
 };
-
-function formatDate(value: string) {
-  return new Intl.DateTimeFormat('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  }).format(new Date(value));
-}
 
 export async function generateStaticParams() {
   const topics = await getBlogTopics();
@@ -147,45 +139,10 @@ export default async function BlogTopicPage({ params, searchParams }: Props) {
             </p>
           </div>
 
+          <h2 className="sr-only">Articles in this topic</h2>
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {archive.items.map((post) => (
-              <article key={post.slug} className="theme-panel overflow-hidden rounded-[2rem]">
-                <div className="theme-section-alt aspect-[16/9] overflow-hidden border-b border-[var(--border)]">
-                  <Image
-                    src={post.imageUrl}
-                    alt={post.title}
-                    width={1200}
-                    height={750}
-                    className="h-full w-full object-cover transition-transform duration-300 hover:scale-[1.03]"
-                    unoptimized
-                  />
-                </div>
-
-                <div className="p-6">
-                  <div className="flex flex-wrap items-center gap-3 text-xs uppercase tracking-[0.22em]">
-                    <span className="theme-pill-primary rounded-full px-3 py-1 font-semibold">
-                      {post.category}
-                    </span>
-                    <span className="theme-subtle">{formatDate(post.publishedAt)}</span>
-                    <span className="theme-subtle">{post.readTimeMinutes.toFixed(1)} min read</span>
-                  </div>
-
-                  <h2 className="theme-heading mt-5 text-2xl font-semibold leading-tight">
-                    {post.title}
-                  </h2>
-                  <p className="theme-soft mt-4 text-sm leading-7">{post.excerpt}</p>
-
-                  <div className="mt-6 flex items-center justify-between gap-4">
-                    <p className="theme-subtle text-sm">By {post.author}</p>
-                    <Link
-                      href={`/post/${post.slug}`}
-                      className="theme-primary-button rounded-full px-4 py-2 text-sm font-bold"
-                    >
-                      Read Article
-                    </Link>
-                  </div>
-                </div>
-              </article>
+            {archive.items.map((post, index) => (
+              <BlogPostCard key={post.slug} post={post} topics={topics} index={index} />
             ))}
           </div>
 

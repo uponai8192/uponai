@@ -31,6 +31,7 @@ const featuresLinks: DropdownLink[] = [
 const resourcesLinks: DropdownLink[] = [
   { label: 'N8N', href: '/n8n-downloads' },
   { label: 'Blogs', href: '/blogs' },
+  { label: 'Case Studies', href: '/case-studies' },
   { label: 'About Us', href: '/about-us-page' },
   { label: 'Trust Center', href: '/trust-center' },
   { label: 'Support', href: 'mailto:support@uponai.com', external: true },

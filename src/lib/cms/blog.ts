@@ -1,5 +1,6 @@
 import { unstable_cache } from 'next/cache';
 import {
+  isCaseStudy,
   uponaiBlogPosts as localBlogPosts,
   uponaiBlogTopics as localBlogTopics,
   type UponAIBlogPost,
@@ -114,4 +115,9 @@ export async function getBlogTopic(slug: string): Promise<UponAIBlogTopic | unde
 export async function getBlogPostsByTopic(slug: string): Promise<UponAIBlogPost[]> {
   const posts = await fetchPosts();
   return posts.filter((post) => post.topicSlugs.includes(slug));
+}
+
+export async function getCaseStudies(): Promise<UponAIBlogPost[]> {
+  const posts = await fetchPosts();
+  return posts.filter(isCaseStudy);
 }

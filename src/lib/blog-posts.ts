@@ -35,6 +35,17 @@ export type UponAIBlogPost = {
 
 const BLOG_POSTS_PER_PAGE = 12;
 
+// Customer case studies are ordinary posts with this category, so authors
+// publish them the same way. The /case-studies hub, the post breadcrumb and
+// the related rail filter on it. The Studio category field is free text, so
+// retyping this value on a post silently drops it from the hub; keep the
+// string in step with the Studio schema if that field ever becomes a list.
+export const CASE_STUDY_CATEGORY = 'Customer Case Study';
+
+export function isCaseStudy(post: Pick<UponAIBlogPost, 'category'>) {
+  return post.category === CASE_STUDY_CATEGORY;
+}
+
 // Local blog library built from the public UponAI blog plus imported legacy preview posts.
 // The token in this repo does not currently have blog-read scopes, so this snapshot keeps
 // the site functional and indexable until a scoped token is added.

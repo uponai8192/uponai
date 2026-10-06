@@ -9,6 +9,7 @@ import {
   SITE_NAME,
   SITE_URL,
 } from '@/lib/seo';
+import { isCaseStudy, type UponAIBlogPost } from '@/lib/blog-posts';
 import { getBlogPost, getBlogPosts, getBlogTopics } from '@/lib/cms/blog';
 
 type Props = {
@@ -78,16 +79,24 @@ export default async function BlogPostPage({ params }: Props) {
   if (slug !== post.slug) permanentRedirect(`/post/${post.slug}`);
   const [allPosts, topics] = await Promise.all([getBlogPosts(), getBlogTopics()]);
   const articleBody = post.htmlBody ? toPlainText(post.htmlBody) : post.body.join('\n\n');
-  const relatedPosts = allPosts
-    .filter(
-      (entry) =>
-        entry.slug !== post.slug && entry.topicSlugs.some((topicSlug) => post.topicSlugs.includes(topicSlug))
-    )
-    .slice(0, 3);
+  const caseStudy = isCaseStudy(post);
+  const hub = caseStudy
+    ? { label: 'Case Studies', path: '/case-studies' }
+    : { label: 'Blogs', path: '/blogs' };
+  // A case study links to the other case studies first, then falls back to
+  // posts that share a topic, so the rail stays full while the library is small.
+  const sharesTopic = (entry: UponAIBlogPost) =>
+    entry.topicSlugs.some((topicSlug) => post.topicSlugs.includes(topicSlug));
+  const others = allPosts.filter((entry) => entry.slug !== post.slug);
+  const relatedPosts = (
+    caseStudy
+      ? [...others.filter(isCaseStudy), ...others.filter((entry) => !isCaseStudy(entry) && sharesTopic(entry))]
+      : others.filter(sharesTopic)
+  ).slice(0, 3);
 
   const breadcrumbSchema = buildBreadcrumbSchema([
     { name: 'Home', path: '/' },
-    { name: 'Blogs', path: '/blogs' },
+    { name: hub.label, path: hub.path },
     { name: post.title, path: `/post/${post.slug}` },
   ]);
 
@@ -152,8 +161,8 @@ export default async function BlogPostPage({ params }: Props) {
               Home
             </Link>
             <span className="theme-subtle">/</span>
-            <Link href="/blogs" className="theme-link-muted">
-              Blogs
+            <Link href={hub.path} className="theme-link-muted">
+              {hub.label}
             </Link>
             <span className="theme-subtle">/</span>
             <span className="theme-heading line-clamp-1">{post.title}</span>
@@ -289,7 +298,7 @@ export default async function BlogPostPage({ params }: Props) {
 
                 <div className="theme-card rounded-[1.5rem] p-6">
                   <p className="text-sm font-semibold uppercase tracking-[0.26em] text-[var(--brand-accent-text)]">
-                    Explore Related Reading
+                    {caseStudy ? 'More Customer Stories' : 'Explore Related Reading'}
                   </p>
                   <div className="mt-4 space-y-3">
                     {relatedPosts.map((entry) => (
