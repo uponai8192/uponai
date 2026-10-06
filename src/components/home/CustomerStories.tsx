@@ -24,7 +24,7 @@ export default function CustomerStories({
 
         <div className="sd-rise mt-10 text-center">
           <Link
-            href="/contact-us-page"
+            href="/case-studies"
             className="theme-secondary-button inline-flex rounded-xl px-6 py-3.5 text-[15px] font-semibold"
           >
             {content.ctaLabel}

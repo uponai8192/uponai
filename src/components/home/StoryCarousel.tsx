@@ -51,6 +51,15 @@ function usePrefersReducedMotion() {
   );
 }
 
+// First letters of the first and last word, e.g. "Paul Bonelli" -> "PB".
+function initialsOf(name: string) {
+  const words = name.split(/\s+/).map((word) => word.replace(/[^\p{L}]/gu, '')).filter(Boolean);
+  if (!words.length) return '·';
+  const first = words[0].charAt(0);
+  const last = words.length > 1 ? words[words.length - 1].charAt(0) : '';
+  return (first + last).toUpperCase();
+}
+
 // Deterministic so server and client markup match.
 const bars = Array.from({ length: 11 }, (_, i) => ((i * 31) % 105) / 100);
 
@@ -60,7 +69,7 @@ function resolveAgent(story: HomeCustomerStory, index: number) {
   return {
     key,
     name: agent?.name ?? 'Grace',
-    label: agent?.contextLabel ?? 'UponAI agent',
+    label: story.industry || agent?.contextLabel || 'UponAI agent',
     tint: tintByKey[key] ?? '1, 87, 163',
   };
 }
@@ -271,7 +280,7 @@ export default function StoryCarousel({ stories }: { stories: HomeCustomerStory[
                             aria-hidden
                             className="grid h-10 w-10 flex-none place-items-center rounded-full bg-[var(--surface-muted)] text-sm font-bold text-[var(--text-soft)] font-[family-name:var(--font-display)]"
                           >
-                            {story.name.replace(/[^A-Za-z]/g, '').charAt(0) || '·'}
+                            {initialsOf(story.name)}
                           </span>
                         )}
                         <span className="leading-tight">

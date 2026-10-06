@@ -78,6 +78,8 @@ export type HomeCustomerStory = {
   metricLabel?: string;
   /** Anonymised descriptor shown instead of a logo, e.g. "Multi-location dental group". */
   company?: string;
+  /** Industry tag on the slide. Falls back to the agent's industry label. */
+  industry?: string;
   /** Vertical agent key; picks the portrait and tint. Falls back by position. */
   agentKey?: string;
   /** Illustrative exchange for the call replay panel. */
@@ -250,91 +252,66 @@ export const defaultHomeHowItWorks: HomeHowItWorksContent = {
   ctaLabel: 'See how agents are built →',
 };
 
-// Placeholder stories: every bracketed value is waiting on a real customer
-// result. The transcripts are illustrative calls for each vertical, not quotes.
+// The three published customer case studies. Metrics and quotes come from the
+// customer interviews; the call replays are illustrative, not recordings. The
+// agent key only picks the portrait and tint, the industry tag is set per story.
 export const defaultHomeCustomerStories: HomeCustomerStoriesContent = {
   eyebrow: 'Customer stories',
   heading: 'Every answered call shows up in the numbers.',
   stories: [
     {
-      metric: '+00%',
-      metricLabel: '[more appointments booked after hours]',
-      quote: '[Customer quote: one or two sentences, in their words, on what changed once the agent took the calls.]',
-      name: '[Customer name]',
-      role: '[Title], [Company]',
-      company: '[Multi-location dental group]',
-      agentKey: 'healthcare',
-      callLength: '0:48',
-      transcript: [
-        { speaker: 'caller', text: 'I cracked a filling and it really hurts. Can anyone see me today?' },
-        { speaker: 'agent', text: 'I am sorry to hear that. I have a 4:15 this afternoon. Shall I hold it for you?' },
-        { speaker: 'caller', text: 'Yes please, that works.' },
-      ],
-      outcome: 'Appointment booked',
-    },
-    {
-      metric: '00×',
-      metricLabel: '[more qualified consultations]',
-      quote: '[Customer quote: one or two sentences, in their words, on what changed once the agent took the calls.]',
-      name: '[Customer name]',
-      role: '[Title], [Company]',
-      company: '[Personal injury law firm]',
-      agentKey: 'legal',
-      callLength: '1:12',
-      transcript: [
-        { speaker: 'caller', text: 'I was in a car accident last week and need to talk to someone.' },
-        { speaker: 'agent', text: 'I can help with that. Was anyone injured, and has an insurer contacted you yet?' },
-        { speaker: 'caller', text: 'My neck, and yes, they called yesterday.' },
-      ],
-      outcome: 'Intake done, attorney notified',
-    },
-    {
-      metric: '00%',
-      metricLabel: '[of reservation calls handled without staff]',
-      quote: '[Customer quote: one or two sentences, in their words, on what changed once the agent took the calls.]',
-      name: '[Customer name]',
-      role: '[Title], [Company]',
-      company: '[Boutique hotel group]',
-      agentKey: 'hospitality',
-      callLength: '0:36',
-      transcript: [
-        { speaker: 'caller', text: 'Do you have a sea view room for the 12th, two nights?' },
-        { speaker: 'agent', text: 'We do. A deluxe king with a balcony is free both nights. Want me to reserve it?' },
-        { speaker: 'caller', text: 'Perfect, book it.' },
-      ],
-      outcome: 'Reservation confirmed',
-    },
-    {
-      metric: '-00%',
-      metricLabel: '[fewer order status tickets]',
-      quote: '[Customer quote: one or two sentences, in their words, on what changed once the agent took the calls.]',
-      name: '[Customer name]',
-      role: '[Title], [Company]',
-      company: '[Online home goods retailer]',
-      agentKey: 'retail',
-      callLength: '0:29',
-      transcript: [
-        { speaker: 'caller', text: 'Where is my order? It was meant to arrive yesterday.' },
-        { speaker: 'agent', text: 'Let me check. It is out for delivery and should reach you by 6pm today.' },
-        { speaker: 'caller', text: 'Great, thanks.' },
-      ],
-      outcome: 'Resolved, no ticket raised',
-    },
-    {
-      metric: '$0.0M',
-      metricLabel: '[pipeline from calls that used to go to voicemail]',
-      quote: '[Customer quote: one or two sentences, in their words, on what changed once the agent took the calls.]',
-      name: '[Customer name]',
-      role: '[Title], [Company]',
-      company: '[Regional mortgage broker]',
+      industry: 'Cloud Communications',
+      company: 'IT support team, 800+ employees',
+      metric: '100%',
+      metricLabel: 'of calls answered, with zero hold time',
+      quote: 'All of their calls are being answered, as opposed to less than all. There is no hold time. That is one of the most important points.',
+      name: 'Shripal Daphtary',
+      role: 'Head of Engineering & Product, PressOne',
       agentKey: 'financial-services',
-      callLength: '1:04',
+      callLength: '0:41',
       transcript: [
-        { speaker: 'caller', text: 'I would like to see if I can refinance my mortgage.' },
-        { speaker: 'agent', text: 'Happy to help. Roughly how much is left on the loan, and when did you take it out?' },
-        { speaker: 'caller', text: 'About 240k, back in 2021.' },
+        { speaker: 'caller', text: 'Hi, I can\'t get onto the VPN and I have a client call at two.' },
+        { speaker: 'agent', text: 'I can help with that. I\'ve opened a ticket and marked it urgent. Is this the best number for IT to call you back?' },
+        { speaker: 'caller', text: 'Yes, that\'s my cell.' },
       ],
-      outcome: 'Qualified lead sent to CRM',
+      outcome: 'Ticket opened, IT notified',
+      href: '/post/pressone-case-study-eliminated-hold-times-scaled-support-without-adding-headcount',
+    },
+    {
+      industry: 'Retail & E-Commerce',
+      company: 'Collectibles retailer',
+      metric: '75%',
+      metricLabel: 'fewer missed calls',
+      quote: 'So now the customer is not only just not missing calls, they\'re also getting sales after hours by using UponAI.',
+      name: 'Paul Bonelli',
+      role: 'President, Advanced Hosted Services',
+      agentKey: 'retail',
+      callLength: '0:52',
+      transcript: [
+        { speaker: 'caller', text: 'Do you still have the vintage card set you posted last week?' },
+        { speaker: 'agent', text: 'We do, and there\'s one left. Want me to text you the link to buy it on eBay?' },
+        { speaker: 'caller', text: 'Yes, send it over.' },
+      ],
+      outcome: 'Purchase link sent · 9:12 PM',
+      href: '/post/advanced-hosted-services-case-study-after-hours-calls-that-close-business',
+    },
+    {
+      industry: 'Real Estate',
+      company: 'Multi-location real estate firm',
+      metric: '1',
+      metricLabel: 'phone number for every location',
+      quote: 'They wanted one singular number, and they wanted that upfront welcome to feel very personable and person-like, not a robot. That was a very big win for us.',
+      name: 'Robin Koebberling',
+      role: 'Project Manager, Pro On Call Technologies',
+      agentKey: 'hospitality',
+      callLength: '0:38',
+      transcript: [
+        { speaker: 'caller', text: 'Hi, I\'m calling about the house listed on Maple Street.' },
+        { speaker: 'agent', text: 'That listing is with our Eastside office. I\'ll connect you with an agent there now. May I have your name first?' },
+        { speaker: 'caller', text: 'Sure, it\'s Dana.' },
+      ],
+      outcome: 'Routed to Eastside office',
+      href: '/post/pro-on-call-case-study-one-number-every-location',
     },
   ],
   ctaLabel: 'Read case studies →',
