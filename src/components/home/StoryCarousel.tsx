@@ -215,9 +215,13 @@ export default function StoryCarousel({ stories }: { stories: HomeCustomerStory[
           </div>
         ))}
 
-        {/* Stage: every slide in one grid cell, so the height never jumps. */}
+        {/* Stage: every slide in one grid cell, so the height never jumps. The
+            glass surface (backdrop blur and shadow) lives here, on a layer that
+            never moves; the slides are transparent and only their content
+            fades and drifts. With the blur on each slide, every frame of a
+            change re-blurred two large moving layers and the rotation stuttered. */}
         <div
-          className="relative z-10 mx-auto grid max-w-5xl touch-pan-y"
+          className="theme-panel relative z-10 mx-auto grid max-w-5xl touch-pan-y overflow-hidden rounded-[28px]"
           onPointerDown={onPointerDown}
           onPointerUp={onPointerUp}
           onPointerCancel={() => (swipeStart.current = null)}
@@ -235,7 +239,7 @@ export default function StoryCarousel({ stories }: { stories: HomeCustomerStory[
                 aria-hidden={!isActive}
                 inert={!isActive}
                 data-state={state}
-                className="story-slide theme-panel col-start-1 row-start-1 rounded-[28px] p-2.5 md:p-3"
+                className="story-slide col-start-1 row-start-1 p-2.5 md:p-3"
               >
                 <div className="grid gap-2.5 md:grid-cols-2 md:gap-3">
                   {/* Result */}
