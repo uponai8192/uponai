@@ -1,13 +1,15 @@
 #!/usr/bin/env node
 // One-off import of the local blog library into Sanity (Phase 1 of
-// docs/cms-migration-spike.md). Reads the merged post list (220 imported +
-// 9 manual) and the 4 topics from src/lib/blog-posts.ts and writes them to
+// docs/cms-migration-spike.md). Reads the merged post list (220 imported
+// plus the manual posts) and the 4 topics from src/lib/blog-posts.ts and writes them to
 // the Content Lake with deterministic ids, so re-running patches instead of
 // duplicating.
 //
 // Usage:
 //   node scripts/import-posts-to-sanity.mjs           # dry run, prints plan
 //   node scripts/import-posts-to-sanity.mjs --apply   # actually import
+//   node scripts/import-posts-to-sanity.mjs --only=slug-a,slug-b --apply   # just those posts
+//   node scripts/import-posts-to-sanity.mjs --only=slug-a --dump=out.json  # JSON for sanity exec
 //
 // Requires SANITY_PROJECT_ID, SANITY_DATASET and an Editor-role
 // SANITY_API_TOKEN in .env.local. Run locally only, never on the server.
@@ -15,13 +17,36 @@
 import { createHash } from 'node:crypto';
 import { execSync } from 'node:child_process';
 import { createRequire } from 'node:module';
-import { cpSync, mkdtempSync, readFileSync, rmSync, existsSync } from 'node:fs';
+import { cpSync, mkdtempSync, readFileSync, rmSync, existsSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import process from 'node:process';
 
 const repoRoot = process.cwd();
 const apply = process.argv.includes('--apply');
+// --only=slug-a,slug-b limits the write to those posts (no topics), so a
+// follow-up import of a few new posts cannot overwrite edits made in Studio
+// to the rest of the library since the initial migration.
+const onlyArg = process.argv.find((arg) => arg.startsWith('--only='));
+// --dump=<file> writes the documents as JSON instead of mutating, for when
+// the .env.local token is read-only and the write has to go through
+// `npx sanity exec <script> --with-user-token` in the Studio repo.
+const dumpArg = process.argv.find((arg) => arg.startsWith('--dump='));
+const dumpFile = dumpArg ? dumpArg.slice('--dump='.length) : null;
+const onlySlugs = onlyArg
+  ? new Set(onlyArg.slice('--only='.length).split(',').filter(Boolean))
+  : null;
+if (onlySlugs && onlySlugs.size === 0) {
+  console.error('--only needs at least one slug');
+  process.exit(1);
+}
+if (dumpArg && !dumpFile) {
+  console.error('--dump needs a file path');
+  process.exit(1);
+}
+if (dumpFile && apply) {
+  console.log('Ignoring --apply because --dump was given; nothing will be written to Sanity.');
+}
 
 // ── Env ────────────────────────────────────────────────────────────────────
 const envFile = readFileSync(path.join(repoRoot, '.env.local'), 'utf8');
@@ -115,7 +140,16 @@ async function mutateBatch(docs) {
 }
 
 async function main() {
-  const { posts, topics } = loadBlogModule();
+  const { posts: allPosts, topics: allTopics } = loadBlogModule();
+  const posts = onlySlugs ? allPosts.filter((post) => onlySlugs.has(post.slug)) : allPosts;
+  const topics = onlySlugs ? [] : allTopics;
+  if (onlySlugs) {
+    const missing = [...onlySlugs].filter((slug) => !posts.some((post) => post.slug === slug));
+    if (missing.length) {
+      console.error(`--only slugs not found in the library: ${missing.join(', ')}`);
+      process.exit(1);
+    }
+  }
   const docs = [...topics.map(topicDoc), ...posts.map(postDoc)];
 
   const slugs = new Set();
@@ -131,6 +165,12 @@ async function main() {
   if (duplicates.length) {
     console.error(`Duplicate slugs, aborting: ${duplicates.join(', ')}`);
     process.exit(1);
+  }
+
+  if (dumpFile) {
+    writeFileSync(dumpFile, JSON.stringify(docs, null, 2));
+    console.log(`Wrote ${docs.length} documents to ${dumpFile}`);
+    return;
   }
 
   if (!apply) {
