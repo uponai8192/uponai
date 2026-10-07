@@ -204,14 +204,14 @@ export const defaultHomeCapabilities: HomeCapabilitiesContent = {
     },
     {
       kicker: 'Capability 02 · Deploy',
-      title: 'Train once, deploy everywhere',
-      lede: 'The same AI agent handles phone calls, website chat, WhatsApp, and more, under your own branding, on your own domain and numbers, fully mobile.',
-      benefit: 'one agent to maintain instead of three, every improvement ships to every channel at once.',
+      title: 'Plugs into the phone system you already have',
+      lede: 'Keep your numbers and your carrier. Agents answer inbound calls, run outbound and batch campaigns, and hand callers to your team with a warm transfer, over Twilio, Telnyx, Vonage, or any SIP trunk.',
+      benefit: 'no rip-and-replace. The agent goes live on the lines your customers already call.',
       features: [
-        'No-code builder',
-        'Multi-channel: phone, chat, web, WhatsApp',
-        'Custom branding: logo, domain, phone number',
-        '100% mobile support',
+        'Bring your own numbers or buy new ones',
+        'Inbound, outbound, and batch calling',
+        'Warm transfer to your team, plus SMS follow-up',
+        'Contact center ready: Five9, Genesys, Avaya, Amazon Connect',
       ],
     },
     {
@@ -220,9 +220,10 @@ export const defaultHomeCapabilities: HomeCapabilitiesContent = {
       lede: 'Every conversation is transcribed, analyzed, and turned into insight, so you get real-time intelligence about your operations instead of a black box.',
       benefit: 'you finally see what customers ask for, where they drop off, and which leads you would have missed.',
       features: [
-        'Transcribed call transcripts and insights',
-        'Multi-step complex workflows',
-        'Automatic lead generation',
+        'Transcripts, recordings, and post-call analysis',
+        'Multi-step conversation flows',
+        'Lead details captured and pushed to your CRM',
+        'Automated QA scoring and threshold alerts',
       ],
     },
   ],
@@ -240,7 +241,7 @@ export const defaultHomeHowItWorks: HomeHowItWorksContent = {
     },
     {
       title: 'Deploy',
-      body: 'Publish the same agent to phone, web chat, and WhatsApp under your own branding, numbers, and domain.',
+      body: 'Connect the agent to your phone numbers and embed a chat or callback widget on your site with one script tag.',
       time: '1 click',
     },
     {
