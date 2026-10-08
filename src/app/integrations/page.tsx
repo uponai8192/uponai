@@ -217,9 +217,7 @@ export default function IntegrationsPage() {
         </div>
       </section>
 
-      <IntegrationsHub />
-
-      <section className="px-4 py-20">
+      <section className="px-4 pb-20">
         <div className="mx-auto max-w-7xl">
           <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
@@ -255,7 +253,9 @@ export default function IntegrationsPage() {
         </div>
       </section>
 
-      <section className="px-4 pb-20">
+      <IntegrationsHub />
+
+      <section className="px-4 py-20">
         <div className="mx-auto max-w-4xl">
           <h2 className="theme-heading text-3xl font-bold md:text-4xl">Integration questions</h2>
           <div className="mt-8 space-y-4">
