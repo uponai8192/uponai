@@ -246,20 +246,15 @@ export default function Nav({ settings = defaultSiteSettings }: { settings?: Sit
                   floating ? 'h-2 w-2 opacity-100' : 'h-0 w-0 opacity-0'
                 }`}
               />
-              <div
-                className={`relative overflow-hidden transition-all duration-300 ${
-                  floating ? 'h-9 w-28' : 'h-11 w-34 sm:h-12 sm:w-38'
-                }`}
-              >
-                <Image
-                  src="/logo.png"
-                  alt="UponAI"
-                  fill
-                  sizes="152px"
-                  className="object-contain scale-[1.65]"
-                  priority
-                />
-              </div>
+              <Image
+                src="/logo-wordmark.png"
+                alt="UponAI"
+                width={396}
+                height={239}
+                sizes="100px"
+                className={`w-auto transition-[height] duration-300 ${floating ? 'h-9' : 'h-12 sm:h-14'}`}
+                priority
+              />
             </Link>
 
             <nav className="hidden items-center gap-1 xl:flex">

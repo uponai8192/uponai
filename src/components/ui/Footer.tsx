@@ -32,15 +32,14 @@ export default async function Footer() {
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.2fr_0.9fr_0.9fr_1fr]">
           <div className="theme-card rounded-[2rem] p-7">
             <Link href="/" className="mb-6 inline-block">
-              <div className="relative h-20 w-52 overflow-hidden md:w-60">
-                <Image
-                  src="/logo.png"
-                  alt="UponAI"
-                  fill
-                  sizes="(min-width: 768px) 240px, 208px"
-                  className="object-contain scale-[1.8]"
-                />
-              </div>
+              <Image
+                src="/logo-wordmark.png"
+                alt="UponAI"
+                width={396}
+                height={239}
+                sizes="120px"
+                className="h-16 w-auto md:h-[4.5rem]"
+              />
             </Link>
             <p className="theme-body max-w-md text-sm leading-relaxed">
               UponAI builds AI voice and conversational systems for businesses that need faster response times,
