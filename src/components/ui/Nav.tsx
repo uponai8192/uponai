@@ -247,12 +247,11 @@ export default function Nav({ settings = defaultSiteSettings }: { settings?: Sit
                 }`}
               />
               <Image
-                src="/logo-wordmark.png"
+                src="/logo-mark.png"
                 alt="UponAI"
-                width={396}
-                height={239}
-                sizes="100px"
-                className={`w-auto transition-[height] duration-300 ${floating ? 'h-9' : 'h-12 sm:h-14'}`}
+                width={192}
+                height={192}
+                className={`w-auto transition-[height] duration-300 ${floating ? 'h-8' : 'h-10 sm:h-11'}`}
                 priority
               />
             </Link>
