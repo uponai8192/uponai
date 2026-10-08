@@ -239,7 +239,14 @@ export default function Nav({ settings = defaultSiteSettings }: { settings?: Sit
               floating ? 'min-h-[54px]' : 'min-h-[64px] md:min-h-[72px]'
             }`}
           >
-            <Link href="/" className="inline-flex flex-shrink-0 items-center gap-2.5">
+            {/* On wide screens the docked header nudges the mark 144px toward the
+                menu; translate leaves the flex layout and menu position alone. */}
+            <Link
+              href="/"
+              className={`inline-flex flex-shrink-0 items-center gap-2.5 transition-transform duration-300 ${
+                floating ? '' : 'xl:translate-x-36'
+              }`}
+            >
               <span
                 aria-hidden
                 className={`animate-brand-pulse rounded-full bg-[var(--brand)] shadow-[0_0_10px_var(--brand)] transition-all duration-300 ${
