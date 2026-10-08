@@ -23,6 +23,11 @@ const TILE_BG = 'linear-gradient(160deg, #22406c, #0d1c3a)';
 // agent does with them on a call. Anything not listed here lands in "More".
 const categories: { title: string; body: string; names: string[] }[] = [
   {
+    title: 'Automation & Workflows',
+    body: 'n8n is the bridge to every tool below. Zapier and Make work too if your team already runs on them.',
+    names: ['n8n', 'Zapier', 'Make'],
+  },
+  {
     title: 'CRM & Sales',
     body: 'Capture lead details on the call and push clean records into the pipeline your team already works.',
     names: ['GoHighLevel', 'HubSpot', 'Salesforce', 'Pipedrive', 'Zoho', 'Airtable'],
@@ -46,11 +51,6 @@ const categories: { title: string; body: string; names: string[] }[] = [
     title: 'Payments & Commerce',
     body: 'Look up orders, send payment links and record transactions without handing the caller off.',
     names: ['Stripe', 'Square', 'PayPal', 'Shopify', 'WooCommerce', 'QuickBooks', 'Xero'],
-  },
-  {
-    title: 'Automation & Workflows',
-    body: 'n8n is the bridge to everything on this page. Zapier and Make work too if your team already runs on them.',
-    names: ['n8n', 'Zapier', 'Make'],
   },
 ];
 
