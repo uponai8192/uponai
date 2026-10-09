@@ -1,0 +1,15 @@
+.git
+.gitignore
+.next
+node_modules
+npm-debug.log*
+
+uponai
+
+.DS_Store
+*.tmp
+*.swp
+
+README.md
+AGENTS.md
+CLAUDE.md
