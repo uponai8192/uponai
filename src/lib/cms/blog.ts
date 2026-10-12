@@ -6,7 +6,7 @@ import {
   type UponAIBlogPost,
   type UponAIBlogTopic,
 } from '@/lib/blog-posts';
-import { CMS_TAG_POSTS, CMS_TAG_TOPICS, sanityConfigured, sanityQuery } from '@/lib/cms/sanity';
+import { CMS_TAG_POSTS, CMS_TAG_TOPICS, sanityConfigured, sanityQuery, withCmsFallback } from '@/lib/cms/sanity';
 
 // Blog content from Sanity, returned in the exact UponAIBlogPost and
 // UponAIBlogTopic shapes the routes already render, so the page components did
@@ -61,7 +61,7 @@ function normalizePost(raw: RawPost): UponAIBlogPost {
   };
 }
 
-const fetchPosts = unstable_cache(
+const fetchCmsPosts = unstable_cache(
   async (): Promise<UponAIBlogPost[]> => {
     if (!sanityConfigured()) return localBlogPosts;
     const raw = await sanityQuery<RawPost[]>(
@@ -74,7 +74,7 @@ const fetchPosts = unstable_cache(
   { tags: [CMS_TAG_POSTS] }
 );
 
-const fetchTopics = unstable_cache(
+const fetchCmsTopics = unstable_cache(
   async (): Promise<UponAIBlogTopic[]> => {
     if (!sanityConfigured()) return localBlogTopics;
     const raw = await sanityQuery<UponAIBlogTopic[]>(
@@ -93,6 +93,9 @@ const fetchTopics = unstable_cache(
   ['cms-topics'],
   { tags: [CMS_TAG_TOPICS] }
 );
+
+const fetchPosts = withCmsFallback('posts', fetchCmsPosts, () => localBlogPosts);
+const fetchTopics = withCmsFallback('blogTopics', fetchCmsTopics, () => localBlogTopics);
 
 export async function getBlogPosts(): Promise<UponAIBlogPost[]> {
   return fetchPosts();

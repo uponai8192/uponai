@@ -5,7 +5,7 @@ import {
   type VoiceAICityPageOverride,
   type VoiceAIIndustryPage,
 } from '@/lib/voice-ai-industries';
-import { CMS_TAG_VERTICALS, sanityConfigured, sanityQuery } from '@/lib/cms/sanity';
+import { CMS_TAG_VERTICALS, sanityConfigured, sanityQuery, withCmsFallback } from '@/lib/cms/sanity';
 
 // Industry landing pages ("verticals") from Sanity, returned in the existing
 // VoiceAIIndustryPage shape so the page components did not change.
@@ -68,7 +68,7 @@ function normalizeVertical(raw: RawVertical): VoiceAIIndustryPage | null {
   };
 }
 
-const fetchVerticals = unstable_cache(
+const fetchCmsVerticals = unstable_cache(
   async (): Promise<VoiceAIIndustryPage[]> => {
     if (!sanityConfigured()) return localVerticals;
     const raw = await sanityQuery<RawVertical[]>(
@@ -94,7 +94,7 @@ const fetchVerticals = unstable_cache(
   { tags: [CMS_TAG_VERTICALS] }
 );
 
-const fetchCityOverrides = unstable_cache(
+const fetchCmsCityOverrides = unstable_cache(
   async (): Promise<Record<string, VoiceAICityPageOverride>> => {
     if (!sanityConfigured()) return {};
     const raw = await sanityQuery<
@@ -119,6 +119,17 @@ const fetchCityOverrides = unstable_cache(
   { tags: [CMS_TAG_VERTICALS] }
 );
 
+const fetchVerticals = withCmsFallback('verticals', fetchCmsVerticals, () => localVerticals);
+
+// Falls back to the in-repo override for that city, the same copy an
+// unconfigured environment renders.
+const readCityOverride = withCmsFallback(
+  'verticalCityOverrides',
+  async (slug: string, citySlug: string): Promise<VoiceAICityPageOverride | undefined> =>
+    (await fetchCmsCityOverrides())[`${slug}/${citySlug}`],
+  (slug, citySlug) => getLocalCityOverride(slug, citySlug) ?? undefined
+);
+
 export async function getVerticals(): Promise<VoiceAIIndustryPage[]> {
   return fetchVerticals();
 }
@@ -140,6 +151,5 @@ export async function getVerticalCityOverride(
   citySlug: string
 ): Promise<VoiceAICityPageOverride | undefined> {
   if (!sanityConfigured()) return getLocalCityOverride(slug, citySlug);
-  const overrides = await fetchCityOverrides();
-  return overrides[`${slug}/${citySlug}`];
+  return readCityOverride(slug, citySlug);
 }

@@ -1,7 +1,7 @@
 import { unstable_cache } from 'next/cache';
 import type { UponAIMenuLink } from '@/lib/uponai-pages';
 import { defaultSiteSettings, type SiteSettings } from '@/lib/site-settings';
-import { CMS_TAG_SETTINGS, sanityQuery } from '@/lib/cms/sanity';
+import { CMS_TAG_SETTINGS, sanityQuery, withCmsFallback } from '@/lib/cms/sanity';
 
 // Navigation, footer links and office list from the Sanity siteSettings
 // singleton, falling back per field to the in-repo menus. These render on
@@ -13,7 +13,7 @@ import { CMS_TAG_SETTINGS, sanityQuery } from '@/lib/cms/sanity';
 const menuOr = (value: UponAIMenuLink[] | undefined, fallback: UponAIMenuLink[]) =>
   value?.length ? value : fallback;
 
-export const getSiteSettings = unstable_cache(
+const fetchSiteSettings = unstable_cache(
   async (): Promise<SiteSettings> => {
     const doc = await sanityQuery<Partial<SiteSettings>>(
       `*[_id == "siteSettings"][0]{
@@ -39,4 +39,10 @@ export const getSiteSettings = unstable_cache(
   },
   ['cms-settings'],
   { tags: [CMS_TAG_SETTINGS] }
+);
+
+export const getSiteSettings = withCmsFallback(
+  'siteSettings',
+  fetchSiteSettings,
+  () => defaultSiteSettings
 );

@@ -1,11 +1,11 @@
 import { unstable_cache } from 'next/cache';
 import { defaultHomePageContent, type HomePageContent } from '@/lib/home-content';
-import { CMS_TAG_HOME, sanityQuery } from '@/lib/cms/sanity';
+import { CMS_TAG_HOME, sanityQuery, withCmsFallback } from '@/lib/cms/sanity';
 
 // Homepage copy from the Sanity homePage singleton. Falls back to the in-repo
 // defaults section by section, so an unconfigured environment or a partially
 // filled document can never render an empty homepage.
-export const getHomePageContent = unstable_cache(
+const fetchHomePageContent = unstable_cache(
   async (): Promise<HomePageContent> => {
     // Customer story avatars are uploaded assets, so they are resolved to CDN
     // URLs here; everything else on the document is already plain copy.
@@ -50,4 +50,10 @@ export const getHomePageContent = unstable_cache(
   },
   ['cms-home'],
   { tags: [CMS_TAG_HOME] }
+);
+
+export const getHomePageContent = withCmsFallback(
+  'homePage',
+  fetchHomePageContent,
+  () => defaultHomePageContent
 );

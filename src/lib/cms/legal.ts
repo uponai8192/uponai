@@ -1,5 +1,5 @@
 import { unstable_cache } from 'next/cache';
-import { CMS_TAG_LEGAL, sanityQuery } from '@/lib/cms/sanity';
+import { CMS_TAG_LEGAL, sanityQuery, withCmsFallback } from '@/lib/cms/sanity';
 
 // Privacy policy and terms of service from Sanity. Unlike the rest of the CMS
 // work there is no in-repo fallback copy: the existing pages are hand-written
@@ -44,7 +44,7 @@ export type LegalPage = {
   sections: LegalSection[];
 };
 
-export const getLegalPage = unstable_cache(
+const fetchLegalPage = unstable_cache(
   async (slug: string): Promise<LegalPage | null> => {
     const doc = await sanityQuery<LegalPage | null>(
       `*[_type == "legalPage" && slug.current == "${slug}"][0]{
@@ -58,3 +58,7 @@ export const getLegalPage = unstable_cache(
   ['cms-legal'],
   { tags: [CMS_TAG_LEGAL] }
 );
+
+// null sends the route to its hand-written JSX page, the same as a missing
+// document.
+export const getLegalPage = withCmsFallback('legalPage', fetchLegalPage, () => null);
