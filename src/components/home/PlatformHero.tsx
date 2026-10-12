@@ -36,7 +36,7 @@ export default function PlatformHero({ content = defaultHomeHero }: { content?: 
     <section ref={sectionRef} className="hero-track relative">
       <div className="hero-pin relative overflow-clip px-4 pb-14 pt-16 md:pt-20">
         {/* Aurora: three soft colour fields drifting slowly behind the copy. */}
-        <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div aria-hidden className="hero-aurora-field pointer-events-none absolute inset-0 overflow-hidden">
           <span className="hero-aurora" style={{ '--a': 'var(--wash-1)', '--x': '70%', '--y': '10%', '--t': '26s' } as CSSProperties} />
           <span className="hero-aurora" style={{ '--a': 'var(--wash-2)', '--x': '15%', '--y': '35%', '--t': '34s', '--delay': '-11s' } as CSSProperties} />
           <span className="hero-aurora" style={{ '--a': 'var(--brand-accent-bg)', '--x': '55%', '--y': '70%', '--t': '30s', '--delay': '-19s' } as CSSProperties} />

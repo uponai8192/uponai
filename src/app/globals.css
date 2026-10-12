@@ -564,6 +564,14 @@ body {
   view-timeline: --hero block;
 }
 
+/* The washes fade out before the hero's bottom edge, so the glow dissolves
+   into the page background instead of ending in a lighter band where the
+   switchboard begins. The homepage keeps one background throughout. */
+.hero-aurora-field {
+  -webkit-mask-image: linear-gradient(180deg, #000 55%, transparent 100%);
+  mask-image: linear-gradient(180deg, #000 55%, transparent 100%);
+}
+
 .hero-aurora {
   position: absolute;
   left: var(--x);
@@ -723,6 +731,23 @@ body {
       animation-range: cover 0% cover 100%, cover 0% cover 100%;
     }
 
+    /* The stage starts scrolling away at the same moment the walkthrough
+       starts dissolving, so its bottom edge would cut the half-faded video
+       off in a hard line over the switchboard. This veil fades that edge
+       into the page colour, and only during the exit: at rest it would
+       dim the bottom of the resting frame. */
+    .hero-pin::after {
+      content: '';
+      position: absolute;
+      inset: auto 0 0;
+      height: 45svh;
+      pointer-events: none;
+      background: linear-gradient(180deg, transparent, var(--background) 85%);
+      animation: hero-exit-veil linear both;
+      animation-timeline: --hero;
+      animation-range: cover 0% cover 100%;
+    }
+
     .hero-pin .hero-copy {
       animation: hero-copy-out linear both;
       animation-timeline: --hero;
@@ -735,6 +760,14 @@ body {
     .hero-pin:has(:focus-visible) .hero-copy,
     .hero-pin:has(:focus-visible) .hero-frame {
       animation: none;
+    }
+
+    /* The veil would otherwise cover the frame's pause button once focus
+       snaps the frame back to rest. Opacity is restated because the base
+       rule only gets it from the animation fill. */
+    .hero-pin:has(:focus-visible)::after {
+      animation: none;
+      opacity: 0;
     }
 
     .hero-pin:has(:focus-visible) .hero-frame {
@@ -781,6 +814,14 @@ body {
     scale: 1.17;
     opacity: 0;
   }
+}
+
+/* 61.54% (160/260 of the cover range, see "Hero choreography") is where
+   the stage unpins and the dissolve begins in hero-dolly. The ramp is
+   short so the edge never shows while it is still close to the bottom. */
+@keyframes hero-exit-veil {
+  0%, 61.54% { opacity: 0; }
+  64%, 100% { opacity: 1; }
 }
 
 @keyframes hero-dolly-radius {

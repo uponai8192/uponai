@@ -8,7 +8,7 @@ export default function HowItWorksSteps({
 }) {
   const steps = content.steps.map((step, i) => ({ ...step, n: String(i + 1).padStart(2, '0') }));
   return (
-    <section id="how" className="theme-section-alt border-y border-[var(--border)] px-4 py-20 md:py-24">
+    <section id="how" className="px-4 py-20 md:py-24">
       <div className="mx-auto max-w-7xl">
         <div className="sd-cine mx-auto mb-12 max-w-2xl text-center">
           <span className="inline-flex items-center gap-2.5 text-xs uppercase tracking-[0.2em] text-[var(--brand)] font-[family-name:var(--font-mono)]">
