@@ -116,7 +116,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
       </head>
-      <body className={`${bodyFont.variable} ${displayFont.variable} ${monoFont.variable} bg-[var(--background)] text-[var(--foreground)] antialiased transition-[background-color,color] duration-300`}>
+      <body className={`${bodyFont.variable} ${displayFont.variable} ${monoFont.variable} text-[var(--foreground)] antialiased transition-[color] duration-300`}>
         <VoiceWidgetProvider>
           <Nav settings={settings} />
           {/* Offsets the fixed header at its docked height: 64px bar on mobile,
