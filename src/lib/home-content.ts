@@ -36,17 +36,11 @@ export type HomeSolutionsContent = {
   items: { title: string; body: string; href: string }[];
 };
 
-export type HomeIntroContent = {
+export type HomeDemoContent = {
   eyebrow: string;
-  headingStart: string;
-  headingAccent: string;
-  headingEnd: string;
-  ledeStart: string;
-  ledeBold1: string;
-  ledeMiddle: string;
-  ledeBold2: string;
-  ledeEnd: string;
-  stats: { value: string; label: string }[];
+  heading: string;
+  body: string;
+  ctaLabel: string;
 };
 
 export type HomeCapabilitiesContent = {
@@ -117,7 +111,7 @@ export type HomePageContent = {
   hero: HomeHeroContent;
   socialProof: HomeSocialProofContent;
   solutions: HomeSolutionsContent;
-  intro: HomeIntroContent;
+  demo: HomeDemoContent;
   capabilities: HomeCapabilitiesContent;
   howItWorks: HomeHowItWorksContent;
   customerStories: HomeCustomerStoriesContent;
@@ -169,21 +163,11 @@ export const defaultHomeSolutions: HomeSolutionsContent = {
   ],
 };
 
-export const defaultHomeIntro: HomeIntroContent = {
-  eyebrow: 'Introducing the new way · AI Agent Platform',
-  headingStart: 'One Platform.',
-  headingAccent: 'Every Channel.',
-  headingEnd: 'Full Control',
-  ledeStart: 'Build and deploy AI agents across ',
-  ledeBold1: 'phone, chat, and web',
-  ledeMiddle: ' to augment your workforce with ',
-  ledeBold2: 'visibility, speed, and scale',
-  ledeEnd: ', trained once, live everywhere, measured in real time.',
-  stats: [
-    { value: '10 min', label: 'To your first working agent' },
-    { value: '1 build', label: 'Deployed across every channel' },
-    { value: 'Every', label: 'Conversation captured and analyzed' },
-  ],
+export const defaultHomeDemo: HomeDemoContent = {
+  eyebrow: 'See it in action',
+  heading: 'Easier to show than explain.',
+  body: 'Watch an UponAI agent pick up a call, answer a question, and log the whole conversation. Then book 20 minutes and we’ll build one live for your team.',
+  ctaLabel: 'Get a Demo',
 };
 
 export const defaultHomeCapabilities: HomeCapabilitiesContent = {
@@ -367,7 +351,7 @@ export const defaultHomePageContent: HomePageContent = {
   hero: defaultHomeHero,
   socialProof: defaultHomeSocialProof,
   solutions: defaultHomeSolutions,
-  intro: defaultHomeIntro,
+  demo: defaultHomeDemo,
   capabilities: defaultHomeCapabilities,
   howItWorks: defaultHomeHowItWorks,
   customerStories: defaultHomeCustomerStories,

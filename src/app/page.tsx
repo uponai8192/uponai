@@ -3,7 +3,7 @@ import PlatformHero from '@/components/home/PlatformHero';
 import AgentSwitchboard from '@/components/home/AgentSwitchboard';
 import IntegrationsHub from '@/components/home/IntegrationsHub';
 import Solutions from '@/components/home/Solutions';
-import IntroSolution from '@/components/home/IntroSolution';
+import DemoShowcase from '@/components/home/DemoShowcase';
 import Capabilities from '@/components/home/Capabilities';
 import HowItWorksSteps from '@/components/home/HowItWorksSteps';
 import CustomerStories from '@/components/home/CustomerStories';
@@ -43,7 +43,7 @@ export default async function HomePage() {
         <CustomerStories content={content.customerStories} />
       </div>
       <div className="scroll-panel">
-        <IntroSolution content={content.intro} />
+        <DemoShowcase content={content.demo} />
       </div>
       <div className="scroll-panel">
         <Capabilities content={content.capabilities} />

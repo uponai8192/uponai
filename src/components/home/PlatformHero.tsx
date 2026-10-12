@@ -5,8 +5,8 @@ import { uponaiBookingUrl } from '@/lib/booking';
 import { defaultHomeHero, type HomeHeroContent } from '@/lib/home-content';
 import HeroShowcase from './HeroShowcase';
 
-function scrollToSolution() {
-  document.getElementById('solution')?.scrollIntoView({ behavior: 'smooth' });
+function scrollToDemo() {
+  document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' });
 }
 
 export default function PlatformHero({ content = defaultHomeHero }: { content?: HomeHeroContent }) {
@@ -86,7 +86,7 @@ export default function PlatformHero({ content = defaultHomeHero }: { content?: 
             </a>
             <button
               type="button"
-              onClick={scrollToSolution}
+              onClick={scrollToDemo}
               className="theme-secondary-button rounded-xl px-6 py-3.5 text-[15px] font-semibold"
             >
               {content.secondaryCtaLabel}

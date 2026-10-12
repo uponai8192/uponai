@@ -75,7 +75,7 @@ async function main() {
     hero: content.hero,
     socialProof: content.socialProof,
     solutions: { ...content.solutions, items: keyed(content.solutions.items) },
-    intro: { ...content.intro, stats: keyed(content.intro.stats) },
+    demo: content.demo,
     capabilities: { ...content.capabilities, items: keyed(content.capabilities.items) },
     howItWorks: { ...content.howItWorks, steps: keyed(content.howItWorks.steps) },
     customerStories: {

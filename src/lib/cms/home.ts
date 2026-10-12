@@ -31,7 +31,10 @@ export const getHomePageContent = unstable_cache(
       solutions: doc?.solutions?.items?.length
         ? doc.solutions
         : defaultHomePageContent.solutions,
-      intro: doc?.intro ?? defaultHomePageContent.intro,
+      // A cleared heading or button label would render an empty h2 or a bare
+      // arrow, so the section falls back whole unless both are filled.
+      demo:
+        doc?.demo?.heading && doc.demo.ctaLabel ? doc.demo : defaultHomePageContent.demo,
       capabilities: doc?.capabilities ?? defaultHomePageContent.capabilities,
       howItWorks: doc?.howItWorks ?? defaultHomePageContent.howItWorks,
       // The carousel is built around a headline figure per story. Documents
