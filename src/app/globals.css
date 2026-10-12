@@ -977,6 +977,120 @@ body {
   }
 }
 
+/* ── Homepage intro ──────────────────────────────────────────────────────
+   Every homepage load opens on the AI mark spinning over a cover in the
+   page colour (PlatformHero). At 0.9s the cover fades and reveals the
+   headline alone, its underline draws, then the buttons and the
+   walkthrough follow. The headline sits fully painted under the cover the
+   whole time, so it is not held back for LCP. The walkthrough poster is
+   the desktop LCP element and is held at opacity 0 until 1.75s, which
+   moves desktop LCP to about 1.8s on every load; that cost was accepted
+   for the effect. All of it lives under no-preference, so reduced motion
+   gets the plain hero. */
+.home-loader {
+  display: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .home-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: grid;
+    place-items: center;
+    pointer-events: none;
+    background:
+      radial-gradient(900px 520px at 50% -12%, var(--spotlight), transparent 65%),
+      var(--background);
+    animation: home-loader-out 400ms ease-in 900ms both;
+  }
+
+  .home-loader-ring {
+    position: relative;
+    display: grid;
+    width: 104px;
+    height: 104px;
+    place-items: center;
+    animation: home-loader-in 300ms ease-out both;
+  }
+
+  .home-loader-ring svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke-width: 2;
+  }
+
+  .home-loader-ring circle:first-child {
+    stroke: var(--border-strong);
+  }
+
+  /* A quarter-turn arc running round the ring. */
+  .home-loader-ring circle:last-child {
+    stroke: var(--brand-cool);
+    stroke-linecap: round;
+    stroke-dasharray: 0.25 0.75;
+    transform-origin: 50% 50%;
+    animation: home-loader-spin 800ms linear infinite;
+  }
+
+  .home-loader-ring img {
+    width: 46px;
+    height: auto;
+  }
+
+  /* The words are already painted under the cover, so their own rise is
+     dropped; the cover fading off them is the fade-in. */
+  .hero-intro .hero-word,
+  .hero-intro .hero-accent {
+    animation: none;
+  }
+
+  .hero-intro .hero-wave path {
+    animation-delay: 1.15s;
+  }
+
+  .hero-intro .hero-fade {
+    animation-delay: calc(var(--delay, 0s) + 1.25s);
+  }
+
+  /* Opacity only. A transform animation would make the showcase a
+     containing block, which knocks the pinned dolly off centre (see the
+     note on .hero-pin .hero-showcase). This rule outranks that one's
+     animation: none by source order, so it has to stay transform-free. */
+  .hero-intro .hero-rise {
+    animation: hero-intro-fade 500ms ease-out 1.75s both;
+  }
+}
+
+@keyframes home-loader-out {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes home-loader-in {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+}
+
+@keyframes hero-intro-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes home-loader-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
 /* ── Integrations hub ────────────────────────────────────────────────────
    The UponAI hub sits in a starfield with integration tiles drifting around
    it, and pulses travel along the curved connections. The scene is themed

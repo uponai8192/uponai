@@ -33,7 +33,23 @@ export default function PlatformHero({ content = defaultHomeHero }: { content?: 
     // until it fills the screen while the copy lifts away, then it keeps
     // growing past the camera and dissolves into the switchboard (globals.css,
     // "Hero choreography"). Everywhere else it is a plain hero in flow.
-    <section ref={sectionRef} className="hero-track relative">
+    <section ref={sectionRef} className="hero-track hero-intro relative">
+      {/* Intro loader: the AI mark spins over a cover in the page colour,
+          then the cover fades to reveal the headline on its own, and the
+          buttons and walkthrough follow (globals.css, "Homepage intro").
+          It is CSS only, so it never waits on scripts. The headline is
+          painted underneath from the start, so the reveal does not hold
+          back its LCP. Skipped entirely for reduced motion. */}
+      <div aria-hidden className="home-loader">
+        <span className="home-loader-ring">
+          <svg viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="46" />
+            <circle cx="50" cy="50" r="46" pathLength={1} />
+          </svg>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo-mark.png" alt="" width={192} height={192} />
+        </span>
+      </div>
       <div className="hero-pin relative overflow-clip px-4 pb-14 pt-16 md:pt-20">
         {/* Aurora: three soft colour fields drifting slowly behind the copy. */}
         <div aria-hidden className="hero-aurora-field pointer-events-none absolute inset-0 overflow-hidden">
