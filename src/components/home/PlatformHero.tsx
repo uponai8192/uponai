@@ -5,10 +5,6 @@ import { uponaiBookingUrl } from '@/lib/booking';
 import { defaultHomeHero, type HomeHeroContent } from '@/lib/home-content';
 import HeroShowcase from './HeroShowcase';
 
-function scrollToDemo() {
-  document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' });
-}
-
 export default function PlatformHero({ content = defaultHomeHero }: { content?: HomeHeroContent }) {
   // Tolerates stray or doubled spaces from a CMS editor: empty words would
   // otherwise render blank spans and push the accent's delay out.
@@ -100,13 +96,6 @@ export default function PlatformHero({ content = defaultHomeHero }: { content?: 
             >
               {content.primaryCtaLabel}
             </a>
-            <button
-              type="button"
-              onClick={scrollToDemo}
-              className="theme-secondary-button rounded-xl px-6 py-3.5 text-[15px] font-semibold"
-            >
-              {content.secondaryCtaLabel}
-            </button>
           </div>
           <p
             className="hero-fade hero-footnote theme-subtle mt-5 text-[12.5px] font-[family-name:var(--font-mono)]"

@@ -23,7 +23,6 @@ const whatWeDoLinks: DropdownLink[] = [
 ];
 
 const featuresLinks: DropdownLink[] = [
-  { label: 'Book Appointment', href: uponaiBookingUrl, external: true },
   { label: 'SIP Integration & Call Transfer', href: '/sip-integrations-and-transfers-685191' },
   { label: 'Recordings', href: '/recordings-page' },
   { label: 'Integrations', href: '/integrations' },

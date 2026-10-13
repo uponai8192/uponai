@@ -13,7 +13,6 @@ export type HomeHeroContent = {
   /** Second half, rendered in the brand gradient, inline with the first. */
   headlineAccent: string;
   primaryCtaLabel: string;
-  secondaryCtaLabel: string;
   footnoteStrong: string;
   footnoteRest: string;
 };
@@ -123,7 +122,6 @@ export const defaultHomeHero: HomeHeroContent = {
   headline: 'Build or Sell',
   headlineAccent: 'AI Voice Agents.',
   primaryCtaLabel: 'Get a demo →',
-  secondaryCtaLabel: '▶ Watch 2-min overview',
   footnoteStrong: 'First agent live in 10 minutes',
   footnoteRest: ' · No-code builder · Works with your existing stack',
 };
