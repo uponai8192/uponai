@@ -8,6 +8,7 @@
 
 import { unstable_cache } from 'next/cache';
 import { unstable_rethrow } from 'next/navigation';
+import { cache } from 'react';
 
 export const CMS_TAG_HOME = 'cms-home';
 export const CMS_TAG_POSTS = 'cms-posts';
@@ -80,6 +81,12 @@ export async function sanityQuery<T>(query: string): Promise<T | null> {
 // page's own revalidate to that value, so a page built from fallback content
 // regenerates (and retries Sanity) about a minute later. Outside a prerender
 // it has no effect on the response.
+//
+// The wrapper is memoised per request with React's cache(). unstable_cache
+// does not share a failure between callers, so without it a page that reads
+// the same collection twice (generateMetadata and the page body, or two
+// readers over one collection) paid one Sanity timeout and one log line per
+// call during an outage.
 const CMS_FALLBACK_REVALIDATE_SECONDS = 60;
 const shortenPageLifetime = unstable_cache(async () => true, ['cms-fallback-render'], {
   revalidate: CMS_FALLBACK_REVALIDATE_SECONDS,
@@ -90,7 +97,7 @@ export function withCmsFallback<Args extends unknown[], Result>(
   read: (...args: Args) => Promise<Result>,
   fallback: (...args: Args) => NoInfer<Result>
 ): (...args: Args) => Promise<Result> {
-  return async (...args) => {
+  return cache(async (...args: Args) => {
     try {
       return await read(...args);
     } catch (error) {
@@ -105,5 +112,5 @@ export function withCmsFallback<Args extends unknown[], Result>(
       } catch {}
       return fallback(...args);
     }
-  };
+  });
 }
