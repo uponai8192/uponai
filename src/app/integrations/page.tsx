@@ -66,7 +66,7 @@ const connectionMethods = [
     eyebrow: 'Mid-call actions',
     title: 'Agents that do the work, not just talk',
     body: 'Custom functions let an agent call your APIs during the conversation: check a calendar, look up an account, create a ticket or update a CRM record, then tell the caller what happened.',
-    href: 'https://documentation.uponai.com/',
+    href: 'https://docs.uponai.com/',
     linkLabel: 'Read the documentation',
     external: true,
   },

@@ -35,7 +35,7 @@ const resourcesLinks: DropdownLink[] = [
   { label: 'About Us', href: '/about-us-page' },
   { label: 'Trust Center', href: '/trust-center' },
   { label: 'Support', href: 'mailto:support@uponai.com', external: true },
-  { label: 'Documentation', href: 'https://documentation.uponai.com/', external: true },
+  { label: 'Documentation', href: 'https://docs.uponai.com/', external: true },
   { label: 'Admin Panel', href: 'https://admin-panel.upon-ai.com/auth/login', external: true },
   { label: 'Stats', href: 'https://stats.uptimerobot.com/vHlC7Zpxfg', external: true },
   { label: 'Partnerships', href: '/upon-ai-partners' },
