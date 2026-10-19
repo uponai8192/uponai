@@ -1733,6 +1733,82 @@ html[data-theme='light'] .text-slate-300 {
 }
 
 html[data-theme='light'] .text-slate-400 {
+/* ── Solutions stage ──────────────────────────────────────────────────────
+   The centre card grows out of the page while it scrolls into view and the
+   corner snippets drift upward at different speeds as the stage crosses the
+   viewport, both scrubbed by scroll position. Entry only for the card: it
+   never shrinks back on the way out, so the camera only moves forward. One
+   animation per rule, so Lightning CSS keeps the timelines intact (see the
+   integrations choreography). Without scroll-driven animation support the
+   card sits at full size and the snippets stay put. */
+@keyframes sol-grow {
+  from { transform: scale(0.55); }
+  to { transform: none; }
+}
+
+@keyframes sol-drift {
+  from { transform: translateY(var(--drift-from, 64px)); }
+  to { transform: translateY(var(--drift-to, -56px)); }
+}
+
+@keyframes sol-twinkle {
+  0%, 100% { opacity: 0.3; transform: scale(0.6) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1) rotate(45deg); }
+}
+
+/* The snippet for the solution on the card stands forward; the rest recede. */
+.sol-float-card {
+  box-shadow: 0 18px 44px rgba(var(--shadow-rgb), 0.14);
+  transition:
+    opacity 400ms ease,
+    transform 600ms cubic-bezier(0.22, 0.61, 0.36, 1),
+    border-color 400ms ease,
+    box-shadow 400ms ease;
+}
+
+.sol-float[data-active='false'] .sol-float-card {
+  opacity: 0.7;
+  transform: scale(0.95);
+}
+
+.sol-float[data-active='true'] .sol-float-card {
+  border-color: var(--brand-primary-border);
+  box-shadow:
+    0 0 0 3px var(--brand-primary-bg),
+    0 26px 56px rgba(var(--shadow-rgb), 0.22);
+  transform: scale(1.04);
+}
+
+.sol-sparkle {
+  animation: sol-twinkle 3.2s ease-in-out infinite;
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .sol-card {
+      animation: sol-grow linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 45%;
+    }
+
+    .sol-float {
+      animation: sol-drift linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sol-sparkle {
+    animation: none;
+  }
+
+  .sol-float-card {
+    transition: none;
+  }
+}
+
   color: var(--text-soft);
 }
 
