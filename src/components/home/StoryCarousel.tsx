@@ -6,13 +6,13 @@ import {
   useEffect,
   useRef,
   useState,
-  useSyncExternalStore,
   type CSSProperties,
   type KeyboardEvent,
   type PointerEvent,
 } from 'react';
 import AgentAvatar from '@/components/voice/AgentAvatar';
 import type { HomeCustomerStory } from '@/lib/home-content';
+import { usePrefersReducedMotion } from '@/lib/use-reduced-motion';
 import { findVerticalAgent, verticalAgentKeys } from '@/lib/vertical-agents';
 
 // Customer stories as a rotating "call replay" carousel. The active progress
@@ -34,22 +34,6 @@ const tintByKey: Record<string, string> = {
   education: '34, 197, 94',
   government: '14, 165, 233',
 };
-
-const reducedMotionQuery = '(prefers-reduced-motion: reduce)';
-
-function subscribeReducedMotion(callback: () => void) {
-  const media = window.matchMedia(reducedMotionQuery);
-  media.addEventListener('change', callback);
-  return () => media.removeEventListener('change', callback);
-}
-
-function usePrefersReducedMotion() {
-  return useSyncExternalStore(
-    subscribeReducedMotion,
-    () => window.matchMedia(reducedMotionQuery).matches,
-    () => false,
-  );
-}
 
 // First letters of the first and last word, e.g. "Paul Bonelli" -> "PB".
 function initialsOf(name: string) {

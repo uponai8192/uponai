@@ -1,16 +1,26 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import { useEffect, useRef, useState, type CSSProperties, type PointerEvent } from 'react';
 import AgentAvatar from '@/components/voice/AgentAvatar';
 import { useVoiceWidget } from '@/components/widget/VoiceWidgetProvider';
 import { defaultHomeSocialProof, type HomeSocialProofContent } from '@/lib/home-content';
+import { usePrefersReducedMotion } from '@/lib/use-reduced-motion';
 import { getVerticalAgents } from '@/lib/vertical-agents';
 
-// The agent switchboard: one pinned stage that hands over from agent to agent
-// as the visitor scrolls. The section is several screens tall; its inner
-// stage is sticky, and scroll progress through the section picks the agent.
-// Scrolling itself is never intercepted.
+// The agent switchboard: one stage that hands over from agent to agent. It
+// used to be a pinned scroll track, several screens tall, where scrolling
+// picked the agent; visitors felt stuck in it until they had seen all seven.
+// Now the section is one screen tall and scrolls past like any other. The
+// agents rotate on a timer (the active row's progress line is the clock, see
+// .story-timer in globals.css), and picking one hands control to the visitor
+// for good. Rotation pauses while a call is live or connecting, while the
+// pointer rests on the stage, under keyboard focus, offscreen, and in a
+// hidden tab. On phones the dial is a swipeable row of agent chips, and the
+// stage itself swipes.
+
+const DURATION_MS = 6000;
+const SWIPE_PX = 48;
 
 type StageDetails = {
   /** Page that already covers this vertical. */
@@ -102,79 +112,89 @@ export default function AgentSwitchboard({
   content?: HomeSocialProofContent;
 }) {
   const sectionRef = useRef<HTMLElement>(null);
-  const stickyRef = useRef<HTMLDivElement>(null);
-  const railRef = useRef<HTMLSpanElement>(null);
-  const barRef = useRef<HTMLSpanElement>(null);
+  const chipRowRef = useRef<HTMLOListElement>(null);
+  const swipeStart = useRef<number | null>(null);
   const [active, setActive] = useState(0);
+  const [userPicked, setUserPicked] = useState(false);
+  const [hovering, setHovering] = useState(false);
+  const [focused, setFocused] = useState(false);
+  const [offscreen, setOffscreen] = useState(true);
+  const [tabHidden, setTabHidden] = useState(false);
+  const reducedMotion = usePrefersReducedMotion();
   const { callState, leadCaptured, openWidget, startCallDirect, endCall } = useVoiceWidget();
 
   useEffect(() => {
     const section = sectionRef.current;
-    const sticky = stickyRef.current;
-    if (!section || !sticky) return;
-
-    let frame = 0;
-    let listening = false;
-
-    // Progress runs from the moment the stage pins to the moment it unpins.
-    const measure = () => {
-      frame = 0;
-      const pinTop = parseFloat(getComputedStyle(sticky).top) || 0;
-      const rect = section.getBoundingClientRect();
-      const travel = rect.height - sticky.offsetHeight;
-      const progress = travel > 0 ? Math.min(1, Math.max(0, (pinTop - rect.top) / travel)) : 0;
-      if (railRef.current) railRef.current.style.transform = `scaleY(${progress})`;
-      if (barRef.current) barRef.current.style.transform = `scaleX(${progress})`;
-      setActive(Math.min(COUNT - 1, Math.floor(progress * COUNT)));
-    };
-
-    const schedule = () => {
-      if (!frame) frame = requestAnimationFrame(measure);
-    };
-
-    // Only listen to scroll while the section is on screen.
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting && !listening) {
-        listening = true;
-        window.addEventListener('scroll', schedule, { passive: true });
-        window.addEventListener('resize', schedule);
-      } else if (!entry.isIntersecting && listening) {
-        listening = false;
-        window.removeEventListener('scroll', schedule);
-        window.removeEventListener('resize', schedule);
-      }
-      // Settle on the first or last agent when entering or leaving fast.
-      schedule();
+    if (!section) return;
+    const observer = new IntersectionObserver(([entry]) => setOffscreen(!entry.isIntersecting), {
+      threshold: 0.3,
     });
     observer.observe(section);
-
+    const onVisibility = () => setTabHidden(document.visibilityState === 'hidden');
+    document.addEventListener('visibilitychange', onVisibility);
     return () => {
       observer.disconnect();
-      window.removeEventListener('scroll', schedule);
-      window.removeEventListener('resize', schedule);
-      if (frame) cancelAnimationFrame(frame);
+      document.removeEventListener('visibilitychange', onVisibility);
     };
   }, []);
 
-  // Scroll to the middle of an agent's step, so the dial doubles as navigation.
-  const jumpTo = (index: number) => {
-    const section = sectionRef.current;
-    const sticky = stickyRef.current;
-    if (!section || !sticky) return;
-    const pinTop = parseFloat(getComputedStyle(sticky).top) || 0;
-    const rect = section.getBoundingClientRect();
-    const travel = rect.height - sticky.offsetHeight;
-    const target = window.scrollY + rect.top - pinTop + ((index + 0.5) / COUNT) * travel;
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    window.scrollTo({ top: target, behavior: reduce ? 'auto' : 'smooth' });
-  };
+  // Keep the active chip in view in the phone row. Scrolls the row only,
+  // never the page.
+  useEffect(() => {
+    const row = chipRowRef.current;
+    const chip = row?.children[active] as HTMLElement | undefined;
+    if (!row || !chip || row.scrollWidth <= row.clientWidth) return;
+    // From rects, so the result holds however far the row is already scrolled.
+    const rowRect = row.getBoundingClientRect();
+    const chipRect = chip.getBoundingClientRect();
+    const left = row.scrollLeft + chipRect.left - rowRect.left - (rowRect.width - chipRect.width) / 2;
+    row.scrollTo({ left, behavior: reducedMotion ? 'auto' : 'smooth' });
+  }, [active, reducedMotion]);
 
   const agent = agents[active];
   const stage = stageByKey[agent.key] ?? fallbackStage;
   const connecting = callState === 'loading';
-  // The featured agent keeps changing while a call is live, so the button ends
-  // the current call instead of opening a second one alongside it.
+  // A visitor can still pick another agent mid-call, so the button ends the
+  // current call instead of opening a second one alongside it.
   const onCall = callState === 'active';
+
+  const autoplay = !reducedMotion && !userPicked && COUNT > 1;
+  const running = autoplay && !hovering && !focused && !offscreen && !tabHidden && !onCall && !connecting;
+
+  const advance = () => setActive((index) => (index + 1) % COUNT);
+
+  // A visitor's pick ends the rotation, so the agent they chose stays put.
+  const pick = (index: number) => {
+    setUserPicked(true);
+    setActive(((index % COUNT) + COUNT) % COUNT);
+  };
+
+  const onPointerDown = (event: PointerEvent<HTMLDivElement>) => {
+    if (event.pointerType !== 'mouse') swipeStart.current = event.clientX;
+  };
+
+  const onPointerUp = (event: PointerEvent<HTMLDivElement>) => {
+    if (swipeStart.current === null) return;
+    const delta = event.clientX - swipeStart.current;
+    swipeStart.current = null;
+    if (delta <= -SWIPE_PX) pick(active + 1);
+    else if (delta >= SWIPE_PX) pick(active - 1);
+  };
+
+  // The active row's progress line. It is the autoplay clock while rotating,
+  // and simply marks the chosen agent once the visitor has picked one.
+  const timer = (className: string) => (
+    <span className={`block overflow-hidden rounded-full bg-[var(--border)] ${className}`}>
+      <span
+        key={active}
+        data-paused={!running}
+        onAnimationEnd={autoplay ? advance : undefined}
+        className={`block h-full w-full rounded-full bg-gradient-to-r from-[var(--brand-cool)] to-[var(--brand)] ${
+          autoplay ? 'story-timer' : ''
+        }`}
+      />
+    </span>
+  );
 
   const startTalking = () =>
     leadCaptured ? startCallDirect(agent.key) : openWidget({ vertical: agent.key });
@@ -184,15 +204,17 @@ export default function AgentSwitchboard({
       ref={sectionRef}
       aria-labelledby="switchboard-heading"
       className="relative px-4"
-      // One screen to pin and roughly three quarters of a screen per agent.
-      style={{ height: `calc(100svh + ${COUNT} * 72svh)` }}
+      onFocus={(event) => setFocused(event.target.matches(':focus-visible'))}
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setFocused(false);
+      }}
+      style={{ '--story-duration': `${DURATION_MS}ms` } as CSSProperties}
     >
       <div
-        ref={stickyRef}
         // sw-stage: the integrations band that follows pushes this stage
         // toward the camera and dissolves it as it arrives (globals.css,
         // "Scroll choreography").
-        className="sw-stage sticky top-[4.75rem] flex h-[calc(100svh-4.75rem)] items-center py-4 md:py-8"
+        className="sw-stage flex min-h-[calc(100svh-4.75rem)] items-center py-12 md:py-16"
       >
         <div className="mx-auto grid w-full max-w-7xl items-center gap-5 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-12 lg:gap-16">
           {/* Dial */}
@@ -203,7 +225,7 @@ export default function AgentSwitchboard({
             </span>
             <h2
               id="switchboard-heading"
-              className="theme-heading mt-3 text-2xl font-bold leading-[1.1] md:mt-4 md:text-[2.5rem] [@media(max-height:600px)]:text-xl"
+              className="theme-heading mt-3 text-2xl font-bold leading-[1.1] md:mt-4 md:text-[2.5rem]"
             >
               {content.lead}
               {content.leadHighlight?.trim() ? (
@@ -223,10 +245,9 @@ export default function AgentSwitchboard({
                 className="absolute bottom-[26px] left-[25px] top-[26px] w-px bg-[var(--border-strong)]"
               />
               <span
-                ref={railRef}
                 aria-hidden
-                className="absolute bottom-[26px] left-[25px] top-[26px] w-[2px] origin-top -translate-x-[0.5px] bg-gradient-to-b from-[var(--brand-cool)] to-[var(--brand)]"
-                style={{ transform: 'scaleY(0)' }}
+                className="sw-rail absolute bottom-[26px] left-[25px] top-[26px] w-[2px] origin-top -translate-x-[0.5px] bg-gradient-to-b from-[var(--brand-cool)] to-[var(--brand)]"
+                style={{ transform: `scaleY(${COUNT > 1 ? active / (COUNT - 1) : 0})` }}
               />
               {agents.map((item, i) => {
                 const isActive = i === active;
@@ -235,9 +256,10 @@ export default function AgentSwitchboard({
                   <li key={item.key} className="relative">
                     <button
                       type="button"
-                      onClick={() => jumpTo(i)}
-                      aria-current={isActive ? 'step' : undefined}
-                      className="group flex w-full items-center gap-4 rounded-2xl py-[5px] text-left"
+                      onClick={() => pick(i)}
+                      aria-pressed={isActive}
+                      aria-label={`${item.name}, ${details.industry}`}
+                      className="group flex w-full cursor-pointer items-center gap-4 rounded-2xl py-[5px] text-left"
                     >
                       {/* The avatar disc stays opaque and centred on the rail, so the
                           line runs behind it rather than through it; only the
@@ -257,7 +279,7 @@ export default function AgentSwitchboard({
                         />
                       </span>
                       <span
-                        className={`sw-row flex min-w-0 flex-col leading-tight ${
+                        className={`sw-row relative flex min-w-0 flex-col leading-tight ${
                           isActive ? 'translate-x-1 opacity-100' : 'opacity-55 group-hover:opacity-90'
                         }`}
                       >
@@ -269,6 +291,7 @@ export default function AgentSwitchboard({
                           {item.name}
                         </span>
                         <span className="mt-0.5 text-xs text-[var(--text-subtle)]">{details.industry}</span>
+                        {isActive ? timer('absolute -bottom-2 left-0 h-[2px] w-24') : null}
                       </span>
                     </button>
                   </li>
@@ -276,40 +299,56 @@ export default function AgentSwitchboard({
               })}
             </ol>
 
-            {/* Mobile: horizontal avatar row */}
-            <div className="mt-5 md:hidden">
-              <ol className="flex justify-between">
-                {agents.map((item, i) => {
-                  const isActive = i === active;
-                  return (
-                    <li key={item.key}>
-                      <button
-                        type="button"
-                        onClick={() => jumpTo(i)}
-                        aria-label={`${item.name}, ${(stageByKey[item.key] ?? fallbackStage).industry}`}
-                        aria-current={isActive ? 'step' : undefined}
-                        className={`sw-row block overflow-hidden rounded-full border-2 ${
-                          isActive ? 'scale-110 border-[var(--brand)] opacity-100' : 'border-transparent opacity-50'
-                        }`}
-                      >
-                        <AgentAvatar agentKey={item.key} name={item.name} size={36} className="h-9 w-9" />
-                      </button>
-                    </li>
-                  );
-                })}
-              </ol>
-              <span className="mt-3 block h-[2px] overflow-hidden rounded-full bg-[var(--border)]">
-                <span
-                  ref={barRef}
-                  className="block h-full origin-left bg-gradient-to-r from-[var(--brand-cool)] to-[var(--brand)]"
-                  style={{ transform: 'scaleX(0)' }}
-                />
-              </span>
-            </div>
+            {/* Mobile: a swipeable row of agent chips. It bleeds to the screen
+                edges so a half-visible chip hints that the row scrolls. */}
+            <ol
+              ref={chipRowRef}
+              // Browsing the row is taking control, so the rotation stops
+              // rather than dragging the row back mid-swipe.
+              onPointerDown={() => setUserPicked(true)}
+              className="-mx-4 mt-5 flex snap-x snap-mandatory gap-2 overflow-x-auto scroll-px-4 px-4 pb-1 [scrollbar-width:none] md:hidden [&::-webkit-scrollbar]:hidden"
+            >
+              {agents.map((item, i) => {
+                const isActive = i === active;
+                const details = stageByKey[item.key] ?? fallbackStage;
+                return (
+                  <li key={item.key} className="flex-none snap-center">
+                    <button
+                      type="button"
+                      onClick={() => pick(i)}
+                      aria-pressed={isActive}
+                      aria-label={`${item.name}, ${details.industry}`}
+                      className={`sw-row relative flex items-center gap-2.5 overflow-hidden rounded-full border py-1.5 pl-1.5 pr-4 ${
+                        isActive
+                          ? 'border-[var(--brand-primary-border)] bg-[var(--brand-primary-bg)]'
+                          : 'border-[var(--border)] bg-[var(--surface-soft)] opacity-70'
+                      }`}
+                    >
+                      <span className="block h-8 w-8 flex-none overflow-hidden rounded-full">
+                        <AgentAvatar agentKey={item.key} name={item.name} size={32} className="h-8 w-8" />
+                      </span>
+                      <span className="flex flex-col text-left leading-tight">
+                        <span className="text-[13px] font-semibold text-[var(--text-strong)]">{item.name}</span>
+                        <span className="text-[10.5px] text-[var(--text-subtle)]">{details.industry}</span>
+                      </span>
+                      {isActive ? timer('absolute inset-x-4 bottom-0 h-[2px]') : null}
+                    </button>
+                  </li>
+                );
+              })}
+            </ol>
           </div>
 
           {/* Stage */}
-          <div className="theme-panel relative overflow-hidden rounded-[28px] p-5 sm:p-7 md:p-9">
+          <div
+            className="theme-panel relative touch-pan-y overflow-hidden rounded-[28px] p-5 sm:p-7 md:p-9"
+            // Resting the mouse on the stage holds the agent being read.
+            onPointerEnter={(event) => event.pointerType === 'mouse' && setHovering(true)}
+            onPointerLeave={() => setHovering(false)}
+            onPointerDown={onPointerDown}
+            onPointerUp={onPointerUp}
+            onPointerCancel={() => (swipeStart.current = null)}
+          >
             {agents.map((item, i) => (
               <div
                 key={item.key}
@@ -391,13 +430,13 @@ export default function AgentSwitchboard({
                     {agent.name}
                   </h3>
                   <p
-                    className="sw-enter theme-soft mt-3 hidden text-sm leading-6 sm:block md:text-[15px] [@media(max-height:600px)]:hidden"
+                    className="sw-enter theme-soft mt-3 hidden text-sm leading-6 sm:block md:text-[15px]"
                     style={{ '--d': '120ms' } as CSSProperties}
                   >
                     {agent.blurb}
                   </p>
                   <div
-                    className="sw-enter mt-4 hidden flex-wrap gap-2 sm:flex [@media(max-height:600px)]:hidden"
+                    className="sw-enter mt-4 hidden flex-wrap gap-2 sm:flex"
                     style={{ '--d': '180ms' } as CSSProperties}
                   >
                     {agent.chips.map((chip) => (
@@ -412,11 +451,9 @@ export default function AgentSwitchboard({
                 </div>
               </div>
 
-              {/* Dropped on short screens (landscape phones) so the pinned stage
-                  still fits with the Talk button in view. */}
               <div
                 key={`talk-${agent.key}`}
-                className="mt-5 grid gap-2.5 md:mt-7 [@media(max-height:720px)]:hidden"
+                className="mt-5 grid gap-2.5 md:mt-7"
                 aria-hidden
               >
                 <p
@@ -470,8 +507,10 @@ export default function AgentSwitchboard({
         </div>
       </div>
 
+      {/* Only filled once the rotation is off for good (a pick, or reduced
+          motion), so neither autoplay nor a mere pause announces anything. */}
       <p className="sr-only" aria-live="polite">
-        Now showing {agent.name}, {stage.industry}
+        {autoplay ? '' : `Now showing ${agent.name}, ${stage.industry}`}
       </p>
     </section>
   );

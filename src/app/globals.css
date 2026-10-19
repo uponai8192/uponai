@@ -1292,15 +1292,19 @@ html[data-theme='dark'] .integ-band {
       animation-range: cover 0% cover 100%;
     }
 
-    /* The section before: its pinned stage pushes toward the camera and
-       dissolves over the band's arrival. A running transform animation makes
-       this stage, and the next panel below, a containing block for fixed
-       descendants for the life of the page; neither has any today. */
+    /* The section before: its stage pushes toward the camera and dissolves
+       over the second half of the band's arrival. It no longer pins and is
+       about one screen tall, so the band starts entering while the stage is
+       still being read; 15% (half a screen of the 320svh cover range) holds
+       the fade back until the stage is on its way out. A running transform
+       animation makes this stage, and the next panel below, a containing
+       block for fixed descendants for the life of the page; neither has any
+       today. */
     .sw-stage {
       transform-origin: 50% 50%;
       animation: integ-prev-out linear both;
       animation-timeline: --integ;
-      animation-range: cover 0% cover 31.25%;
+      animation-range: cover 15% cover 31.25%;
     }
 
     /* The section after: it comes up from just under full size while the
@@ -1635,6 +1639,11 @@ html[data-theme='dark'] .integ-band {
     transform 400ms cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
+/* The dial's rail fills down to the active agent. */
+.sw-rail {
+  transition: transform 600ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
 @keyframes story-metric {
   from { opacity: 0; transform: translateY(18px) scale(0.86); }
   to { opacity: 1; transform: none; }
@@ -1711,6 +1720,7 @@ html[data-theme='dark'] .integ-band {
 
   .sw-fade,
   .sw-row,
+  .sw-rail,
   .story-slide,
   .story-peek {
     transition: none !important;
@@ -1723,16 +1733,6 @@ html[data-theme='dark'] .integ-band {
   }
 }
 
-html[data-theme='light'] .text-white {
-  color: var(--text-strong);
-}
-
-html[data-theme='light'] .text-slate-200,
-html[data-theme='light'] .text-slate-300 {
-  color: var(--text-body);
-}
-
-html[data-theme='light'] .text-slate-400 {
 /* ── Solutions stage ──────────────────────────────────────────────────────
    The centre card grows out of the page while it scrolls into view and the
    corner snippets drift upward at different speeds as the stage crosses the
@@ -1809,6 +1809,16 @@ html[data-theme='light'] .text-slate-400 {
   }
 }
 
+html[data-theme='light'] .text-white {
+  color: var(--text-strong);
+}
+
+html[data-theme='light'] .text-slate-200,
+html[data-theme='light'] .text-slate-300 {
+  color: var(--text-body);
+}
+
+html[data-theme='light'] .text-slate-400 {
   color: var(--text-soft);
 }
 

@@ -26,9 +26,11 @@ export const metadata: Metadata = {
 // Each scroll-panel fills the viewport and its content drifts in and out
 // tied to scroll position, via CSS scroll-driven animations (globals.css).
 // Scrolling stays free, nothing snaps or hijacks the wheel. The hero, the
-// agent switchboard and the integrations hub sit outside the panels: each
-// is taller than a screen and pins its own stage, and together they read as
-// one forward camera move before the panels begin.
+// agent switchboard and the integrations hub sit outside the panels and read
+// as one forward camera move before the panels begin. The hero and the hub
+// are taller than a screen and pin their own stage; the switchboard used to
+// as well, but visitors felt stuck in it, so it is now one screen and
+// rotates its agents on a timer instead.
 export default async function HomePage() {
   const content = await getHomePageContent();
   return (
