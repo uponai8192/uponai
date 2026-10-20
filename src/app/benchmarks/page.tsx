@@ -4,6 +4,8 @@ import CTASection from '@/components/sections/CTASection';
 import { getBenchmarks } from '@/lib/benchmarks';
 import { buildBreadcrumbSchema, buildPageMetadata } from '@/lib/seo';
 
+// Served at uponai.com/benchmarks and, through src/middleware.ts, at the root
+// of bench.uponai.com.
 export const metadata: Metadata = buildPageMetadata({
   title: 'LLM Benchmarks for Voice AI Agents | UponAI',
   description:
