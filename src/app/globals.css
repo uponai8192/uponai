@@ -39,6 +39,11 @@
   --glow-cyan: rgba(46, 124, 196, 0.14);
   --glow-green: rgba(1, 87, 163, 0.14);
   --shadow-rgb: 1, 87, 163;
+  /* Benchmark provider hues (dataviz categorical slots 1-4, validated). */
+  --bench-openai: #2a78d6;
+  --bench-anthropic: #eb6834;
+  --bench-google: #1baf7a;
+  --bench-other: #eda100;
 }
 
 html[data-theme='dark'] {
@@ -78,6 +83,10 @@ html[data-theme='dark'] {
   --glow-cyan: rgba(92, 184, 217, 0.14);
   --glow-green: rgba(77, 163, 232, 0.14);
   --shadow-rgb: 0, 0, 0;
+  --bench-openai: #3987e5;
+  --bench-anthropic: #d95926;
+  --bench-google: #199e70;
+  --bench-other: #c98500;
 }
 
 html {
@@ -1867,4 +1876,53 @@ html[data-theme='light'] [class*='bg-[#0157a3]'][class*='text-white'] {
 ::selection {
   background: rgba(1, 87, 163, 0.28);
   color: var(--text-strong);
+}
+
+/* ── Model benchmarks page ───────────────────────────────────────────────
+   Load-in flourishes only: cards rise, score bars grow from the baseline and
+   the tradeoff line draws itself. Transform and opacity, nothing that
+   relayouts, and all of it switched off for reduced motion. */
+@keyframes bench-rise {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes bench-grow {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@keyframes bench-grow-y {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
+
+@keyframes bench-draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+
+.bench-rise {
+  animation: bench-rise 520ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.bench-grow {
+  transform-origin: left center;
+  animation: bench-grow 700ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.bench-grow-y {
+  transform-origin: center bottom;
+  animation: bench-grow-y 700ms cubic-bezier(0.2, 0.7, 0.2, 1) 200ms both;
+}
+
+/* Paired with pathLength="1" on the line, so one dash covers it whatever
+   its real length. */
+.bench-draw {
+  stroke-dasharray: 1;
+  animation: bench-draw 1200ms ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bench-rise, .bench-grow, .bench-grow-y, .bench-draw { animation: none; }
 }
