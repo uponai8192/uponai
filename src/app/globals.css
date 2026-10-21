@@ -584,12 +584,12 @@ details[open] > summary .faq-toggle {
    motion allowed, the hero is a 160svh scroll track with its stage pinned
    for 100svh. The page loads with the pin already engaged, which on the
    track's cover range is 100/260 = 38.46%; the pin releases at 160/260 =
-   61.54%. From the first scroll the walkthrough frame grows toward the
-   camera until it fills the screen (done at 54.6%, with a short hold), the
-   copy lifts away and the header steps aside; after release the frame
-   keeps growing past the camera and dissolves while the switchboard comes
-   up underneath. The frame is sized from the viewport height so a fixed
-   scale of 1.8 is exactly full height at every viewport.
+   61.54%. From the first scroll the admin console grows toward the camera
+   until it is a framed screen centred in the viewport, with a margin and
+   its rounded corners kept (done at 54.6%, with a short hold), the copy
+   lifts away and the header steps aside; after release the frame keeps
+   growing past the camera and dissolves while the switchboard comes up
+   underneath.
 
    Same rules as the integrations choreography: one animation per rule, or
    equal length lists, because the production minifier writes
@@ -664,11 +664,10 @@ body {
       margin-top: -7rem;
     }
 
-    /* The frame is laid out at its FULL-SCREEN size and scaled DOWN to rest,
-       never up: a layer scaled up from a small layout box is rasterised at
-       the small size and stretched, which is what made the footage go soft
-       as it grew. Scaling down keeps every step sharp and the hold is a 1:1
-       render. --hero-rest-lift is the distance from the viewport centre down
+    /* The frame is laid out at its HOLD size and scaled DOWN to rest, never
+       up: a layer scaled up from a small layout box is rasterised at the
+       small size and stretched, so it goes soft as it grows. Scaling down
+       keeps every step sharp and the hold is a 1:1 render. --hero-rest-lift is the distance from the viewport centre down
        to the resting centre (4svh above the bottom, half a frame up); the
        rest scale and radius are derived on the frame rule below.
        The copy has to fit above the resting frame, so shorter screens get a
@@ -723,10 +722,7 @@ body {
 
     /* The showcase wrapper stays in the grid as a placeholder of the
        resting height; the frame itself is taken out of flow, centred in the
-       stage at full-screen size, and scaled down to sit in that placeholder.
-       Width is capped so a gated portrait tablet never gets a frame wider
-       than the screen; the rest scale is then a little small there, which
-       only shows more of the footage's own margin. */
+       stage at its hold size, and scaled down to sit in that placeholder. */
     .hero-pin .hero-showcase {
       height: var(--hero-frame-h);
       margin-top: 0;
@@ -738,20 +734,22 @@ body {
       animation: none;
     }
 
-    /* Full screen means covering the viewport, not fitting inside it: the
-       frame is as wide as the screen (or as tall, on screens taller than
-       16:9) and the stage clips the overshoot, which is only the footage's
-       own margin. On a 1920-wide screen the 1920 encode then paints 1:1,
-       and measured in the browser that is the whole difference: resampled
-       to 1830 the picture lost a quarter of its detail, at 1:1 it matches
-       the decoded frame exactly. Sizes are rounded to even whole pixels so
+    /* The hold is a framed screen, not a full bleed: the console is UI, and
+       covering the viewport cut its edges off on anything but 16:9. The
+       frame fits inside the viewport with a 3rem side and 2rem top and
+       bottom margin, capped at 1440 wide, so nothing is ever cropped and
+       the page shows around it. Sizes are rounded to even whole pixels so
        the centring stays integral. The resting scale is the resting height
-       over the full height, taken as a ratio with tan(atan2()) since calc()
-       cannot divide lengths. */
+       over the hold height, taken as a ratio with tan(atan2()) since calc()
+       cannot divide lengths, and clamped to 0.85 so the frame always grows:
+       on big or portrait screens the placeholder can be as tall as the
+       capped hold, and the frame then rests a little inside it. The radius
+       is divided by the scale so the corners read as 16px at rest and at
+       the hold alike. */
     .hero-pin .hero-frame {
-      --hero-full-w: round(down, max(100vw, calc(100svh * 16 / 9)), 2px);
+      --hero-full-w: round(down, min(calc(100vw - 6rem), calc((100svh - 4rem) * 16 / 9), 1440px), 2px);
       --hero-full-h: round(down, calc(var(--hero-full-w) * 9 / 16), 2px);
-      --hero-rest: tan(atan2(var(--hero-frame-h), var(--hero-full-h)));
+      --hero-rest: min(0.85, tan(atan2(var(--hero-frame-h), var(--hero-full-h))));
       --hero-rest-radius: calc(16px / var(--hero-rest));
       position: absolute;
       top: round(down, calc(50% - var(--hero-full-h) / 2), 1px);
@@ -769,8 +767,8 @@ body {
       animation-range: cover 0% cover 100%, cover 0% cover 100%;
     }
 
-    /* The stage starts scrolling away at the same moment the walkthrough
-       starts dissolving, so its bottom edge would cut the half-faded video
+    /* The stage starts scrolling away at the same moment the console
+       starts dissolving, so its bottom edge would cut the half-faded frame
        off in a hard line over the switchboard. A mask fades that edge out.
        It is a mask rather than a page-coloured overlay so the dot grid and
        washes behind the stage stay visible. The mask layer is taller than
@@ -816,7 +814,7 @@ body {
       opacity: 1;
     }
 
-    /* The header hides while the walkthrough fills the screen. This is a
+    /* The header hides while the console holds the screen. This is a
        second animation on the same element as the integrations fade; it
        fills nothing outside its range, so it never overrides that one. */
     .site-nav {
@@ -829,7 +827,7 @@ body {
   }
 }
 
-/* Rest is the scaled-down start; full screen is identity. The values read
+/* Rest is the scaled-down start; the hold is identity. The values read
    the stage's custom properties, so one set of keyframes serves every
    viewport height. */
 @keyframes hero-dolly {
@@ -871,7 +869,7 @@ body {
 
 @keyframes hero-dolly-radius {
   0%, 38.46% { border-radius: var(--hero-rest-radius); }
-  54.6%, 100% { border-radius: 0; }
+  54.6%, 100% { border-radius: 16px; }
 }
 
 /* Visibility flips only once the copy is fully gone, so the buttons stop
