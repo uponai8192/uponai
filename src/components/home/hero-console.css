@@ -1,0 +1,166 @@
+/* Hero console (HeroConsole.tsx). The console is laid out on a fixed canvas
+   and scaled to whatever width the frame has, the ratio taken with
+   tan(atan2()) as on the dolly. Under the dolly the frame is laid out at
+   full-screen size, so the canvas renders at 1.5x or more there and is only
+   scaled down by the frame's own rest scale, which keeps the text sharp.
+   Phones get a portrait canvas with the side panels left out. */
+:root {
+  --hc-ok: #1a8a57;
+  --hc-ok-soft: rgba(26, 138, 87, 0.12);
+  --hc-warn: #d9822b;
+}
+
+html[data-theme='dark'] {
+  --hc-ok: #3fcf8e;
+  --hc-ok-soft: rgba(63, 207, 142, 0.14);
+  --hc-warn: #f0a35a;
+}
+
+.hc-fit {
+  container-type: inline-size;
+  overflow: hidden;
+}
+
+.hc {
+  --hc-w: 440px;
+  --hc-h: 550px;
+  width: var(--hc-w);
+  height: var(--hc-h);
+  scale: tan(atan2(100cqw, var(--hc-w)));
+  transform-origin: 0 0;
+  color: var(--text-strong);
+  text-align: left;
+}
+
+@media (min-width: 48rem) {
+  .hc {
+    --hc-w: 1120px;
+    --hc-h: 630px;
+  }
+}
+
+/* Entrances: a short rise out of a blur, staggered with --d. */
+.hc-in {
+  animation: hc-in 500ms cubic-bezier(0.23, 1, 0.32, 1) var(--d, 0s) both;
+}
+
+@keyframes hc-in {
+  from {
+    opacity: 0;
+    translate: 0 8px;
+    filter: blur(2px);
+  }
+}
+
+/* Scene changes rise without the blur: the scene is one big layer, scaled
+   up to 1.7x at the full-screen hold, and a blur there is costly. */
+.hc-scene {
+  animation: hc-scene 450ms cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+@keyframes hc-scene {
+  from {
+    opacity: 0;
+    translate: 0 8px;
+  }
+}
+
+/* Dashboard chart: the line draws itself, then the area and points land. */
+.hc-draw {
+  stroke-dasharray: 1;
+  animation: hc-draw 1400ms cubic-bezier(0.65, 0, 0.35, 1) 400ms both;
+}
+
+@keyframes hc-draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+
+.hc-area {
+  animation: hc-fade 800ms ease 1200ms both;
+}
+
+.hc-dot {
+  animation: hc-fade 300ms ease var(--d, 0s) both;
+}
+
+@keyframes hc-fade {
+  from { opacity: 0; }
+}
+
+.hc-ring {
+  animation: hc-ring 1200ms cubic-bezier(0.65, 0, 0.35, 1) 500ms both;
+}
+
+@keyframes hc-ring {
+  from { stroke-dasharray: 0 100; }
+}
+
+/* Create agent modal. */
+.hc-overlay {
+  animation: hc-fade 250ms ease both;
+}
+
+.hc-pop {
+  animation: hc-pop 350ms cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+@keyframes hc-pop {
+  from {
+    opacity: 0;
+    scale: 0.96;
+  }
+}
+
+/* The scripted cursor glides between targets; the ring marks each click. */
+.hc-cursor {
+  transition:
+    translate 700ms cubic-bezier(0.65, 0, 0.35, 1),
+    opacity 300ms ease;
+}
+
+.hc-click {
+  opacity: 0;
+  animation: hc-click 420ms ease-out forwards;
+}
+
+@keyframes hc-click {
+  from {
+    opacity: 1;
+    scale: 0.4;
+  }
+  to {
+    opacity: 0;
+    scale: 1.6;
+  }
+}
+
+.hc-caret {
+  animation: hc-caret 1s steps(1) infinite;
+}
+
+@keyframes hc-caret {
+  50% { opacity: 0; }
+}
+
+/* Held off screen or paused: the CSS stops with the script. */
+.hc-fit[data-held] .hc * {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hc-in,
+  .hc-scene,
+  .hc-draw,
+  .hc-area,
+  .hc-dot,
+  .hc-ring,
+  .hc-overlay,
+  .hc-pop,
+  .hc-caret {
+    animation: none;
+  }
+  .hc-cursor {
+    transition: none;
+  }
+}
