@@ -3,17 +3,8 @@
   "configurations": [
     {
       "name": "dev",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
-      "port": 3000
-    },
-    {
-      "name": "dev-windows-ca",
-      "runtimeExecutable": "cmd",
-      "runtimeArgs": [
-        "/c",
-        "set NODE_OPTIONS=--use-system-ca&& set \"NODE_EXTRA_CA_CERTS=C:\\ProgramData\\Avast Software\\Avast\\wscert.pem\"&& npm run dev"
-      ],
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["--use-system-ca", "node_modules/next/dist/bin/next", "dev"],
       "port": 3000
     }
   ]
