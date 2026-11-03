@@ -55,7 +55,14 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Failed to create call' }, { status: 502 })
   }
 
-  const { accessToken } = (await res.json()) as { accessToken: string }
+  // Calls on the gateway transport need the call id and ICE servers as well as
+  // the token; the client SDK cannot connect with the token alone.
+  const { accessToken, callId, transport, iceServers } = (await res.json()) as {
+    accessToken: string
+    callId?: string
+    transport?: 'livekit' | 'gateway'
+    iceServers?: RTCIceServer[]
+  }
 
   if (notify && process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
     const transport = nodemailer.createTransport({
@@ -72,7 +79,7 @@ export async function POST(req: NextRequest) {
     }).catch((err: unknown) => console.error('[create-web-call] email error', err))
   }
 
-  return NextResponse.json({ accessToken }, { status: 201 })
+  return NextResponse.json({ accessToken, callId, transport, iceServers }, { status: 201 })
 }
 
 function leadEmail(lead: Required<Pick<LeadBody, 'name' | 'email' | 'company' | 'consentContact' | 'consentMarketing'>>): string {
