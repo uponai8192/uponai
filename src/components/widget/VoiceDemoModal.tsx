@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect, type FormEvent } from 'react'
-import { RetellWebClient } from 'retell-client-js-sdk'
+import { RetellWebClient, type StartCallConfig } from 'retell-client-js-sdk'
 import { useVoiceWidget } from './VoiceWidgetProvider'
 import { getVerticalAgentName } from '@/lib/vertical-agents'
 
@@ -59,7 +59,7 @@ export function VoiceDemoModal() {
         }),
       })
       if (!res.ok) throw new Error('Failed to create call')
-      const { accessToken } = (await res.json()) as { accessToken: string }
+      const call = (await res.json()) as Pick<StartCallConfig, 'accessToken' | 'callId' | 'transport' | 'iceServers'>
       // The server accepted these details, so we can reuse them for reconnects.
       markLeadCaptured()
 
@@ -86,7 +86,7 @@ export function VoiceDemoModal() {
         setErrorMsg('Call failed. Please try again.')
       })
 
-      await client.startCall({ accessToken })
+      await client.startCall(call)
     } catch (err) {
       console.error('[VoiceDemoModal]', err)
       onCallStateChange('error')
