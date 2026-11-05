@@ -72,8 +72,8 @@ const connectionMethods = [
   },
   {
     eyebrow: 'Powered by n8n',
-    title: '1,700+ apps through n8n',
-    body: 'UponAI connects to n8n, and n8n connects to over 1,700 apps. Agents trigger n8n workflows during or after a call, passing the transcript, recording and post-call analysis to any tool in its library. Start from our ready-made templates.',
+    title: '2,500+ apps through n8n',
+    body: 'UponAI connects to n8n, and n8n connects to over 2,500 apps. Agents trigger n8n workflows during or after a call, passing the transcript, recording and post-call analysis to any tool in its library. Start from our ready-made templates.',
     href: '/n8n-downloads',
     linkLabel: 'Get the n8n templates',
   },
@@ -83,7 +83,7 @@ const faqs = [
   {
     question: 'Which tools does UponAI integrate with?',
     answer:
-      'UponAI connects to n8n, and through n8n to its library of over 1,700 apps: the CRM, calendar, helpdesk, messaging and payment tools most teams run on. If a tool has an API but no n8n node, an agent can still call it mid-conversation through a custom function.',
+      'UponAI connects to n8n, and through n8n to its library of over 2,500 apps: the CRM, calendar, helpdesk, messaging and payment tools most teams run on. If a tool has an API but no n8n node, an agent can still call it mid-conversation through a custom function.',
   },
   {
     question: 'Do we have to change phone providers?',
@@ -182,7 +182,7 @@ export default function IntegrationsPage() {
 
             <p className="theme-body mt-7 max-w-3xl text-lg leading-8 md:text-xl">
               UponAI agents book appointments, update the CRM, open tickets and take payments while the
-              caller is still on the line, on the phone system you already have and across 1,700+ apps
+              caller is still on the line, on the phone system you already have and across 2,500+ apps
               through n8n.
             </p>
           </div>
@@ -230,7 +230,7 @@ export default function IntegrationsPage() {
             </div>
             <p className="theme-soft max-w-2xl text-base leading-7">
               A sample of the most requested tools, reachable through n8n. The full list is n8n&apos;s
-              library of 1,700+ apps, and anything else with an API is a custom function away.
+              library of 2,500+ apps, and anything else with an API is a custom function away.
             </p>
           </div>
 

@@ -8,7 +8,7 @@ import { CountUp, IntegrationsStage } from './IntegrationsStage';
 // Copy stays here until the stakeholder settles on this section; it moves to
 // home-content.ts and the CMS once it is final.
 const copy = {
-  count: 1700,
+  count: 2500,
   label: 'Integrations',
   tagline: 'Your AI Voice. Your Apps. Connected.',
   lede: 'Book appointments, update the CRM, open tickets and take payments mid-call. UponAI agents plug into the tools your team already runs on.',
