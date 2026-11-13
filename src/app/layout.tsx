@@ -6,6 +6,7 @@ import Nav from '@/components/ui/Nav';
 import Footer from '@/components/ui/Footer';
 import { getSiteSettings } from '@/lib/cms/settings';
 import CookieConsentManager from '@/components/ui/CookieConsentManager';
+import { consentEnabled, consentStorageKey, gtmContainerId } from '@/lib/consent';
 import { VoiceWidgetProvider } from '@/components/widget/VoiceWidgetProvider'
 import { DEFAULT_OG_IMAGE, SITE_NAME, SITE_URL, organizationSchema, websiteSchema } from '@/lib/seo';
 
@@ -27,6 +28,27 @@ const themeInitScript = `(() => {
     document.documentElement.dataset.theme = 'light';
     document.documentElement.style.colorScheme = 'light';
   }
+})();`;
+
+// Google Tag Manager bootstrap. Consent defaults must be pushed before the
+// container loads; a returning visitor who already accepted starts granted.
+const gtmInitScript = `(() => {
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  window.gtag = window.gtag || gtag;
+  let granted = ${consentEnabled ? 'false' : 'true'};
+  try {
+    if (!granted) granted = window.localStorage.getItem('${consentStorageKey}') === 'accepted';
+  } catch (error) {}
+  const state = granted ? 'granted' : 'denied';
+  gtag('consent', 'default', {
+    ad_storage: state,
+    ad_user_data: state,
+    ad_personalization: state,
+    analytics_storage: state,
+    wait_for_update: 500,
+  });
+  gtag('js', new Date());
 })();`;
 
 export const metadata: Metadata = {
@@ -97,6 +119,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en" data-theme="light" suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: gtmInitScript }} />
+        <script async src={`https://www.googletagmanager.com/gtm.js?id=${gtmContainerId}`} />
         <Script id="theme-init" strategy="beforeInteractive">
           {themeInitScript}
         </Script>
@@ -117,6 +141,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         />
       </head>
       <body className={`${bodyFont.variable} ${displayFont.variable} ${monoFont.variable} text-[var(--foreground)] antialiased transition-[color] duration-300`}>
+        <noscript>
+          <iframe
+            src={`https://www.googletagmanager.com/ns.html?id=${gtmContainerId}`}
+            height="0"
+            width="0"
+            style={{ display: 'none', visibility: 'hidden' }}
+          />
+        </noscript>
         <VoiceWidgetProvider>
           <Nav settings={settings} />
           {/* Offsets the fixed header at its docked height: 64px bar on mobile,
