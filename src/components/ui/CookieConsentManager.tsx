@@ -5,6 +5,7 @@ import Link from 'next/link';
 import {
   consentEnabled,
   consentEventName,
+  consentModeState,
   consentStorageKey,
   type ConsentChoice,
 } from '@/lib/consent';
@@ -12,7 +13,12 @@ import {
 declare global {
   interface Window {
     __uponaiTrackingLoaded?: boolean;
+    gtag?: (...args: unknown[]) => void;
   }
+}
+
+function updateGoogleConsent(choice: ConsentChoice) {
+  window.gtag?.('consent', 'update', consentModeState(choice === 'accepted'));
 }
 
 const consentChangeEventName = 'uponai-consent-changed';
@@ -78,6 +84,8 @@ export default function CookieConsentManager() {
     } catch {
       // Ignore storage write failures and still respect the in-memory choice.
     }
+
+    updateGoogleConsent(choice);
 
     window.dispatchEvent(new Event(consentChangeEventName));
     setBannerOpen(false);
